@@ -14,23 +14,6 @@
     border-color: var(--mantine-color-zinc-7);
 }
 
-.createGroupZone {
-    border-radius: var(--mantine-radius-md);
-    height: 60px;
-    display: flex;
-    alignItems: center;
-    justifyContent: center;
-    border: 2px dashed var(--mantine-color-gray-3);
-    transition: all 0.2s ease;
-    cursor: pointer;
-    background-color: transparent;
-}
-
-.createGroupZone[data-over="true"] {
-    background-color: var(--mantine-color-blue-0);
-    border-color: var(--mantine-color-blue-5);
-}
-
 .emptyPreviewState {
     background-color: var(--mantine-color-zinc-8);
     border-radius: var(--mantine-radius-md);
@@ -39,9 +22,4 @@
     align-items: center;
     justify-content: center;
     border: 1px dashed var(--mantine-color-zinc-7);
-}
-
-.createGroupIconText {
-    font-size: var(--mantine-font-size-xs);
-    font-weight: 700;
 }

@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { Box, Paper, Stack, Text, Group, ActionIcon, ThemeIcon } from '@mantine/core';
-import { IconChevronDown, IconPdf, IconFileText, IconExternalLink } from '@tabler/icons-react';
+import { IconChevronDown } from '@tabler/icons-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useDroppable } from '@dnd-kit/react';
 import { SourceGroup as SourceGroupType, SourceType } from '../types';
 import { SourceCard } from '../SourceCard/SourceCard';
+import { SourceGroupSummary } from './SourceGroupSummary';
 
 import './SourceGroup.css';
 
@@ -13,32 +14,12 @@ interface SourceGroupProps {
   isDraggingAny?: boolean;
 }
 
-const getIcon = (type: SourceType) => {
-  switch (type) {
-    case 'pdf': return <IconPdf size={14} />;
-    case 'doc': return <IconFileText size={14} />;
-    case 'link': return <IconExternalLink size={14} />;
-    default: return <IconFileText size={14} />;
-  }
-};
-
 export const SourceGroup: React.FC<SourceGroupProps> = ({ group, isDraggingAny = false }) => {
-  const [isExpanded, setIsExpanded] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(false);
   const { ref, isDropTarget: isOver } = useDroppable({
     id: group.id,
     data: group,
   });
-
-  const summary = group.sources.reduce((acc, source) => {
-    const key = `${source.type}-${source.color || 'gray'}`;
-    if (!acc[key]) {
-      acc[key] = { type: source.type, color: source.color || 'gray', count: 0 };
-    }
-    acc[key].count++;
-    return acc;
-  }, {} as Record<string, { type: SourceType; color: string; count: number }>);
-
-  const summaryItems = Object.values(summary);
 
   return (
     <Box
@@ -69,31 +50,8 @@ export const SourceGroup: React.FC<SourceGroupProps> = ({ group, isDraggingAny =
                 </Text>
               )
             ) : (
-              <Group gap="xs" mt="4px" wrap="nowrap">
-                {summaryItems.length > 0 ?
-                  (
-                    <>
-                      <Text size="sm" c="dimmed"> {summaryItems.length} sources</Text>
-                      {summaryItems.map((item, index) => (
-                        <Group key={`${item.type}-${item.color}-${index}`} gap="4px" wrap="nowrap">
-                          <ThemeIcon
-                            variant="light"
-                            color={item.color}
-                            size="xs"
-                            radius="xs"
-                          >
-                            {getIcon(item.type)}
-                          </ThemeIcon>
-                          <Text size="10px" c="dimmed" fw={600}>
-                            {item.count}
-                          </Text>
-                        </Group>
-                      ))}
-                    </>
-                  )
-                  : (
-                    <Text size="10px" c="dimmed">Empty group</Text>
-                  )}
+              <Group gap="xs" wrap="nowrap">
+                <SourceGroupSummary sources={group.sources} />
               </Group>
             )}
           </Box>
@@ -121,7 +79,7 @@ export const SourceGroup: React.FC<SourceGroupProps> = ({ group, isDraggingAny =
               transition={{ duration: 0.2, ease: 'easeInOut' }}
               style={{ overflow: 'hidden' }}
             >
-              <Stack gap="5" pt="xs">
+              <Stack gap="5" >
                 {group.sources.length > 0 ? (
                   group.sources.map((source) => (
                     <SourceCard key={source.id} source={source} />

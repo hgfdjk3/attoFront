@@ -1,0 +1,55 @@
+import React from 'react';
+import { Group, ThemeIcon, Text } from '@mantine/core';
+import { IconPdf, IconFileText, IconExternalLink } from '@tabler/icons-react';
+import { Source, SourceType } from '../types';
+
+interface SourceGroupSummaryProps {
+  sources: Source[];
+}
+
+const getIcon = (type: SourceType) => {
+  switch (type) {
+    case 'pdf': return <IconPdf size={14} />;
+    case 'doc': return <IconFileText size={14} />;
+    case 'link': return <IconExternalLink size={14} />;
+    default: return <IconFileText size={14} />;
+  }
+};
+
+export const SourceGroupSummary: React.FC<SourceGroupSummaryProps> = ({ sources }) => {
+  const summary = sources.reduce((acc, source) => {
+    const key = `${source.type}-${source.color || 'gray'}`;
+    if (!acc[key]) {
+      acc[key] = { type: source.type, color: source.color || 'gray', count: 0 };
+    }
+    acc[key].count++;
+    return acc;
+  }, {} as Record<string, { type: SourceType; color: string; count: number }>);
+
+  const summaryItems = Object.values(summary);
+
+  if (summaryItems.length === 0) {
+    return <Text size="10px" c="dimmed">Empty group</Text>;
+  }
+
+  return (
+    <>
+      <Text size="xs" c="dimmed">Sources:</Text>
+      {summaryItems.map((item, index) => (
+        <Group key={`${item.type}-${item.color}-${index}`} gap="4px" wrap="nowrap">
+          <ThemeIcon
+            variant="light"
+            color={item.color}
+            size="xs"
+            radius="xs"
+          >
+            {getIcon(item.type)}
+          </ThemeIcon>
+          <Text size="10px" c="dimmed" fw={600}>
+            {item.count}
+          </Text>
+        </Group>
+      ))}
+    </>
+  );
+};

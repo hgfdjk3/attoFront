@@ -48,23 +48,26 @@ export const SourceCard: React.FC<SourceCardProps> = ({
       ref={mergedRef}
       withBorder
       p="xs"
+      pl="5"
       radius="sm"
       className="sourceCardRoot"
       data-dragging={isDragging || undefined}
       data-dragging-any={isDraggingAny || undefined}
       shadow={isDragging ? 'md' : 'none'}
       style={{
-        borderLeft: source.color ? `4px solid ${source.color}` : undefined,
+        borderLeft: source.color ? `4px solid var(--mantine-color-${source.color}-6)` : undefined,
       }}
     >
       <Group wrap="nowrap" gap="xs">
-        <Box ref={handleRef} className="dragHandle">
-          <IconGripVertical size={16} color="var(--mantine-color-gray-5)" />
-        </Box>
+        <Group wrap="nowrap" gap="5">
+          <Box ref={handleRef} className="dragHandle">
+            <IconGripVertical size={16} color="var(--mantine-color-gray-5)" />
+          </Box>
 
-        <ThemeIcon variant="light" color={source.color || 'gray'} size="md">
-          {getIcon(source.type)}
-        </ThemeIcon>
+          <ThemeIcon variant="light" color={source.color || 'gray'} size="md">
+            {getIcon(source.type)}
+          </ThemeIcon>
+        </Group>
 
         <Box className="sourceCardInfo">
           <Text size="xs" fw={500} truncate>

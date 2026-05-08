@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Stack, Box, Text, Group, ThemeIcon } from '@mantine/core';
+import { Stack, Box, Text, Group, ThemeIcon, ScrollArea } from '@mantine/core';
 import { DragDropProvider, DragOverlay, useDroppable } from '@dnd-kit/react';
 import { PointerSensor } from '@dnd-kit/dom';
 import { Source, SourceGroup as SourceGroupType } from '../types';
 import { SourceGroup } from '../SourceGroup/SourceGroup';
 import { SourceCard } from '../SourceCard/SourceCard';
+import { CreateGroupZone } from '../CreateGroupZone/CreateGroupZone';
 
 import './ProjectSourcesPreview.css';
 
@@ -108,9 +109,9 @@ export const ProjectSourcesPreview: React.FC<ProjectSourcesPreviewProps> = ({
     : null;
 
   return (
-    <DragDropProvider 
-      sensors={sensors} 
-      onDragStart={handleDragStart} 
+    <DragDropProvider
+      sensors={sensors}
+      onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
     >
       <ProjectSourcesPreviewContent
@@ -136,17 +137,19 @@ const ProjectSourcesPreviewContent: React.FC<ProjectSourcesPreviewContentProps> 
   activeSource,
   isDraggingAny
 }) => {
-  const { ref: createGroupRef, isDropTarget: isOverCreate } = useDroppable({ id: 'create-group' });
   const { ref: standaloneRef, isDropTarget: isOverStandalone } = useDroppable({ id: 'standalone-zone' });
 
   return (
     <Box className="previewRoot">
-      <Stack gap="xs">
-        {/* Groups */}
-        {groups.map((group) => (
-          <SourceGroup key={group.id} group={group} isDraggingAny={isDraggingAny} />
-        ))}
+      <ScrollArea h={300} scrollbars="y" scrollbarSize={3} offsetScrollbars>
 
+        <Stack gap="5" >
+          {/* Groups */}
+          {groups.map((group) => (
+            <SourceGroup key={group.id} group={group} isDraggingAny={isDraggingAny} />
+          ))}
+
+        </Stack>
         {/* Standalone Sources */}
         {sources.length > 0 && (
           <Box
@@ -154,7 +157,7 @@ const ProjectSourcesPreviewContent: React.FC<ProjectSourcesPreviewContentProps> 
             className="standaloneSourcesContainer"
             data-over={isOverStandalone || undefined}
           >
-            <Stack gap="xs">
+            <Stack gap="5">
               {sources.map((source) => (
                 <SourceCard key={source.id} source={source} isDraggingAny={isDraggingAny} />
               ))}
@@ -171,21 +174,8 @@ const ProjectSourcesPreviewContent: React.FC<ProjectSourcesPreviewContentProps> 
         )}
 
         {/* Create Group Zone */}
-        <Box
-          ref={createGroupRef}
-          className="createGroupZone"
-          data-over={isOverCreate || undefined}
-        >
-          <Group gap="xs">
-            <ThemeIcon variant="light" color={isOverCreate ? 'blue' : 'gray'} size="sm">
-              <Text className="createGroupIconText">+</Text>
-            </ThemeIcon>
-            <Text size="xs" fw={500} c={isOverCreate ? 'blue' : 'dimmed'}>
-              Drop here to create new group
-            </Text>
-          </Group>
-        </Box>
-      </Stack>
+      </ScrollArea>
+      <CreateGroupZone id="create-group" isDragging={isDraggingAny} />
 
       <DragOverlay>
         {activeSource ? <SourceCard source={activeSource} isOverlay /> : null}
