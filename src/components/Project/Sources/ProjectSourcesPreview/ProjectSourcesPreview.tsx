@@ -6,6 +6,8 @@ import { Source, SourceGroup as SourceGroupType } from '../types';
 import { SourceGroup } from '../SourceGroup/SourceGroup';
 import { SourceCard } from '../SourceCard/SourceCard';
 
+import './ProjectSourcesPreview.css';
+
 interface ProjectSourcesPreviewProps {
   initialGroups: SourceGroupType[];
   standaloneSources: Source[];
@@ -29,13 +31,27 @@ export const ProjectSourcesPreview: React.FC<ProjectSourcesPreviewProps> = ({
     const { source: active, target: over } = event.operation;
     setActiveId(null);
 
-    if (event.canceled || !over) return;
+    if (event.canceled) return;
 
     const sourceId = active.id;
+
+    // If dropped on nothing or on the standalone zone, move to standalone
+    if (!over || over.id === 'standalone-zone') {
+      const sourceInGroup = groups.find(g => g.sources.some(s => s.id === sourceId));
+      if (sourceInGroup) {
+        const movingSource = sourceInGroup.sources.find(s => s.id === sourceId)!;
+        setGroups(groups.map(g =>
+          g.id === sourceInGroup.id ? { ...g, sources: g.sources.filter(s => s.id !== sourceId) } : g
+        ));
+        setSources(prev => [...prev, movingSource]);
+      }
+      return;
+    }
+
     const targetId = over.id;
 
     // Check if we are dropping into a group
-    const targetGroup = groups.find(g => g.id === targetId);
+    const targetGroup = groups.find(g => String(g.id) === String(targetId));
 
     if (targetGroup) {
       // Find where the source is currently
@@ -84,16 +100,6 @@ export const ProjectSourcesPreview: React.FC<ProjectSourcesPreviewProps> = ({
         }
         setGroups(prev => [...prev, newGroup]);
       }
-    } else if (targetId === 'preview-root' || targetId === 'standalone-sources') {
-      // Move to standalone
-      const sourceInGroup = groups.find(g => g.sources.some(s => s.id === sourceId));
-      if (sourceInGroup) {
-        const movingSource = sourceInGroup.sources.find(s => s.id === sourceId)!;
-        setGroups(groups.map(g =>
-          g.id === sourceInGroup.id ? { ...g, sources: g.sources.filter(s => s.id !== sourceId) } : g
-        ));
-        setSources(prev => [...prev, movingSource]);
-      }
     }
   };
 
@@ -102,11 +108,16 @@ export const ProjectSourcesPreview: React.FC<ProjectSourcesPreviewProps> = ({
     : null;
 
   return (
-    <DragDropProvider sensors={sensors} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
+    <DragDropProvider 
+      sensors={sensors} 
+      onDragStart={handleDragStart} 
+      onDragEnd={handleDragEnd}
+    >
       <ProjectSourcesPreviewContent
         groups={groups}
         sources={sources}
         activeSource={activeSource || null}
+        isDraggingAny={!!activeId}
       />
     </DragDropProvider>
   );
@@ -116,79 +127,58 @@ interface ProjectSourcesPreviewContentProps {
   groups: SourceGroupType[];
   sources: Source[];
   activeSource: Source | null;
+  isDraggingAny: boolean;
 }
 
 const ProjectSourcesPreviewContent: React.FC<ProjectSourcesPreviewContentProps> = ({
   groups,
   sources,
-  activeSource
+  activeSource,
+  isDraggingAny
 }) => {
-  const { ref: rootRef } = useDroppable({ id: 'preview-root' });
   const { ref: createGroupRef, isDropTarget: isOverCreate } = useDroppable({ id: 'create-group' });
-  const { ref: standaloneRef, isDropTarget: isOverStandalone } = useDroppable({ id: 'standalone-sources' });
+  const { ref: standaloneRef, isDropTarget: isOverStandalone } = useDroppable({ id: 'standalone-zone' });
 
   return (
-    <Box ref={rootRef} style={{ minHeight: '300px' }}>
+    <Box className="previewRoot">
       <Stack gap="xs">
-        {/* Unified Stack for Groups and Standalone Sources */}
-        <Box
-          ref={standaloneRef}
-          bg={isOverStandalone ? 'var(--mantine-color-zinc-9)' : 'transparent'}
-          style={{
-            borderRadius: 'var(--mantine-radius-md)',
-            border: `1px solid ${isOverStandalone ? 'var(--mantine-color-zinc-7)' : 'transparent'}`,
-            transition: 'all 0.2s ease'
-          }}
-        >
-          <Stack gap="xs">
-            {/* Groups */}
-            {groups.map((group) => (
-              <SourceGroup key={group.id} group={group} />
-            ))}
+        {/* Groups */}
+        {groups.map((group) => (
+          <SourceGroup key={group.id} group={group} isDraggingAny={isDraggingAny} />
+        ))}
 
-            {/* Standalone Sources */}
-            {sources.map((source) => (
-              <SourceCard key={source.id} source={source} />
-            ))}
+        {/* Standalone Sources */}
+        {sources.length > 0 && (
+          <Box
+            ref={standaloneRef}
+            className="standaloneSourcesContainer"
+            data-over={isOverStandalone || undefined}
+          >
+            <Stack gap="xs">
+              {sources.map((source) => (
+                <SourceCard key={source.id} source={source} isDraggingAny={isDraggingAny} />
+              ))}
+            </Stack>
+          </Box>
+        )}
 
-            {groups.length === 0 && sources.length === 0 && (
-              <Box
-                bg="var(--mantine-color-zinc-8)"
-                style={{
-                  borderRadius: 'var(--mantine-radius-md)',
-                  height: '100px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  border: '1px dashed var(--mantine-color-zinc-7)'
-                }}
-              >
-                <Text size="xs" c="dimmed">
-                  No sources or groups yet
-                </Text>
-              </Box>
-            )}
-          </Stack>
-        </Box>
+        {groups.length === 0 && sources.length === 0 && (
+          <Box className="emptyPreviewState">
+            <Text size="xs" c="dimmed">
+              No sources or groups yet
+            </Text>
+          </Box>
+        )}
 
         {/* Create Group Zone */}
         <Box
           ref={createGroupRef}
-          bg={isOverCreate ? 'var(--mantine-color-blue-0)' : 'transparent'}
-          style={{
-            borderRadius: 'var(--mantine-radius-md)',
-            height: '60px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            border: `2px dashed ${isOverCreate ? 'var(--mantine-color-blue-5)' : 'var(--mantine-color-gray-3)'}`,
-            transition: 'all 0.2s ease',
-            cursor: 'pointer'
-          }}
+          className="createGroupZone"
+          data-over={isOverCreate || undefined}
         >
           <Group gap="xs">
             <ThemeIcon variant="light" color={isOverCreate ? 'blue' : 'gray'} size="sm">
-              <Text size="xs" fw={700}>+</Text>
+              <Text className="createGroupIconText">+</Text>
             </ThemeIcon>
             <Text size="xs" fw={500} c={isOverCreate ? 'blue' : 'dimmed'}>
               Drop here to create new group
@@ -197,11 +187,9 @@ const ProjectSourcesPreviewContent: React.FC<ProjectSourcesPreviewContentProps> 
         </Box>
       </Stack>
 
-
       <DragOverlay>
         {activeSource ? <SourceCard source={activeSource} isOverlay /> : null}
       </DragOverlay>
     </Box>
   );
 };
-

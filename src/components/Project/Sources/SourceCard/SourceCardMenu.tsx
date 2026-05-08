@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { Menu, ActionIcon, rem } from '@mantine/core';
+import { Menu, ActionIcon } from '@mantine/core';
 import { IconDotsVertical, IconExternalLink, IconTrash, IconPencil } from '@tabler/icons-react';
+
+import './SourceCardMenu.css';
 
 interface SourceCardMenuProps {
   onGoToSource?: () => void;
@@ -31,25 +33,22 @@ export const SourceCardMenu: React.FC<SourceCardMenuProps> = ({
           variant="subtle" 
           color="gray" 
           size="sm" 
-          style={{ 
-            opacity: visible || opened ? 1 : 0,
-            transition: 'opacity 0.2s ease',
-            pointerEvents: visible || opened ? 'auto' : 'none'
-          }}
+          className="menuTrigger"
+          data-visible={visible || opened || undefined}
         >
-          <IconDotsVertical style={{ width: rem(14), height: rem(14) }} />
+          <IconDotsVertical className="menuTriggerIcon" />
         </ActionIcon>
       </Menu.Target>
 
       <Menu.Dropdown>
         <Menu.Item 
-          leftSection={<IconExternalLink style={{ width: rem(14), height: rem(14) }} />} 
+          leftSection={<IconExternalLink className="menuItemIcon" />} 
           onClick={(e) => { e.stopPropagation(); onGoToSource?.(); }}
         >
           Go to source
         </Menu.Item>
         <Menu.Item 
-          leftSection={<IconPencil style={{ width: rem(14), height: rem(14) }} />} 
+          leftSection={<IconPencil className="menuItemIcon" />} 
           onClick={(e) => { e.stopPropagation(); onRename?.(); }}
         >
           Rename
@@ -57,7 +56,7 @@ export const SourceCardMenu: React.FC<SourceCardMenuProps> = ({
         <Menu.Divider />
         <Menu.Item 
           color="red" 
-          leftSection={<IconTrash style={{ width: rem(14), height: rem(14) }} />} 
+          leftSection={<IconTrash className="menuItemIcon" />} 
           onClick={(e) => { e.stopPropagation(); onRemove?.(); }}
         >
           Remove

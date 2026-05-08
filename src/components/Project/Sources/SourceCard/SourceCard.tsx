@@ -6,9 +6,12 @@ import { useDraggable } from '@dnd-kit/react';
 import { Source, SourceType } from '../types';
 import { SourceCardMenu } from './SourceCardMenu';
 
+import './SourceCard.css';
+
 interface SourceCardProps {
   source: Source;
   isOverlay?: boolean;
+  isDraggingAny?: boolean;
   onRemove?: (id: string) => void;
   onGoToSource?: (id: string) => void;
   onRename?: (id: string) => void;
@@ -26,6 +29,7 @@ const getIcon = (type: SourceType) => {
 export const SourceCard: React.FC<SourceCardProps> = ({
   source,
   isOverlay,
+  isDraggingAny,
   onRemove,
   onGoToSource,
   onRename
@@ -39,24 +43,22 @@ export const SourceCard: React.FC<SourceCardProps> = ({
 
   const mergedRef = useMergedRef(dragRef, hoverRef);
 
-  const style: React.CSSProperties = {
-    opacity: isDragging ? 0.5 : 1,
-    borderLeft: source.color ? `4px solid ${source.color}` : undefined,
-    cursor: 'default',
-    position: 'relative',
-  };
-
   return (
     <Card
       ref={mergedRef}
       withBorder
       p="xs"
       radius="sm"
-      style={style}
+      className="sourceCardRoot"
+      data-dragging={isDragging || undefined}
+      data-dragging-any={isDraggingAny || undefined}
       shadow={isDragging ? 'md' : 'none'}
+      style={{
+        borderLeft: source.color ? `4px solid ${source.color}` : undefined,
+      }}
     >
       <Group wrap="nowrap" gap="xs">
-        <Box ref={handleRef} style={{ cursor: 'grab' }}>
+        <Box ref={handleRef} className="dragHandle">
           <IconGripVertical size={16} color="var(--mantine-color-gray-5)" />
         </Box>
 
@@ -64,7 +66,7 @@ export const SourceCard: React.FC<SourceCardProps> = ({
           {getIcon(source.type)}
         </ThemeIcon>
 
-        <Box style={{ flex: 1, minWidth: 0 }}>
+        <Box className="sourceCardInfo">
           <Text size="xs" fw={500} truncate>
             {source.title}
           </Text>

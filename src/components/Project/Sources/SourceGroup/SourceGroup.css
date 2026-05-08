@@ -1,0 +1,34 @@
+.sourceGroupRoot {
+    width: 100%;
+    position: relative;
+    padding: 6px 0;
+    margin: -6px 0;
+}
+
+.sourceGroupPaper {
+    position: relative;
+    transition: all 0.15s ease;
+    background-color: var(--mantine-color-zinc-9);
+    border: 1px solid var(--mantine-color-zinc-8);
+    margin: 0;
+}
+
+.sourceGroupPaper[data-over="true"] {
+    background-color: var(--mantine-color-zinc-8);
+    border-color: var(--mantine-color-zinc-6);
+    z-index: 2;
+}
+
+.sourceGroupPaper[data-dragging="true"]:not([data-over="true"]) {
+    border-style: dashed;
+    border-color: var(--mantine-color-zinc-7);
+}
+
+.dragOverlayTint {
+    position: absolute;
+    inset: 0;
+    background-color: var(--mantine-color-zinc-7);
+    opacity: 0.03;
+    border-radius: inherit;
+    pointer-events: none;
+}

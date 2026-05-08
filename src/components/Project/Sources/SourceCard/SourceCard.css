@@ -1,0 +1,20 @@
+.sourceCardRoot {
+    cursor: default;
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+.sourceCardRoot[data-dragging="true"] {
+    opacity: 0.5;
+}
+
+.dragHandle {
+    cursor: grab;
+    display: flex;
+    align-items: center;
+}
+
+.sourceCardInfo {
+    flex: 1;
+    min-width: 0;
+}
