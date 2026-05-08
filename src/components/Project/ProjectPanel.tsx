@@ -5,7 +5,7 @@ import { ProjectConfigPanel } from '../Layout/ProjectConfigPanel';
 
 export const ProjectPanel: React.FC = () => {
   return (
-    <Group h="100%" align="stretch" wrap="nowrap" gap="xl" p="lg">
+    <Group h="100%" align="stretch" wrap="nowrap" gap="xs" p="0">
       <Box style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
         <ChatView />
       </Box>

@@ -5,7 +5,7 @@ import { ChatInputArea } from './ChatInputArea';
 
 export const ChatView: React.FC = () => {
   return (
-    <Box p="md" pt="xs" style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+    <Box p="sm" pr="0" pt="0" style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
       <ChatHeader title="ty" />
 
       <Box style={{ flex: 1, display: 'flex', alignItems: 'center' }}>

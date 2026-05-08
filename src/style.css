@@ -493,8 +493,8 @@
     .mantine-Menu-item {
         background-color: transparent;
 
-        &:where([data-hovered]) {
-            background-color: var(--menu-item-hover, var(--mantine-color-default-hover));
+        &:where([data-hovered], :hover) {
+            background-color: var(--menu-item-hover, color-mix(in srgb, var(--mantine-color-default-hover), transparent 50%));
         }
     }
 

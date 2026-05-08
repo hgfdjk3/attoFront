@@ -28,6 +28,7 @@ const MOCK_GROUPS: SourceGroup[] = [
 const MOCK_STANDALONE: Source[] = [
   { id: 's2', title: 'Project Specs.txt', description: 'Requirements document', type: 'txt', color: 'blue' },
   { id: 's3', title: 'Design Assets', description: 'Link to Figma', type: 'link', color: 'orange' },
+  { id: '2', title: 'Design Assets', description: 'Link to Figma', type: 'link', color: 'green' },
 ];
 
 const MOCK_OVERVIEW = "This project focuses on creating a high-fidelity UI clone of the Claude AI web interface using Mantine and React. It includes a multi-panel layout with a responsive sidebar, a central chat area, and a context-aware configuration panel for project management and settings.";

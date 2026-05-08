@@ -1,39 +1,54 @@
 import React from 'react';
 import { Card, Group, Text, ThemeIcon, Box, UnstyledButton } from '@mantine/core';
 import { IconPdf, IconFileText, IconExternalLink, IconGripVertical } from '@tabler/icons-react';
+import { useHover, useMergedRef } from '@mantine/hooks';
 import { useDraggable } from '@dnd-kit/react';
 import { Source, SourceType } from '../types';
+import { SourceCardMenu } from './SourceCardMenu';
 
 interface SourceCardProps {
   source: Source;
   isOverlay?: boolean;
+  onRemove?: (id: string) => void;
+  onGoToSource?: (id: string) => void;
+  onRename?: (id: string) => void;
 }
 
 const getIcon = (type: SourceType) => {
   switch (type) {
-    case 'pdf': return <IconPdf size={18} />;
-    case 'doc': return <IconFileText size={18} />;
-    case 'link': return <IconExternalLink size={18} />;
-    default: return <IconFileText size={18} />;
+    case 'pdf': return <IconPdf size={16} />;
+    case 'doc': return <IconFileText size={16} />;
+    case 'link': return <IconExternalLink size={16} />;
+    default: return <IconFileText size={16} />;
   }
 };
 
-export const SourceCard: React.FC<SourceCardProps> = ({ source, isOverlay }) => {
-  const { ref, handleRef, isDragging } = useDraggable({
+export const SourceCard: React.FC<SourceCardProps> = ({
+  source,
+  isOverlay,
+  onRemove,
+  onGoToSource,
+  onRename
+}) => {
+  const { hovered, ref: hoverRef } = useHover();
+  const { ref: dragRef, handleRef, isDragging } = useDraggable({
     id: source.id,
     data: source,
     disabled: isOverlay,
   });
 
+  const mergedRef = useMergedRef(dragRef, hoverRef);
+
   const style: React.CSSProperties = {
     opacity: isDragging ? 0.5 : 1,
     borderLeft: source.color ? `4px solid ${source.color}` : undefined,
     cursor: 'default',
+    position: 'relative',
   };
 
   return (
     <Card
-      ref={ref}
+      ref={mergedRef}
       withBorder
       p="xs"
       radius="sm"
@@ -57,7 +72,17 @@ export const SourceCard: React.FC<SourceCardProps> = ({ source, isOverlay }) => 
             {source.description}
           </Text>
         </Box>
+
+        {!isOverlay && (
+          <SourceCardMenu
+            visible={hovered || isDragging}
+            onGoToSource={() => onGoToSource?.(source.id)}
+            onRemove={() => onRemove?.(source.id)}
+            onRename={() => onRename?.(source.id)}
+          />
+        )}
       </Group>
     </Card>
   );
 };
+
