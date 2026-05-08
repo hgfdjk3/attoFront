@@ -1,0 +1,17 @@
+import React from 'react';
+import { Box, Group } from '@mantine/core';
+import { ChatView } from '../Chat/ChatView';
+import { ProjectConfigPanel } from '../Layout/ProjectConfigPanel';
+
+export const ProjectPanel: React.FC = () => {
+  return (
+    <Group h="100%" align="stretch" wrap="nowrap" gap="xl" p="lg">
+      <Box style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+        <ChatView />
+      </Box>
+      <Box w={320} >
+        <ProjectConfigPanel />
+      </Box>
+    </Group>
+  );
+};

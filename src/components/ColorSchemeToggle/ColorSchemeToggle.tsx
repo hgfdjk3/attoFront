@@ -1,6 +1,7 @@
+import React from 'react';
 import { Button, Group, useMantineColorScheme } from '@mantine/core';
 
-export function ColorSchemeToggle() {
+export const ColorSchemeToggle: React.FC = () => {
   const { setColorScheme } = useMantineColorScheme();
 
   return (
@@ -10,4 +11,4 @@ export function ColorSchemeToggle() {
       <Button onClick={() => setColorScheme('auto')}>Auto</Button>
     </Group>
   );
-}
+};

@@ -1,11 +1,11 @@
-import { ColorSchemeToggle } from '../components/ColorSchemeToggle/ColorSchemeToggle';
-import { Welcome } from '../components/Welcome/Welcome';
+import React from 'react';
+import { ProjectLayout } from '../components/Layout/ProjectLayout';
+import { ProjectPanel } from '../components/Project/ProjectPanel';
 
-export function HomePage() {
+export const HomePage: React.FC = () => {
   return (
-    <>
-      <Welcome />
-      <ColorSchemeToggle />
-    </>
+    <ProjectLayout>
+      <ProjectPanel />
+    </ProjectLayout>
   );
-}
+};
