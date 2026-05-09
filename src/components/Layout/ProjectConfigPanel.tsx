@@ -38,7 +38,13 @@ const MOCK_STANDALONE: Source[] = [
 
 const MOCK_OVERVIEW = "This project focuses on creating a high-fidelity UI clone of the Claude AI web interface using Mantine and React. It includes a multi-panel layout with a responsive sidebar, a central chat area, and a context-aware configuration panel for project management and settings.";
 
-export const ProjectConfigPanel: React.FC = () => {
+interface ProjectConfigPanelProps {
+  groups: SourceGroup[];
+  standaloneSources: Source[];
+  activeSourceId: string | null;
+}
+
+export const ProjectConfigPanel: React.FC<ProjectConfigPanelProps> = ({ groups, standaloneSources, activeSourceId }) => {
   return (
     <Stack gap="sm" h="100%">
       <ProjectConfigSection title="Members">
@@ -50,7 +56,11 @@ export const ProjectConfigPanel: React.FC = () => {
       </ProjectConfigSection>
 
       <ProjectConfigSection title="Sources" flex={2}>
-        <ProjectSourcesPreview initialGroups={MOCK_GROUPS} standaloneSources={MOCK_STANDALONE} />
+        <ProjectSourcesPreview
+          initialGroups={groups}
+          standaloneSources={standaloneSources}
+          activeSourceId={activeSourceId}
+        />
       </ProjectConfigSection>
 
       <ProjectConfigSection title="Knowledge Graph" flex={1}>
