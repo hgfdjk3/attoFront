@@ -1,5 +1,5 @@
 import React from 'react';
-import { Stack } from '@mantine/core';
+import { Box, Stack } from '@mantine/core';
 import { ProjectConfigSection } from '../Project/ProjectConfigSection';
 import { KnowledgeGraphPreview } from '../Project/KnowledgeGraph/KnowledgeGraphPreview';
 import { ProjectMembersPreview } from '../Project/ProjectMembersPreview';
@@ -64,6 +64,8 @@ export const ProjectConfigPanel: React.FC<ProjectConfigPanelProps> = ({ groups, 
       </ProjectConfigSection>
 
       <ProjectConfigSection title="Knowledge Graph" flex={1}>
+        <Box pt="5" />
+
         <KnowledgeGraphPreview />
       </ProjectConfigSection>
     </Stack>

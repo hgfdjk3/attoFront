@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ActionIcon, Box, Button, Group, Paper, Textarea, useMantineTheme, rem } from '@mantine/core';
 import { useDroppable } from '@dnd-kit/react';
-import { IconCornerDownLeft, IconPlus, IconX } from '@tabler/icons-react';
+import { IconCornerDownLeft, IconEye, IconFileCode, IconPlus, IconX } from '@tabler/icons-react';
 import { Source } from '../Project/Sources/types';
 import { PromptInputSources } from './PromptInputSources';
 
@@ -69,7 +69,7 @@ export const PromptInput: React.FC<PromptInputProps> = ({
         className="promptInputRoot"
         style={{
           position: 'relative',
-          border: `1px solid light-dark(${theme.colors.gray[2]}, ${theme.colors.dark[4]})`,
+          border: `1px solid light-dark(${theme.colors.gray[2]}, ${theme.colors.dark[6]})`,
           borderRadius: theme.radius.lg,
           backgroundColor: `light-dark(${theme.white}, ${theme.colors.dark[8]})`,
           boxShadow: theme.shadows.xs,
@@ -97,7 +97,7 @@ export const PromptInput: React.FC<PromptInputProps> = ({
             }}
             styles={{
               input: {
-                fontSize: rem(16),
+                fontSize: rem(15),
                 padding: 0,
                 lineHeight: 1.5,
                 color: `light-dark(${theme.colors.gray[8]}, ${theme.colors.gray[2]})`,
@@ -106,7 +106,7 @@ export const PromptInput: React.FC<PromptInputProps> = ({
           />
 
           <Group justify="space-between" mt="md" align="center">
-            <Group gap="xs">
+            <Group gap="3">
               <ActionIcon
                 variant="subtle"
                 color="gray"

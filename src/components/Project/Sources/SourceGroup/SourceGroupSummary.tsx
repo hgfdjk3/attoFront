@@ -2,6 +2,8 @@ import React from 'react';
 import { Group, ThemeIcon, Text } from '@mantine/core';
 import { IconPdf, IconFileText, IconExternalLink } from '@tabler/icons-react';
 import { Source, SourceType } from '../types';
+import { AnimatePresence } from 'motion/react';
+import AnimatedItem from '@/components/animations/AnimatedItem';
 
 interface SourceGroupSummaryProps {
   sources: Source[];
@@ -34,22 +36,28 @@ export const SourceGroupSummary: React.FC<SourceGroupSummaryProps> = ({ sources 
 
   return (
     <>
-      <Text size="xs" c="dimmed">Sources:</Text>
-      {summaryItems.map((item, index) => (
-        <Group key={`${item.type}-${item.color}-${index}`} gap="4px" wrap="nowrap">
-          <ThemeIcon
-            variant="light"
-            color={item.color}
-            size="xs"
-            radius="xs"
-          >
-            {getIcon(item.type)}
-          </ThemeIcon>
-          <Text size="10px" c="dimmed" fw={600}>
-            {item.count}
-          </Text>
-        </Group>
-      ))}
+      <AnimatePresence mode="wait">
+        <AnimatedItem key="sources">
+          <Text size="xs" c="dimmed">Sources:</Text>
+        </AnimatedItem>
+        {summaryItems.map((item, index) => (
+          <AnimatedItem key={`${item.type}-${item.color}-${index}`} delay={index * 0.1}>
+            <Group gap="3px" wrap="nowrap">
+              <ThemeIcon
+                variant="light"
+                color={item.color}
+                size="xs"
+                radius="xs"
+              >
+                {getIcon(item.type)}
+              </ThemeIcon>
+              <Text size="10px" c="dimmed" fw={600}>
+                {item.count}
+              </Text>
+            </Group>
+          </AnimatedItem>
+        ))}
+      </AnimatePresence>
     </>
   );
 };
