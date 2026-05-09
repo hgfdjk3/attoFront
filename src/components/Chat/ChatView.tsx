@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box } from '@mantine/core';
-import { ChatHeader } from './ChatHeader';
+import { ProjectHeader } from './ProjectHeader';
 import { PromptInput } from './PromptInput';
 import { Source } from '../Project/Sources/types';
 
@@ -13,7 +13,7 @@ interface ChatViewProps {
 export const ChatView: React.FC<ChatViewProps> = ({ sources, attachedSourceIds, onDetachSource }) => {
   return (
     <Box p="sm" pr="0" pt="0" style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-      <ChatHeader title="ty" />
+      <ProjectHeader title="Textbook Q&A" />
 
       <Box style={{ flex: 1, display: 'flex', alignItems: 'center' }}>
         <PromptInput

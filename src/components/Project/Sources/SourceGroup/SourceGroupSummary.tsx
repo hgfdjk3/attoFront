@@ -18,6 +18,8 @@ const getIcon = (type: SourceType) => {
   }
 };
 
+const MAX_VISIBLE_SOURCE_GROUPS = 3;
+
 export const SourceGroupSummary: React.FC<SourceGroupSummaryProps> = ({ sources }) => {
   const summary = sources.reduce((acc, source) => {
     const key = `${source.type}-${source.color || 'gray'}`;
@@ -40,9 +42,12 @@ export const SourceGroupSummary: React.FC<SourceGroupSummaryProps> = ({ sources 
         <AnimatedItem key="sources">
           <Text size="xs" c="dimmed">Sources:</Text>
         </AnimatedItem>
-        {summaryItems.map((item, index) => (
+        {summaryItems.slice(0, MAX_VISIBLE_SOURCE_GROUPS).map((item, index) => (
           <AnimatedItem key={`${item.type}-${item.color}-${index}`} delay={index * 0.1}>
             <Group gap="3px" wrap="nowrap">
+              <Text size="xs" c="dimmed" fw={600}>
+                {item.count}
+              </Text>
               <ThemeIcon
                 variant="light"
                 color={item.color}
@@ -51,12 +56,16 @@ export const SourceGroupSummary: React.FC<SourceGroupSummaryProps> = ({ sources 
               >
                 {getIcon(item.type)}
               </ThemeIcon>
-              <Text size="10px" c="dimmed" fw={600}>
-                {item.count}
-              </Text>
             </Group>
           </AnimatedItem>
         ))}
+        {summaryItems.length > MAX_VISIBLE_SOURCE_GROUPS && (
+          <AnimatedItem key="more">
+            <Text size="xs" c="dimmed">
+              And {summaryItems.slice(MAX_VISIBLE_SOURCE_GROUPS).map(it => it.count).reduce((a, b) => a + b, 0)} more
+            </Text>
+          </AnimatedItem>
+        )}
       </AnimatePresence>
     </>
   );
