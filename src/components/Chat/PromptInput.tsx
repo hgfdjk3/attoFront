@@ -3,6 +3,7 @@ import { ActionIcon, Box, Button, Group, Paper, Textarea, useMantineTheme, rem }
 import { useDroppable } from '@dnd-kit/react';
 import { IconCornerDownLeft, IconPlus, IconX } from '@tabler/icons-react';
 import { Source } from '../Project/Sources/types';
+import { PromptInputSources } from './PromptInputSources';
 
 import './PromptInput.css';
 
@@ -117,50 +118,12 @@ export const PromptInput: React.FC<PromptInputProps> = ({
                 <IconPlus size={20} stroke={1.5} />
               </ActionIcon>
 
-              <Box className="promptInputSources" data-over={isDropTarget || undefined}>
-                {/* <Group justify="space-between" align="center" mb={6} wrap="nowrap">
-              <Button variant="subtle" color="gray" size="xs" radius="xl" disabled>
-                Sources
-              </Button>
-              <Button variant="subtle" color={isDropTarget ? 'blue' : 'gray'} size="xs" radius="xl" disabled>
-                {isDropTarget ? 'Drop to attach' : 'Drop source cards here'}
-              </Button>
-            </Group> */}
-
-                <Group gap="xs" wrap="wrap" align="center">
-                  {attachedSources.length > 0 ? (
-                    attachedSources.map((source) => (
-                      <Button
-                        key={source.id}
-                        size="xs"
-                        variant="light"
-                        color={source.color || 'gray'}
-                        radius="xl"
-                        rightSection={
-                          onDetachSource ? (
-                            <ActionIcon
-                              size="xs"
-                              variant="subtle"
-                              color="gray"
-                              radius="xl"
-                              onClick={() => onDetachSource(source.id)}
-                              aria-label={`Remove ${source.title}`}
-                            >
-                              <IconX size={10} stroke={1.5} />
-                            </ActionIcon>
-                          ) : undefined
-                        }
-                      >
-                        {source.title}
-                      </Button>
-                    ))
-                  ) : (
-                    <Button size="xs" variant="subtle" color="gray" radius="xl" disabled>
-                      {emptySourcesLabel}
-                    </Button>
-                  )}
-                </Group>
-              </Box>
+              <PromptInputSources
+                attachedSources={attachedSources}
+                onDetachSource={onDetachSource}
+                emptySourcesLabel={emptySourcesLabel}
+                isDropTarget={isDropTarget}
+              />
               {modes.map((mode) => (
                 <Button
                   key={mode.id}
