@@ -1,6 +1,7 @@
 import React from 'react';
 import { Stack } from '@mantine/core';
 import { ProjectConfigSection } from '../Project/ProjectConfigSection';
+import { KnowledgeGraphPreview } from '../Project/KnowledgeGraph/KnowledgeGraphPreview';
 import { ProjectMembersPreview } from '../Project/ProjectMembersPreview';
 import { ProjectOverview } from '../Project/ProjectOverview';
 import { ProjectSourcesPreview } from '../Project/Sources/ProjectSourcesPreview/ProjectSourcesPreview';
@@ -48,13 +49,12 @@ export const ProjectConfigPanel: React.FC = () => {
         <ProjectOverview content={MOCK_OVERVIEW} />
       </ProjectConfigSection>
 
-      <ProjectConfigSection title="Sources" flex={1}>
+      <ProjectConfigSection title="Sources" flex={2}>
         <ProjectSourcesPreview initialGroups={MOCK_GROUPS} standaloneSources={MOCK_STANDALONE} />
       </ProjectConfigSection>
 
-
-      <ProjectConfigSection title="Knowledge Graph">1
-        {/* <ProjectSourcesPreview initialGroups={MOCK_GROUPS} standaloneSources={MOCK_STANDALONE} /> */}
+      <ProjectConfigSection title="Knowledge Graph" flex={1}>
+        <KnowledgeGraphPreview />
       </ProjectConfigSection>
     </Stack>
   );

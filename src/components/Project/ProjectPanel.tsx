@@ -9,7 +9,7 @@ export const ProjectPanel: React.FC = () => {
       <Box style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
         <ChatView />
       </Box>
-      <Box w={320} >
+      <Box w={{ base: '100%', md: 360, lg: 380 }} >
         <ProjectConfigPanel />
       </Box>
     </Group>

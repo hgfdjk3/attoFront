@@ -11,7 +11,8 @@ import {
   IconStarFilled,
   IconDotsVertical,
   IconDownload,
-  IconLayoutDashboard
+  IconLayoutDashboard,
+  IconGraph
 } from '@tabler/icons-react';
 
 export const Sidebar: React.FC = () => {
@@ -49,6 +50,13 @@ export const Sidebar: React.FC = () => {
             label="Projects"
             leftSection={<IconFolders size={18} stroke={1.5} />}
             variant="light"
+          />
+          <NavLink
+            label="Knowledge Graph"
+            leftSection={<IconGraph size={18} stroke={1.5} />}
+            variant="light"
+            href="/knowledge-graph"
+            component="a"
           />
           <NavLink
             label="Artifacts"
