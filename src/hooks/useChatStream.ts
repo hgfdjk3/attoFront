@@ -27,6 +27,9 @@ Let me know if you need any changes.
 ?How long does the oven need to preheat for?  
 
 <my-component>This is a test component that should be rendered with special styling.</my-component>
+<my-component>This is a test component that should be rendered with special styling.</my-component>
+<my-component>This is a test component that should be rendered with special styling.</my-component>
+<my-co  mponent>This is a test component that should be rendered with special styling.</my-component>
 
 
 \`\`\`mermaid 

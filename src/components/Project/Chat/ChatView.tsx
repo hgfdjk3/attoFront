@@ -65,10 +65,10 @@ export const ChatView: React.FC<ChatViewProps> = ({ sources, attachedSourceIds, 
           {showMarkdownResponse ? (
             <motion.div
               key="markdown-response"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.25, ease: "easeOut" }}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
               style={{ height: '100%' }}
             >
               <MarkdownResponse content={streamedContent || data || ''} />
@@ -76,10 +76,10 @@ export const ChatView: React.FC<ChatViewProps> = ({ sources, attachedSourceIds, 
           ) : (
             <motion.div
               key="project-dashboard"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.25, ease: "easeOut" }}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
               style={{ height: '100%' }}
             >
               <ProjectDashboard
@@ -108,28 +108,37 @@ export const ChatView: React.FC<ChatViewProps> = ({ sources, attachedSourceIds, 
       />
 
       {/* Floating Input Island */}
-      <Box
-        style={{
-          position: 'absolute',
-          bottom: 24,
-          left: '50%',
-          transform: 'translateX(-50%)',
-          width: '100%',
-          maxWidth: 820,
-          zIndex: 100,
-          padding: '0 20px',
-        }}
-      >
-        <PromptInput
-          initialValue=""
-          onSubmit={(value) => {
-            mutate(value);
+      <AnimatePresence mode="wait">
+        <motion.div
+          initial={{ opacity: 0, y: 40, scale: 0.92, x: '-50%' }}
+          animate={{ opacity: 1, y: 0, scale: 1, x: '-50%' }}
+          exit={{ opacity: 0, y: 40, scale: 0.92, x: '-50%' }}
+          transition={{
+            duration: 0.5,
+            delay: 0.15,
+            ease: [0.16, 1, 0.3, 1]
           }}
-          attachedSources={sources.filter((source) => attachedSourceIds.includes(source.id))}
-          onDetachSource={onDetachSource}
-          emptySourcesLabel="Project Sources"
-        />
-      </Box>
+          style={{
+            position: 'absolute',
+            bottom: 24,
+            left: '50%',
+            width: '100%',
+            maxWidth: 820,
+            zIndex: 100,
+            padding: '0 20px',
+          }}
+        >
+          <PromptInput
+            initialValue=""
+            onSubmit={(value) => {
+              mutate(value);
+            }}
+            attachedSources={sources.filter((source) => attachedSourceIds.includes(source.id))}
+            onDetachSource={onDetachSource}
+            emptySourcesLabel="Project Sources"
+          />
+        </motion.div>
+      </AnimatePresence>
     </Box>
   );
 };

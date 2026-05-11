@@ -35,10 +35,27 @@ export const KnowledgeGraphPreview: React.FC = () => {
       };
     });
 
-    const links: GraphLink[] = knowledgeGraphLinks;
+    const links: GraphLink[] = knowledgeGraphLinks.map(link => ({ 
+      ...link,
+      // Ensure source and target are strings if they were mutated in a previous mount
+      source: typeof link.source === 'object' ? (link.source as any).id : link.source,
+      target: typeof link.target === 'object' ? (link.target as any).id : link.target
+    }));
 
     return { nodes, links };
   }, []);
+
+  const [initialized, setInitialized] = React.useState(false);
+
+  useEffect(() => {
+    if (graphRef.current && width > 0 && height > 0 && !initialized) {
+      setInitialized(true);
+      const timeout = setTimeout(() => {
+        (graphRef.current as any).zoomToFit(400, 40);
+      }, 200);
+      return () => clearTimeout(timeout);
+    }
+  }, [width, height, initialized]);
 
   const isDarkMode = document.documentElement.getAttribute('data-mantine-color-scheme') === 'dark';
   const nodeRadiusScale = (value: number, widthValue: number, heightValue: number) => {

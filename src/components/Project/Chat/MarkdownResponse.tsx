@@ -22,7 +22,7 @@ export const MarkdownResponse: React.FC<MarkdownResponseProps> = ({ content }) =
   // const processedContent = content.replace(/\?([\s\S]+?)\?/g, '<my-component>$1</my-component>');
 
   return (
-    <Box p="md" className="markdown-response-container" w={{ base: '100%', md: 800, lg: 1100 }}>
+    <Box className="markdown-response-container" w={{ base: '100%', md: 800, lg: 1100 }}>
       <Streamdown
         components={components}
         allowedTags={{ 'my-component': [] }}
@@ -30,6 +30,7 @@ export const MarkdownResponse: React.FC<MarkdownResponseProps> = ({ content }) =
       >
         {content}
       </Streamdown>
+      <Box h={180} />
     </Box>
   );
 };
