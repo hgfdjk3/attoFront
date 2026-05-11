@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ActionIcon, Box, Group, Stack, Text, Tooltip } from '@mantine/core';
+import { AnimatePresence, motion } from 'motion/react';
 import { ProjectHeader } from '../ProjectHeader';
 import { ProjectDashboard } from '../ProjectDashboard';
 import { PromptInput } from './PromptInput';
@@ -34,7 +35,7 @@ interface ChatViewProps {
 export const ChatView: React.FC<ChatViewProps> = ({ sources, attachedSourceIds, onDetachSource }) => {
   const [chats, setChats] = useState<ChatItemData[]>(MOCK_CHATS);
   const [automations, setAutomations] = useState<AutomationData[]>(MOCK_AUTOMATIONS);
-  
+
   const { mutate, streamedContent, isPending, data } = useChatStream();
 
   const handleToggleSave = (id: string) => {
@@ -59,22 +60,42 @@ export const ChatView: React.FC<ChatViewProps> = ({ sources, attachedSourceIds, 
     <Box p="sm" pr="0" pt="0" style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0, position: 'relative' }}>
       <ProjectHeader title="Operation Grandma" />
 
-      <Box className="chat-scroll-container">
-        {showMarkdownResponse ? (
-          <MarkdownResponse content={streamedContent || data || ''} />
-        ) : (
-          <ProjectDashboard 
-            chats={chats}
-            automations={automations}
-            onToggleChatSave={handleToggleSave}
-            onToggleAutomationActive={handleToggleAutomationActive}
-          />
-        )}
+      <Box className="chat-scroll-container" style={{ flex: 1, minHeight: 0 }}>
+        <AnimatePresence mode="wait">
+          {showMarkdownResponse ? (
+            <motion.div
+              key="markdown-response"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25, ease: "easeOut" }}
+              style={{ height: '100%' }}
+            >
+              <MarkdownResponse content={streamedContent || data || ''} />
+            </motion.div>
+          ) : (
+            <motion.div
+              key="project-dashboard"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25, ease: "easeOut" }}
+              style={{ height: '100%' }}
+            >
+              <ProjectDashboard
+                chats={chats}
+                automations={automations}
+                onToggleChatSave={handleToggleSave}
+                onToggleAutomationActive={handleToggleAutomationActive}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </Box>
 
       {/* Masking Gradient at the bottom */}
-      <Box 
-        style={{ 
+      <Box
+        style={{
           position: 'absolute',
           bottom: 0,
           left: 0,
@@ -87,8 +108,8 @@ export const ChatView: React.FC<ChatViewProps> = ({ sources, attachedSourceIds, 
       />
 
       {/* Floating Input Island */}
-      <Box 
-        style={{ 
+      <Box
+        style={{
           position: 'absolute',
           bottom: 24,
           left: '50%',

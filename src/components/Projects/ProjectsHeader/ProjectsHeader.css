@@ -1,6 +1,5 @@
 .projects-header-container {
   padding-bottom: var(--mantine-spacing-xl);
-  max-width: 1200px;
   width: 100%;
 }
 

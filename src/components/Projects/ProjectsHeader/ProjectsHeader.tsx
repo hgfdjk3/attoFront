@@ -29,8 +29,8 @@ export const ProjectsHeader: React.FC<ProjectsHeaderProps> = ({
               onChange={onSortChange}
             />
           </Group>
-          <Button 
-            leftSection={<IconPlus size={18} />} 
+          <Button
+            leftSection={<IconPlus size={18} />}
             className="new-project-button"
             onClick={onNewProject}
             radius="md"

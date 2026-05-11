@@ -53,8 +53,8 @@ const containerVariants: Variants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.08,
-      delayChildren: 0.1,
+      staggerChildren: 0.15,
+      delayChildren: 0,
     },
   },
   exit: {
@@ -67,10 +67,12 @@ const containerVariants: Variants = {
 };
 
 const itemVariants: Variants = {
-  hidden: { opacity: 0, y: 15, filter: 'blur(8px)' },
+  hidden: { opacity: 0, x: 20, filter: 'blur(8px)' },
+
   visible: {
     opacity: 1,
     y: 0,
+    x: 0,
     filter: 'blur(0px)',
     transition: {
       type: 'spring',
@@ -80,10 +82,10 @@ const itemVariants: Variants = {
   },
   exit: {
     opacity: 0,
-    y: -10,
+    x: 10,
     filter: 'blur(8px)',
     transition: {
-      duration: 0.2,
+      duration: 0.4,
     },
   },
 };

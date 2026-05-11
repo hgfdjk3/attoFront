@@ -22,6 +22,21 @@ function grandma() {
 \`\`\`
 
 Let me know if you need any changes.
+
+
+?How long does the oven need to preheat for?  
+
+<my-component>This is a test component that should be rendered with special styling.</my-component>
+
+
+\`\`\`mermaid 
+graph TD;
+    A-->B;
+    A-->C;
+    B-->D;
+    C-->D;
+\`\`\`
+
 `;
 
 export const useChatStream = () => {

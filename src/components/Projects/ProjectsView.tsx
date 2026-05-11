@@ -53,7 +53,7 @@ export const ProjectsView: React.FC = () => {
           />
 
           <SimpleGrid
-            cols={{ base: 1, sm: 2, lg: 3 }}
+            cols={{ base: 2, sm: 3, lg: 3 }}
             spacing="lg"
             verticalSpacing="lg"
           >

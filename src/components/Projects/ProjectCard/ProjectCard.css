@@ -7,7 +7,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: var(--mantine-spacing-xl);
+  padding: var(--mantine-spacing-md);
   position: relative;
   overflow: hidden;
 }
