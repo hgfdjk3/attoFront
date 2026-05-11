@@ -6,6 +6,8 @@ import { PromptInput } from './PromptInput';
 import { Source } from '../Sources/types';
 import { ChatItemData } from './ChatItem';
 import { AutomationData } from '../../Automations/AutomationItem';
+import { MarkdownResponse } from './MarkdownResponse';
+import { useChatStream } from '../../../hooks/useChatStream';
 import '../ProjectDashboard.css';
 
 const MOCK_CHATS: ChatItemData[] = [
@@ -32,6 +34,8 @@ interface ChatViewProps {
 export const ChatView: React.FC<ChatViewProps> = ({ sources, attachedSourceIds, onDetachSource }) => {
   const [chats, setChats] = useState<ChatItemData[]>(MOCK_CHATS);
   const [automations, setAutomations] = useState<AutomationData[]>(MOCK_AUTOMATIONS);
+  
+  const { mutate, streamedContent, isPending, data } = useChatStream();
 
   const handleToggleSave = (id: string) => {
     setChats((current) =>
@@ -49,17 +53,23 @@ export const ChatView: React.FC<ChatViewProps> = ({ sources, attachedSourceIds, 
     );
   };
 
+  const showMarkdownResponse = isPending || streamedContent || data;
+
   return (
     <Box p="sm" pr="0" pt="0" style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0, position: 'relative' }}>
       <ProjectHeader title="Operation Grandma" />
 
       <Box className="chat-scroll-container">
-        <ProjectDashboard 
-          chats={chats}
-          automations={automations}
-          onToggleChatSave={handleToggleSave}
-          onToggleAutomationActive={handleToggleAutomationActive}
-        />
+        {showMarkdownResponse ? (
+          <MarkdownResponse content={streamedContent || data || ''} />
+        ) : (
+          <ProjectDashboard 
+            chats={chats}
+            automations={automations}
+            onToggleChatSave={handleToggleSave}
+            onToggleAutomationActive={handleToggleAutomationActive}
+          />
+        )}
       </Box>
 
       {/* Masking Gradient at the bottom */}
@@ -91,8 +101,8 @@ export const ChatView: React.FC<ChatViewProps> = ({ sources, attachedSourceIds, 
       >
         <PromptInput
           initialValue=""
-          onSubmit={() => {
-            return;
+          onSubmit={(value) => {
+            mutate(value);
           }}
           attachedSources={sources.filter((source) => attachedSourceIds.includes(source.id))}
           onDetachSource={onDetachSource}

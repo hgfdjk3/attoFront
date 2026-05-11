@@ -57,6 +57,8 @@ export const PromptInput: React.FC<PromptInputProps> = ({
   const handleSubmit = () => {
     if (value.trim()) {
       onSubmit?.(value, activeModeId);
+      setValue('');
+      onValueChange?.('');
     }
   };
 

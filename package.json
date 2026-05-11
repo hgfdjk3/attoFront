@@ -27,13 +27,15 @@
     "@mantine/core": "9.1.1",
     "@mantine/hooks": "9.1.1",
     "@tabler/icons-react": "^3.43.0",
+    "@tanstack/react-query": "^5.100.10",
     "geist": "^1.7.0",
     "motion": "^12.38.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-force-graph": "^1.48.2",
     "react-force-graph-2d": "^1.29.1",
-    "react-router-dom": "^7.9.4"
+    "react-router-dom": "^7.9.4",
+    "streamdown": "^2.5.0"
   },
   "devDependencies": {
     "@storybook/addon-themes": "^10.0.0",
