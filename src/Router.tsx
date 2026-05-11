@@ -9,6 +9,10 @@ const router = createBrowserRouter([
     element: <HomePage />,
   },
   {
+    path: '/projects',
+    element: <HomePage />,
+  },
+  {
     path: '/knowledge-graph',
     element: <KnowledgeGraphPage />,
   },

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Box, Stack } from '@mantine/core';
+import { AnimatePresence, motion, Variants } from 'motion/react';
 import { ProjectConfigSection } from '../Project/ProjectConfigSection';
 import { KnowledgeGraphPreview } from '../Project/KnowledgeGraph/KnowledgeGraphPreview';
 import { ProjectMembersPreview } from '../Project/ProjectMembersPreview';
@@ -44,30 +45,81 @@ interface ProjectConfigPanelProps {
   activeSourceId: string | null;
 }
 
+const MotionSection = motion.create(ProjectConfigSection);
+const MotionStack = motion.create(Stack);
+
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.08,
+      delayChildren: 0.1,
+    },
+  },
+  exit: {
+    opacity: 0,
+    transition: {
+      staggerChildren: 0.05,
+      staggerDirection: -1,
+    },
+  },
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 15, filter: 'blur(8px)' },
+  visible: {
+    opacity: 1,
+    y: 0,
+    filter: 'blur(0px)',
+    transition: {
+      type: 'spring',
+      damping: 25,
+      stiffness: 120,
+    },
+  },
+  exit: {
+    opacity: 0,
+    y: -10,
+    filter: 'blur(8px)',
+    transition: {
+      duration: 0.2,
+    },
+  },
+};
+
 export const ProjectConfigPanel: React.FC<ProjectConfigPanelProps> = ({ groups, standaloneSources, activeSourceId }) => {
   return (
-    <Stack gap="sm" h="100%">
-      <ProjectConfigSection title="Members">
-        <ProjectMembersPreview members={MOCK_MEMBERS} />
-      </ProjectConfigSection>
+    <MotionStack
+      gap="sm"
+      h="100%"
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+    >
+      <AnimatePresence mode="popLayout">
+        <MotionSection key="members" title="Members" variants={itemVariants}>
+          <ProjectMembersPreview members={MOCK_MEMBERS} />
+        </MotionSection>
 
-      <ProjectConfigSection title="Overview">
-        <ProjectOverview content={MOCK_OVERVIEW} />
-      </ProjectConfigSection>
+        <MotionSection key="overview" title="Overview" variants={itemVariants}>
+          <ProjectOverview content={MOCK_OVERVIEW} />
+        </MotionSection>
 
-      <ProjectConfigSection title="Sources" flex={2}>
-        <ProjectSourcesPreview
-          initialGroups={groups}
-          standaloneSources={standaloneSources}
-          activeSourceId={activeSourceId}
-        />
-      </ProjectConfigSection>
+        <MotionSection key="sources" title="Sources" flex={2} variants={itemVariants}>
+          <ProjectSourcesPreview
+            initialGroups={groups}
+            standaloneSources={standaloneSources}
+            activeSourceId={activeSourceId}
+          />
+        </MotionSection>
 
-      <ProjectConfigSection title="Knowledge Graph" flex={1}>
-        <Box pt="5" />
-
-        <KnowledgeGraphPreview />
-      </ProjectConfigSection>
-    </Stack>
+        <MotionSection key="graph" title="Knowledge Graph" flex={1} variants={itemVariants}>
+          <Box pt="5" />
+          <KnowledgeGraphPreview />
+        </MotionSection>
+      </AnimatePresence>
+    </MotionStack>
   );
 };

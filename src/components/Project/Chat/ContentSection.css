@@ -1,0 +1,39 @@
+/* =============================================
+   Content Section — Layout & Header
+   ============================================= */
+
+.content-section-card {
+  background-color: var(--mantine-color-default);
+  transition: box-shadow 200ms ease;
+  overflow: visible;
+}
+
+.content-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 12px;
+  padding: 0 4px;
+}
+
+.content-section-title {
+  font-size: var(--mantine-font-size-sm);
+  font-weight: var(--mantine-fw-black);
+  color: var(--mantine-color-dimmed);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.content-section-action {
+  font-size: var(--mantine-font-size-xs);
+  font-weight: var(--mantine-fw-normal);
+  color: var(--mantine-color-secondary);
+  cursor: pointer;
+  transition: opacity 150ms ease;
+  opacity: 0.7;
+}
+
+.content-section-action:hover {
+  opacity: 1;
+  text-decoration: underline;
+}

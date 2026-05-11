@@ -1,0 +1,53 @@
+.project-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+  cursor: pointer;
+  background-color: var(--mantine-color-default);
+  border: 1px solid var(--mantine-color-default-border);
+  min-height: rem(180px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: var(--mantine-spacing-xl);
+  position: relative;
+  overflow: hidden;
+}
+
+.project-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--mantine-shadow-md);
+  border-color: var(--mantine-primary-color-filled);
+  background-color: var(--mantine-color-default-hover);
+}
+
+.project-card-title {
+  color: var(--mantine-color-text);
+  font-family: var(--mantine-font-family);
+  font-weight: 600;
+  font-size: var(--mantine-font-size-lg);
+  letter-spacing: -0.01em;
+}
+
+.project-card-description {
+  line-height: 1.6;
+  color: var(--mantine-color-dimmed);
+  font-size: var(--mantine-font-size-sm);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.project-card-footer {
+  color: var(--mantine-color-dimmed);
+  font-size: var(--mantine-font-size-xs);
+  font-weight: 500;
+  margin-top: var(--mantine-spacing-md);
+}
+
+[data-mantine-color-scheme="dark"] .project-card {
+  background-color: var(--mantine-color-dark-8);
+}
+
+[data-mantine-color-scheme="dark"] .project-card:hover {
+  background-color: var(--mantine-color-dark-7);
+}

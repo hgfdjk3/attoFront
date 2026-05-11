@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { ActionIcon, Box, Button, Group, Paper, Textarea, useMantineTheme, rem } from '@mantine/core';
 import { useDroppable } from '@dnd-kit/react';
 import { IconCornerDownLeft, IconEye, IconFileCode, IconPlus, IconX } from '@tabler/icons-react';
-import { Source } from '../Project/Sources/types';
+import { Source } from '../Sources/types';
 import { PromptInputSources } from './PromptInputSources';
 
 import './PromptInput.css';
@@ -72,7 +72,7 @@ export const PromptInput: React.FC<PromptInputProps> = ({
           border: `1px solid light-dark(${theme.colors.gray[2]}, ${theme.colors.dark[6]})`,
           borderRadius: theme.radius.lg,
           backgroundColor: `light-dark(${theme.white}, ${theme.colors.dark[8]})`,
-          boxShadow: theme.shadows.xs,
+          boxShadow: '0 20px 40px -15px rgba(0, 0, 0, 0.2), 0 0 1px 0 rgba(0, 0, 0, 0.1)',
         }}
       >
         <Box
@@ -99,7 +99,8 @@ export const PromptInput: React.FC<PromptInputProps> = ({
               input: {
                 fontSize: rem(15),
                 padding: 0,
-                lineHeight: 1.5,
+                paddingRight: rem(12),
+                lineHeight: 1.6,
                 color: `light-dark(${theme.colors.gray[8]}, ${theme.colors.gray[2]})`,
               },
             }}

@@ -1,7 +1,7 @@
 import React from 'react';
 import { ActionIcon, Button, ButtonProps } from '@mantine/core';
 import { IconX } from '@tabler/icons-react';
-import { Source } from '../Project/Sources/types';
+import { Source } from '../Sources/types';
 
 export interface PromptInputSourceBadgeProps extends Omit<ButtonProps, 'rightSection'> {
   source: Source;

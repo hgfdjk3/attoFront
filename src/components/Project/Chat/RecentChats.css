@@ -1,0 +1,24 @@
+/* =============================================
+   Recent Chats — Redesigned
+   ============================================= */
+
+.recent-chats-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  width: 100%;
+}
+
+.recent-chats-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.empty-state {
+  padding: var(--mantine-spacing-xl) 0;
+  text-align: center;
+  color: var(--mantine-color-dimmed);
+  font-style: italic;
+  font-size: var(--mantine-font-size-sm);
+}

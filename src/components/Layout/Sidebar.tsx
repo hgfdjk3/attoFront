@@ -15,13 +15,15 @@ import {
   IconGraph
 } from '@tabler/icons-react';
 
+import { Link } from 'react-router-dom';
+
 export const Sidebar: React.FC = () => {
   return (
     <Box style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       {/* Sidebar Header */}
       <Group justify="space-between" mb="md">
         <Text size="xl" fw={700}>
-          Claude
+          Atom
         </Text>
         <ActionIcon variant="subtle" color="gray" aria-label="Toggle Sidebar">
           <IconLayoutSidebar stroke={1.5} size={20} />
@@ -50,13 +52,15 @@ export const Sidebar: React.FC = () => {
             label="Projects"
             leftSection={<IconFolders size={18} stroke={1.5} />}
             variant="light"
+            component={Link}
+            to="/projects"
           />
           <NavLink
             label="Knowledge Graph"
             leftSection={<IconGraph size={18} stroke={1.5} />}
             variant="light"
-            href="/knowledge-graph"
-            component="a"
+            component={Link}
+            to="/knowledge-graph"
           />
           <NavLink
             label="Artifacts"

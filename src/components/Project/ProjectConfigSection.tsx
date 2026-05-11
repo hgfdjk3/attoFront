@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { ActionIcon, Card, Group, Text } from '@mantine/core';
 import { IconPlus } from '@tabler/icons-react';
 
@@ -9,18 +9,22 @@ interface ProjectConfigSectionProps {
   flex?: number | string;
 }
 
-export const ProjectConfigSection: React.FC<ProjectConfigSectionProps> = ({ title, onAdd, children, flex }) => {
-  return (
-    <Card withBorder p="md" py="sm" radius="md" style={{ flex }}>
-      <Group justify="space-between" mb="5">
-        <Text size="sm" fw={600}>
-          {title}
-        </Text>
-        <ActionIcon variant="subtle" color="gray" size="sm" onClick={onAdd}>
-          <IconPlus size={16} stroke={1.5} />
-        </ActionIcon>
-      </Group>
-      {children}
-    </Card>
-  );
-};
+export const ProjectConfigSection = forwardRef<HTMLDivElement, ProjectConfigSectionProps>(
+  ({ title, onAdd, children, flex }, ref) => {
+    return (
+      <Card withBorder p="md" py="sm" radius="md" style={{ flex }} ref={ref}>
+        <Group justify="space-between" mb="5">
+          <Text size="sm" fw={600}>
+            {title}
+          </Text>
+          <ActionIcon variant="subtle" color="gray" size="sm" onClick={onAdd}>
+            <IconPlus size={16} stroke={1.5} />
+          </ActionIcon>
+        </Group>
+        {children}
+      </Card>
+    );
+  }
+);
+
+ProjectConfigSection.displayName = 'ProjectConfigSection';

@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, Group } from '@mantine/core';
 import { DragDropProvider } from '@dnd-kit/react';
 import { PointerSensor } from '@dnd-kit/dom';
-import { ChatView } from '../Chat/ChatView';
+import { ChatView } from './Chat/ChatView';
 import { ProjectConfigPanel } from '../Layout/ProjectConfigPanel';
 import { Source, SourceGroup } from './Sources/types';
 
