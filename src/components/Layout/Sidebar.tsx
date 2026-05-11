@@ -1,146 +1,82 @@
 import React from 'react';
-import { ActionIcon, Avatar, Badge, Box, Divider, Group, NavLink, ScrollArea, Stack, Text } from '@mantine/core';
+import { ActionIcon, Avatar, Box, Group, NavLink, Stack, Text } from '@mantine/core';
 import {
   IconMessagePlus,
-  IconSearch,
-  IconMessages,
   IconFolders,
-  IconCode,
-  IconSettings,
+  IconGraph,
   IconLayoutSidebar,
-  IconStarFilled,
-  IconDotsVertical,
-  IconDownload,
-  IconLayoutDashboard,
-  IconGraph
+  IconSettings,
 } from '@tabler/icons-react';
+import { Link, useLocation } from 'react-router-dom';
 
-import { Link } from 'react-router-dom';
+const navItems = [
+  { label: 'New Chat', icon: IconMessagePlus, link: '/' },
+  { label: 'Projects', icon: IconFolders, link: '/projects' },
+  { label: 'Knowledge Graph', icon: IconGraph, link: '/knowledge-graph' },
+];
 
 export const Sidebar: React.FC = () => {
+  const location = useLocation();
+
   return (
-    <Box style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+    <Box style={{ display: 'flex', flexDirection: 'column', height: '100%', padding: '0' }}>
       {/* Sidebar Header */}
-      <Group justify="space-between" mb="md">
-        <Text size="xl" fw={700}>
-          Atom
+      <Group justify="space-between" mb="xl" mt="xs">
+        <Text size="lg" fw={800} style={{ letterSpacing: '-0.5px' }}>
+          Atom.
         </Text>
         <ActionIcon variant="subtle" color="gray" aria-label="Toggle Sidebar">
           <IconLayoutSidebar stroke={1.5} size={20} />
         </ActionIcon>
       </Group>
 
-      <ScrollArea flex={1} type="hover" offsetScrollbars>
-        <Stack gap="xs">
-          {/* Main Links */}
+      {/* Main Navigation */}
+      <Stack gap={4} flex={1}>
+        {navItems.map((item) => (
           <NavLink
-            label="New chat"
-            leftSection={<IconMessagePlus size={18} stroke={1.5} />}
-            variant="light"
-          />
-          <NavLink
-            label="Search"
-            leftSection={<IconSearch size={18} stroke={1.5} />}
-            variant="light"
-          />
-          <NavLink
-            label="Chats"
-            leftSection={<IconMessages size={18} stroke={1.5} />}
-            variant="light"
-          />
-          <NavLink
-            label="Projects"
-            leftSection={<IconFolders size={18} stroke={1.5} />}
-            variant="light"
+            key={item.label}
             component={Link}
-            to="/projects"
-          />
-          <NavLink
-            label="Knowledge Graph"
-            leftSection={<IconGraph size={18} stroke={1.5} />}
+            to={item.link}
+            label={<Text size="sm" fw={500}>{item.label}</Text>}
+            leftSection={<item.icon size={18} stroke={1.5} />}
+            active={location.pathname === item.link}
             variant="light"
-            component={Link}
-            to="/knowledge-graph"
+            h={36}
+            style={{
+              borderRadius: 'var(--mantine-radius-md)',
+            }}
           />
-          <NavLink
-            label="Artifacts"
-            leftSection={<IconLayoutDashboard size={18} stroke={1.5} />}
-            variant="light"
-          />
-          <NavLink
-            label="Code"
-            leftSection={<IconCode size={18} stroke={1.5} />}
-            rightSection={
-              <Badge size="xs" variant="light" color="blue">
-                Upgrade
-              </Badge>
-            }
-            variant="light"
-          />
+        ))}
+      </Stack>
 
-          <Divider my="sm" />
+      {/* Footer Section */}
+      <Stack gap="sm">
+        <NavLink
+          label={<Text size="sm" fw={500}>Settings</Text>}
+          leftSection={<IconSettings size={18} stroke={1.5} />}
+          variant="subtle"
+          h={36}
+          style={{ borderRadius: 'var(--mantine-radius-md)' }}
+        />
 
-          {/* Customize Link */}
-          <NavLink
-            label="Customize"
-            leftSection={<IconSettings size={18} stroke={1.5} />}
-            variant="light"
-          />
-
-          <Divider my="sm" />
-
-          {/* Starred Section */}
-          <Text size="xs" c="dimmed" fw={500} mb="xs" mt="md">
-            Starred
-          </Text>
-          <NavLink
-            label="ty"
-            leftSection={<Box w={18} />}
-            rightSection={
-              <Group gap="xs">
-                <ActionIcon size="sm" variant="subtle" color="gray">
-                  <IconDotsVertical size={14} />
-                </ActionIcon>
-              </Group>
-            }
-            variant="light"
-            active
-          />
-
-          <Divider my="sm" />
-
-          {/* Recents Section */}
-          <Text size="xs" c="dimmed" fw={500} mb="xs" mt="md">
-            Recents
-          </Text>
-          <NavLink label="Untitled" variant="light" leftSection={<Box w={18} />} />
-          <NavLink label="Claude app UI design with dark ..." variant="light" leftSection={<Box w={18} />} />
-          <NavLink label="Claude app UI design with dark t..." variant="light" leftSection={<Box w={18} />} />
-          <NavLink label="Adding more array elements" variant="light" leftSection={<Box w={18} />} />
-          <NavLink label="Nebula graph with vector datab..." variant="light" leftSection={<Box w={18} />} />
-          <NavLink label="Convert TypeScript array to JSON" variant="light" leftSection={<Box w={18} />} />
-        </Stack>
-      </ScrollArea>
-
-      {/* User Profile Footer */}
-      <Box pt="md" mt="auto">
-        <Group justify="space-between" wrap="nowrap">
-          <Group gap="sm" wrap="nowrap">
-            <Avatar color="dark" radius="xl">R</Avatar>
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <Text size="sm" fw={500} truncate>
-                Ran
-              </Text>
-              <Text c="dimmed" size="xs" truncate>
-                Free plan
-              </Text>
-            </div>
+        <Box
+          p="xs"
+          style={{
+            borderRadius: 'var(--mantine-radius-md)',
+            backgroundColor: 'var(--mantine-color-default-hover)',
+            cursor: 'pointer',
+            transition: 'background-color 0.2s ease'
+          }}
+        >
+          <Group wrap="nowrap" gap="sm">
+            <Avatar color="dark" radius="md" size="sm">R</Avatar>
+            <Box style={{ flex: 1, minWidth: 0 }}>
+              <Text size="sm" fw={600} truncate lh={1.2}>Ran</Text>
+              <Text c="dimmed" size="xs" truncate lh={1.2}>Free plan</Text>
+            </Box>
           </Group>
-          <ActionIcon variant="subtle" color="gray">
-            <IconDownload size={18} stroke={1.5} />
-          </ActionIcon>
-        </Group>
-      </Box>
+        </Box>
+      </Stack>
     </Box>
   );
 };
