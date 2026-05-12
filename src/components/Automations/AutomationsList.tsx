@@ -1,5 +1,8 @@
-import { Box, Stack, Text } from '@mantine/core';
+import React from 'react';
+import { Box, Text } from '@mantine/core';
+import { motion, Variants } from 'motion/react';
 import { AutomationItem, AutomationData } from './AutomationItem';
+import './Automations.css';
 
 interface AutomationsListProps {
   automations: AutomationData[];
@@ -8,6 +11,25 @@ interface AutomationsListProps {
   onAutomationClick?: (id: string) => void;
   onAdd?: () => void;
 }
+
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1
+    }
+  }
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  show: { 
+    opacity: 1, 
+    y: 0, 
+    transition: { type: 'spring', stiffness: 300, damping: 24 } 
+  }
+};
 
 export const AutomationsList: React.FC<AutomationsListProps> = ({
   automations,
@@ -18,28 +40,40 @@ export const AutomationsList: React.FC<AutomationsListProps> = ({
 }) => {
   return (
     <Box className="automations-section">
-      <Stack gap="2">
-        {automations.length > 0 ? (
-          automations.map((automation) => (
-            <AutomationItem
-              key={automation.id}
-              automation={automation}
-              onToggleActive={onToggleActive}
-              onRun={onRun}
-              onClick={onAutomationClick}
-            />
-          ))
-        ) : (
-          <Box py="xl" ta="center">
-            <Text size="sm" c="dimmed">
-              No automations yet
+      {automations.length > 0 ? (
+        <motion.div 
+          className="automations-list"
+          variants={containerVariants}
+          initial="hidden"
+          animate="show"
+        >
+          {automations.map((automation) => (
+            <motion.div key={automation.id} variants={itemVariants}>
+              <AutomationItem
+                automation={automation}
+                onToggleActive={onToggleActive}
+                onRun={onRun}
+                onClick={onAutomationClick}
+              />
+            </motion.div>
+          ))}
+        </motion.div>
+      ) : (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.4 }}
+        >
+          <Box py="xl" ta="center" className="automation-empty-state">
+            <Text size="sm" c="dimmed" fw={500}>
+              No automations active
             </Text>
-            <Text size="xs" c="dimmed" mt="xs">
-              Create one to automate repetitive tasks
+            <Text size="xs" c="dimmed" mt="xs" style={{ opacity: 0.7 }}>
+              Build workflows to automate your project
             </Text>
           </Box>
-        )}
-      </Stack>
+        </motion.div>
+      )}
     </Box>
   );
 };

@@ -1,6 +1,9 @@
 import React from 'react';
-import { ActionIcon, Badge, Box, Group, Switch, Text, Tooltip } from '@mantine/core';
-import { IconClock, IconPlayerPlay, IconDotsVertical, IconBolt } from '@tabler/icons-react';
+import { Box, Group, Text } from '@mantine/core';
+import { IconBolt, IconActivity } from '@tabler/icons-react';
+import { motion } from 'motion/react';
+import { AutomationActionButton } from './AutomationActionButton';
+import './Automations.css';
 
 export interface AutomationData {
   id: string;
@@ -10,6 +13,7 @@ export interface AutomationData {
   schedule?: string;
   isActive: boolean;
   lastRun?: string;
+  isRunning?: boolean;
 }
 
 interface AutomationItemProps {
@@ -21,83 +25,39 @@ interface AutomationItemProps {
 
 export const AutomationItem: React.FC<AutomationItemProps> = ({ automation, onToggleActive, onRun, onClick }) => {
   return (
-    <Box
-      className="automation-item"
-      onClick={() => onClick?.(automation.id)}
-      style={{ cursor: 'pointer' }}
+    <motion.div
+      whileHover={{ scale: 1.005 }}
+      whileTap={{ scale: 0.995 }}
+      style={{ width: '100%' }}
     >
-      <Group justify="space-between" align="flex-start" wrap="nowrap" gap="sm">
-        <Group gap="sm" align="flex-start" wrap="nowrap" style={{ flex: 1, minWidth: 0 }}>
-          <Box
-            className={`automation-icon-wrapper ${automation.isActive ? 'automation-icon-active' : ''}`}
-          >
-            <IconBolt size={16} stroke={1.5} />
-          </Box>
-
-          <Box style={{ flex: 1, minWidth: 0 }}>
-            <Group gap="xs" align="center" mb="2">
-              <Text size="sm" fw={500} truncate>
-                {automation.name}
-              </Text>
-              {automation.isScheduled ? (
-                <Badge
-                  size="xs"
-                  variant="light"
-                  color="violet"
-                  leftSection={<IconClock size={10} />}
-                >
-                  {automation.schedule || 'Scheduled'}
-                </Badge>
-              ) : (
-                <Badge size="xs" variant="light" color="gray">
-                  Manual
-                </Badge>
-              )}
-            </Group>
-            <Text size="xs" c="dimmed" lineClamp={1}>
-              {automation.description}
+      <Box
+        className={`automation-row ${automation.isActive ? 'is-active' : ''}`}
+        onClick={() => onClick?.(automation.id)}
+      >
+        <Group justify="space-between" align="center" wrap="nowrap" style={{ width: '100%' }}>
+          <Box style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: 2 }}>
+            <Text size="sm" fw={500} truncate c={automation.isActive || !automation.isScheduled ? undefined : "dimmed"}>
+              {automation.name}
             </Text>
-            {automation.lastRun && (
-              <Text size="xs" c="dimmed" mt="4" style={{ opacity: 0.7 }}>
-                Last run: {automation.lastRun}
-              </Text>
-            )}
-          </Box>
-        </Group>
 
-        <Group gap="6" align="center" wrap="nowrap" className="automation-item-actions">
-          <Tooltip label="Run now" withArrow>
-            <ActionIcon
-              variant="subtle"
-              color="gray"
-              size="sm"
-              onClick={(e) => {
-                e.stopPropagation();
-                onRun?.(automation.id);
-              }}
-            >
-              <IconPlayerPlay size={14} />
-            </ActionIcon>
-          </Tooltip>
-          <ActionIcon
-            variant="subtle"
-            color="gray"
-            size="sm"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <IconDotsVertical size={14} />
-          </ActionIcon>
-          <Switch
-            size="xs"
-            checked={automation.isActive}
-            onChange={(e) => {
-              e.stopPropagation();
-              onToggleActive?.(automation.id);
-            }}
-            color="green"
-          />
+            <Text size="xs" c="dimmed" truncate>
+              {automation.description}
+              {automation.lastRun && ` • Last run: ${automation.lastRun}`}
+            </Text>
+          </Box>
+
+          <Group gap="md" align="center" wrap="nowrap" className="automation-actions" onClick={(e) => e.stopPropagation()}>
+            <AutomationActionButton 
+              isScheduled={automation.isScheduled}
+              isActive={automation.isActive}
+              isRunning={automation.isRunning}
+              schedule={automation.schedule}
+              onToggle={() => onToggleActive?.(automation.id)}
+              onRun={() => onRun?.(automation.id)}
+            />
+          </Group>
         </Group>
-      </Group>
-    </Box>
+      </Box>
+    </motion.div>
   );
 };

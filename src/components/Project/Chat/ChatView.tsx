@@ -110,7 +110,7 @@ export const ChatView: React.FC<ChatViewProps> = ({ sources, attachedSourceIds, 
       {/* Floating Input Island */}
       <AnimatePresence mode="wait">
         <motion.div
-          initial={{ opacity: 0, y: 40, scale: 0.92, x: '-50%' }}
+          initial={{ opacity: 0, y: 40, scale: 0.97, x: '-50%' }}
           animate={{ opacity: 1, y: 0, scale: 1, x: '-50%' }}
           exit={{ opacity: 0, y: 40, scale: 0.92, x: '-50%' }}
           transition={{
