@@ -20,7 +20,7 @@ export const RecentChats: React.FC<RecentChatsProps> = ({
 
   return (
     <Box className="recent-chats-container">
-      <Stack gap="2" className="recent-chats-list">
+      <Stack gap="0" className="recent-chats-list">
         {displayedChats.length > 0 ? (
           displayedChats.map((chat) => (
             <ChatItem

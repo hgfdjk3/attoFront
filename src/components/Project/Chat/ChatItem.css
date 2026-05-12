@@ -3,8 +3,8 @@
    ============================================= */
 
 .chat-item {
-  padding: 6px 8px;
-  border-radius: 6px;
+  padding: 8px;
+  border-radius: 8px;
   transition: background-color 150ms ease;
   position: relative;
   background-color: transparent;
@@ -13,7 +13,7 @@
 }
 
 .chat-item:hover {
-  background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6));
+  background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-6));
 }
 
 .chat-item:active {
