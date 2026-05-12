@@ -2,18 +2,19 @@
    Content Section — Layout & Header
    ============================================= */
 
-.content-section-card {
-  background-color: var(--mantine-color-default);
-  transition: box-shadow 200ms ease;
-  overflow: visible;
+.content-section-container {
+  display: flex;
+  flex-direction: column;
+  /* margin-bottom: 24px; */
 }
 
 .content-section-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  margin-bottom: 12px;
-  padding: 0 4px;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--mantine-color-default-border);
 }
 
 .content-section-title {

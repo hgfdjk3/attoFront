@@ -21,9 +21,10 @@ interface AutomationItemProps {
   onToggleActive?: (id: string) => void;
   onRun?: (id: string) => void;
   onClick?: (id: string) => void;
+  onScheduleClick?: (id: string) => void;
 }
 
-export const AutomationItem: React.FC<AutomationItemProps> = ({ automation, onToggleActive, onRun, onClick }) => {
+export const AutomationItem: React.FC<AutomationItemProps> = ({ automation, onToggleActive, onRun, onClick, onScheduleClick }) => {
   return (
     <motion.div
       whileHover={{ scale: 1.005 }}
@@ -54,6 +55,7 @@ export const AutomationItem: React.FC<AutomationItemProps> = ({ automation, onTo
               schedule={automation.schedule}
               onToggle={() => onToggleActive?.(automation.id)}
               onRun={() => onRun?.(automation.id)}
+              onScheduleClick={() => onScheduleClick?.(automation.id)}
             />
           </Group>
         </Group>

@@ -142,7 +142,7 @@ export const ProjectPanel: React.FC = () => {
             onDetachSource={(sourceId) => setAttachedSourceIds((current) => current.filter((id) => id !== sourceId))}
           />
         </Box>
-        <Box w={{ base: '100%', md: 360, lg: 380 }} >
+        <Box w={{ base: 10, xs: 10, sm: 10, md: 360, lg: 380 }} >
           <ProjectConfigPanel
             groups={groups}
             standaloneSources={sources}

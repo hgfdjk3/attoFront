@@ -67,13 +67,13 @@ const containerVariants: Variants = {
 };
 
 const itemVariants: Variants = {
-  hidden: { opacity: 0, x: 20, filter: 'blur(8px)' },
+  hidden: { opacity: 0, x: 20 },
 
   visible: {
     opacity: 1,
     y: 0,
     x: 0,
-    filter: 'blur(0px)',
+    // filter: 'blur(0px)',
     transition: {
       type: 'spring',
       damping: 25,
@@ -83,7 +83,7 @@ const itemVariants: Variants = {
   exit: {
     opacity: 0,
     x: 10,
-    filter: 'blur(8px)',
+    // filter: 'blur(8px)',
     transition: {
       duration: 0.4,
     },

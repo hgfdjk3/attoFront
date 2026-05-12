@@ -6,6 +6,8 @@ import { RecentChats } from './Chat/RecentChats';
 import { AutomationsList } from '../Automations/AutomationsList';
 import { ChatItemData } from './Chat/ChatItem';
 import { AutomationData } from '../Automations/AutomationItem';
+import { ScheduleConfiguratorModal } from '../Automations/ScheduleConfiguratorModal';
+import { ScheduleConfig } from '../Automations/ScheduleConfigurator';
 import './ProjectDashboard.css';
 
 interface ProjectDashboardProps {
@@ -21,6 +23,20 @@ export const ProjectDashboard: React.FC<ProjectDashboardProps> = ({
   onToggleChatSave,
   onToggleAutomationActive,
 }) => {
+  const [scheduleModalOpen, setScheduleModalOpen] = React.useState(false);
+  const [schedulingAutomationId, setSchedulingAutomationId] = React.useState<string | null>(null);
+
+  const handleScheduleClick = (id: string) => {
+    setSchedulingAutomationId(id);
+    setScheduleModalOpen(true);
+  };
+
+  const handleSaveSchedule = (config: ScheduleConfig) => {
+    console.log('Saved schedule for', schedulingAutomationId, config);
+    // Here we would typically notify the parent or API of the schedule update
+  };
+
+  const selectedAutomation = automations.find(a => a.id === schedulingAutomationId);
   return (
     <Box className="chat-content-area" maw={{ xs: 800, sm: 900, md: 1000, lg: 1100, xl: 1000 }}>
       <Stack gap="md">
@@ -32,7 +48,7 @@ export const ProjectDashboard: React.FC<ProjectDashboardProps> = ({
           <RecentChats
             chats={chats}
             onToggleSave={onToggleChatSave}
-            limit={4}
+            limit={5}
           />
         </ContentSection>
 
@@ -54,10 +70,21 @@ export const ProjectDashboard: React.FC<ProjectDashboardProps> = ({
           <AutomationsList
             automations={automations}
             onToggleActive={onToggleAutomationActive}
+            onScheduleClick={handleScheduleClick}
           />
         </ContentSection>
         <Box h={120} />
       </Stack>
+
+      <ScheduleConfiguratorModal
+        opened={scheduleModalOpen}
+        onClose={() => {
+          setScheduleModalOpen(false);
+          setSchedulingAutomationId(null);
+        }}
+        onSave={handleSaveSchedule}
+        automationName={selectedAutomation?.name}
+      />
     </Box>
   );
 };

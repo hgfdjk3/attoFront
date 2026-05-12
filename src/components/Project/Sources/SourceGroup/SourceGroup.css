@@ -14,8 +14,7 @@
 }
 
 .sourceGroupPaper[data-over="true"] {
-    background-color: var(--mantine-color-zinc-7);
-    border-color: var(--mantine-color-zinc-6);
+    background-color: light-dark(var(--mantine-color-zinc-2), var(--mantine-color-zinc-7));
     z-index: 2;
 }
 

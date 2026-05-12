@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Box, Text, Group } from '@mantine/core';
+import { Box, Text, Group } from '@mantine/core';
 import './ContentSection.css';
 
 interface ContentSectionProps {
@@ -18,7 +18,7 @@ export const ContentSection: React.FC<ContentSectionProps> = ({
   rightSection
 }) => {
   return (
-    <Card withBorder p="md" radius="md" shadow="none" className="content-section-card">
+    <Box className="content-section-container">
       {(title || actionLabel || rightSection) && (
         <Box className="content-section-header">
           <Group gap="xs" align="center">
@@ -38,7 +38,9 @@ export const ContentSection: React.FC<ContentSectionProps> = ({
           </Group>
         </Box>
       )}
-      {children}
-    </Card>
+      <Box className="content-section-body">
+        {children}
+      </Box>
+    </Box>
   );
 };

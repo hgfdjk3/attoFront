@@ -10,13 +10,16 @@ interface AutomationsListProps {
   onRun?: (id: string) => void;
   onAutomationClick?: (id: string) => void;
   onAdd?: () => void;
+  onScheduleClick?: (id: string) => void;
 }
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
+
   show: {
     opacity: 1,
     transition: {
+      delay: 0.1,
       staggerChildren: 0.1
     }
   }
@@ -24,10 +27,10 @@ const containerVariants: Variants = {
 
 const itemVariants: Variants = {
   hidden: { opacity: 0, y: 20 },
-  show: { 
-    opacity: 1, 
-    y: 0, 
-    transition: { type: 'spring', stiffness: 300, damping: 24 } 
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { type: 'spring', stiffness: 300, damping: 24 }
   }
 };
 
@@ -37,11 +40,12 @@ export const AutomationsList: React.FC<AutomationsListProps> = ({
   onRun,
   onAutomationClick,
   onAdd,
+  onScheduleClick,
 }) => {
   return (
     <Box className="automations-section">
       {automations.length > 0 ? (
-        <motion.div 
+        <motion.div
           className="automations-list"
           variants={containerVariants}
           initial="hidden"
@@ -54,6 +58,7 @@ export const AutomationsList: React.FC<AutomationsListProps> = ({
                 onToggleActive={onToggleActive}
                 onRun={onRun}
                 onClick={onAutomationClick}
+                onScheduleClick={onScheduleClick}
               />
             </motion.div>
           ))}
