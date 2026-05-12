@@ -33,14 +33,14 @@ export const UserMessage: React.FC<UserMessageProps> = ({ content, timestamp }) 
           gap={8}
           h={20}
           px={4}
-          style={{
-            opacity: hovered ? 1 : 0,
-            transition: 'opacity 0.2s ease',
-            pointerEvents: hovered ? 'all' : 'none'
-          }}
+
         >
           {timestamp && (
-            <Text size="xs" c="dimmed" fw={500}>
+            <Text size="xs" c="dimmed" style={{
+              opacity: hovered ? 1 : 0,
+              transition: 'opacity 0.2s ease',
+              pointerEvents: hovered ? 'all' : 'none'
+            }} fw={500}>
               {timestamp}
             </Text>
           )}
