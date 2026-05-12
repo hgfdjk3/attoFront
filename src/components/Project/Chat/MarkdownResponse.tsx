@@ -30,7 +30,6 @@ export const MarkdownResponse: React.FC<MarkdownResponseProps> = ({ content }) =
       >
         {content}
       </Streamdown>
-      <Box h={180} />
     </Box>
   );
 };

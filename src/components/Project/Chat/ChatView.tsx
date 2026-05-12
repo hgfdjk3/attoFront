@@ -7,7 +7,7 @@ import { PromptInput } from './PromptInput';
 import { Source } from '../Sources/types';
 import { ChatItemData } from './ChatItem';
 import { AutomationData } from '../../Automations/AutomationItem';
-import { MarkdownResponse } from './MarkdownResponse';
+import { ChatConversation, ChatMessage } from './ChatConversation/ChatConversation';
 import { useChatStream } from '../../../hooks/useChatStream';
 import '../ProjectDashboard.css';
 
@@ -35,6 +35,7 @@ interface ChatViewProps {
 export const ChatView: React.FC<ChatViewProps> = ({ sources, attachedSourceIds, onDetachSource }) => {
   const [chats, setChats] = useState<ChatItemData[]>(MOCK_CHATS);
   const [automations, setAutomations] = useState<AutomationData[]>(MOCK_AUTOMATIONS);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
 
   const { mutate, streamedContent, isPending, data } = useChatStream();
 
@@ -54,7 +55,7 @@ export const ChatView: React.FC<ChatViewProps> = ({ sources, attachedSourceIds, 
     );
   };
 
-  const showMarkdownResponse = isPending || streamedContent || data;
+  const showMarkdownResponse = messages.length > 0 || isPending;
 
   return (
     <Box p="sm" pr="0" pt="0" style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0, position: 'relative' }}>
@@ -71,7 +72,7 @@ export const ChatView: React.FC<ChatViewProps> = ({ sources, attachedSourceIds, 
               transition={{ duration: 0.3, ease: "easeOut" }}
               style={{ height: '100%' }}
             >
-              <MarkdownResponse content={streamedContent || data || ''} />
+              <ChatConversation messages={messages} streamedContent={streamedContent} isStreaming={isPending} />
             </motion.div>
           ) : (
             <motion.div
@@ -131,7 +132,26 @@ export const ChatView: React.FC<ChatViewProps> = ({ sources, attachedSourceIds, 
           <PromptInput
             initialValue=""
             onSubmit={(value) => {
-              mutate(value);
+              const now = new Date();
+              const timestamp = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+              
+              setMessages((prev) => [...prev, { 
+                id: Date.now().toString(), 
+                role: 'user', 
+                content: value,
+                timestamp 
+              }]);
+              
+              mutate(value, {
+                onSuccess: (finalContent) => {
+                  setMessages((prev) => [...prev, { 
+                    id: (Date.now() + 1).toString(), 
+                    role: 'assistant', 
+                    content: finalContent as string,
+                    timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                  }]);
+                }
+              });
             }}
             attachedSources={sources.filter((source) => attachedSourceIds.includes(source.id))}
             onDetachSource={onDetachSource}
