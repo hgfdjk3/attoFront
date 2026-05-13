@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { ActionIcon, Box, Button, Group, Paper, Textarea, useMantineTheme, rem } from '@mantine/core';
+import { ActionIcon, Box, Button, Group, Paper, Textarea, useMantineTheme, rem, Divider } from '@mantine/core';
 import { useDroppable } from '@dnd-kit/react';
-import { IconCornerDownLeft, IconEye, IconFileCode, IconPlus, IconX } from '@tabler/icons-react';
+import { IconBolt, IconCornerDownLeft, IconEye, IconFileCode, IconPlus, IconX } from '@tabler/icons-react';
 import { Source } from '../../Sources/types';
 import { PromptInputSources } from './PromptInputSources';
 import { PromptActions } from './PromptActions/PromptActions';
@@ -28,6 +28,8 @@ export interface PromptInputProps {
   onManageAgents?: () => void;
   onDetachSource?: (sourceId: string) => void;
   emptySourcesLabel?: string;
+  isAutomationMode?: boolean;
+  onAutomationModeToggle?: (active: boolean) => void;
 }
 
 const DEFAULT_MODES: PromptMode[] = [];
@@ -46,8 +48,13 @@ export const PromptInput: React.FC<PromptInputProps> = ({
   onManageAgents,
   onDetachSource,
   emptySourcesLabel,
+  isAutomationMode: externalIsAutomationMode,
+  onAutomationModeToggle,
 }) => {
   const [value, setValue] = useState(initialValue);
+  const [internalIsAutomationMode, setInternalIsAutomationMode] = useState(false);
+  const isAutomationMode = externalIsAutomationMode ?? internalIsAutomationMode;
+
   const [activeModeId, setActiveModeId] = useState(initialModeId || modes[0]?.id || '');
   const theme = useMantineTheme();
   const { ref, isDropTarget } = useDroppable({ id: 'prompt-input-sources' });
@@ -59,10 +66,18 @@ export const PromptInput: React.FC<PromptInputProps> = ({
 
   const handleSubmit = () => {
     if (value.trim()) {
-      onSubmit?.(value, activeModeId);
+      onSubmit?.(value, isAutomationMode ? 'automation' : activeModeId);
       setValue('');
-      onValueChange?.('');
+      handleValueChange('');
     }
+  };
+
+  const handleToggleAutomation = () => {
+    const newState = !isAutomationMode;
+    if (externalIsAutomationMode === undefined) {
+      setInternalIsAutomationMode(newState);
+    }
+    onAutomationModeToggle?.(newState);
   };
 
   return (
@@ -74,10 +89,14 @@ export const PromptInput: React.FC<PromptInputProps> = ({
         className="promptInputRoot"
         style={{
           position: 'relative',
-          border: `1px solid light-dark(${theme.colors.gray[2]}, ${theme.colors.dark[6]})`,
+          border: isAutomationMode
+            ? `1px solid light-dark(${theme.colors.orange[4]}, ${theme.colors.orange[8]})`
+            : `1px solid light-dark(${theme.colors.gray[2]}, ${theme.colors.dark[6]})`,
           borderRadius: theme.radius.lg,
           backgroundColor: `light-dark(${theme.white}, ${theme.colors.dark[8]})`,
-          boxShadow: '0 20px 40px -15px rgba(0, 0, 0, 0.2), 0 0 1px 0 rgba(0, 0, 0, 0.1)',
+          boxShadow: isAutomationMode
+            ? `0 20px 40px -15px rgba(255, 145, 0, 0.15), 0 0 1px 0 rgba(255, 145, 0, 0.2)`
+            : '0 20px 40px -15px rgba(0, 0, 0, 0.2), 0 0 1px 0 rgba(0, 0, 0, 0.1)',
         }}
       >
         <Box
@@ -87,7 +106,7 @@ export const PromptInput: React.FC<PromptInputProps> = ({
 
         <Box p="sm" className="promptInputContent">
           <Textarea
-            placeholder={placeholder}
+            placeholder={isAutomationMode ? "Describe the automation workflow you want to create..." : placeholder}
             variant="unstyled"
             autosize
             minRows={1}
@@ -112,11 +131,34 @@ export const PromptInput: React.FC<PromptInputProps> = ({
           />
 
           <Group justify="space-between" mt="md" align="center">
-            <Group gap="3">
-              <PromptActions 
-                onAttachSource={onAttachSource} 
-                onManageAgents={onManageAgents} 
+            <Group gap="0">
+              <PromptActions
+                onAttachSource={onAttachSource}
+                onManageAgents={onManageAgents}
               />
+              <Divider mx="3" orientation='vertical' />
+              <Button
+                variant={isAutomationMode ? 'light' : 'subtle'}
+                color={isAutomationMode ? 'orange' : 'gray'}
+                size="xs"
+                px={5}
+                radius="xl"
+                mr="5"
+                onClick={handleToggleAutomation}
+                fw={600}
+                styles={{
+                  root: {
+                    color: isAutomationMode
+                      ? theme.colors.orange[7]
+                      : `light-dark(${theme.colors.gray[7]}, ${theme.colors.gray[4]})`,
+                    backgroundColor: isAutomationMode
+                      ? `light-dark(${theme.colors.orange[0]}, ${theme.colors.orange[5]}20)`
+                      : undefined,
+                  }
+                }}
+              >
+                <IconBolt size={16} stroke={isAutomationMode ? 2.5 : 1.5} />
+              </Button>
 
               <PromptInputSources
                 attachedSources={attachedSources}
@@ -162,14 +204,18 @@ export const PromptInput: React.FC<PromptInputProps> = ({
               )}
               <ActionIcon
                 variant="filled"
-                color={submitColor}
+                color={isAutomationMode ? 'orange' : submitColor}
                 size="lg"
                 radius="md"
                 disabled={!value.trim()}
                 onClick={handleSubmit}
                 aria-label="Submit prompt"
               >
-                <IconCornerDownLeft size={18} stroke={2} />
+                {isAutomationMode ? (
+                  <IconBolt size={18} stroke={2} fill="currentColor" />
+                ) : (
+                  <IconCornerDownLeft size={18} stroke={2} />
+                )}
               </ActionIcon>
             </Group>
           </Group>

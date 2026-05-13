@@ -16,11 +16,11 @@ export const PromptActions: React.FC<PromptActionsProps> = ({
   const theme = useMantineTheme();
 
   return (
-    <Menu 
-      shadow="xl" 
-      width={220} 
-      position="top-start" 
-      offset={12} 
+    <Menu
+      shadow="xl"
+      width={220}
+      position="top-start"
+      offset={12}
       withArrow={false}
       radius="md"
       transitionProps={{ transition: 'pop-bottom-left', duration: 150 }}
@@ -30,7 +30,7 @@ export const PromptActions: React.FC<PromptActionsProps> = ({
         <ActionIcon
           variant="subtle"
           color="gray"
-          size="lg"
+          size="md"
           radius="md"
           className="promptActionButton"
           aria-label="Add options"

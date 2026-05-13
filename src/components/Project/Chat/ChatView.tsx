@@ -149,14 +149,14 @@ export const ChatView: React.FC<ChatViewProps> = ({
         >
           <PromptInput
             initialValue=""
-            onSubmit={(value) => {
+            onSubmit={(value, modeId) => {
               const now = new Date();
               const timestamp = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
               
               setMessages((prev) => [...prev, { 
                 id: Date.now().toString(), 
                 role: 'user', 
-                content: value,
+                content: modeId === 'automation' ? `Create Automation: ${value}` : value,
                 timestamp 
               }]);
               
