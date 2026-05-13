@@ -1,0 +1,31 @@
+.automation-node-card {
+  min-width: 320px;
+  max-width: 450px;
+  background-color: var(--mantine-color-body);
+  border-color: var(--mantine-color-default-border);
+  transition: all 0.2s ease;
+  border-radius: var(--mantine-radius-md);
+  box-shadow: var(--mantine-shadow-xs);
+}
+
+.automation-node-card:hover {
+  border-color: var(--mantine-color-blue-filled);
+  box-shadow: var(--mantine-shadow-md);
+  transform: translateY(-2px);
+}
+
+.automation-handle {
+  width: 10px;
+  height: 10px;
+  background: linear-gradient(135deg, var(--mantine-color-blue-5) 0%, var(--mantine-color-blue-7) 100%);
+  border: 2px solid var(--mantine-color-body);
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.automation-handle:hover {
+  transform: scale(1.4);
+  background: var(--mantine-color-blue-6);
+  box-shadow: 0 0 0 4px rgba(34, 139, 230, 0.2);
+}
+

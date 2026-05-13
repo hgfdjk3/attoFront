@@ -10,12 +10,12 @@ export const ProjectLayout: React.FC<ProjectLayoutProps> = ({ children }) => {
   return (
     <AppShell
       navbar={{ width: 260, breakpoint: 'sm' }}
-      padding="md"
+      padding=""
     >
       <AppShell.Navbar p="md">
         <Sidebar />
       </AppShell.Navbar>
-      <AppShell.Main h="100vh" style={{ display: 'flex', flexDirection: 'column' }}>
+      <AppShell.Main h="100vh" py="xs" pr="xs" style={{ display: 'flex', flexDirection: 'column' }}>
         {children}
       </AppShell.Main>
     </AppShell>

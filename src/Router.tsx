@@ -2,6 +2,7 @@ import React from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { KnowledgeGraphPage } from './pages/KnowledgeGraph.page';
 import { HomePage } from './pages/Home.page';
+import { AutomationsPage } from './pages/Automations.page';
 
 const router = createBrowserRouter([
   {
@@ -15,6 +16,10 @@ const router = createBrowserRouter([
   {
     path: '/knowledge-graph',
     element: <KnowledgeGraphPage />,
+  },
+  {
+    path: '/automations',
+    element: <AutomationsPage />,
   },
 ]);
 

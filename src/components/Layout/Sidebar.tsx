@@ -6,6 +6,7 @@ import {
   IconGraph,
   IconLayoutSidebar,
   IconSettings,
+  IconRobot,
 } from '@tabler/icons-react';
 import { Link, useLocation } from 'react-router-dom';
 
@@ -13,6 +14,7 @@ const navItems = [
   { label: 'New Chat', icon: IconMessagePlus, link: '/' },
   { label: 'Projects', icon: IconFolders, link: '/projects' },
   { label: 'Knowledge Graph', icon: IconGraph, link: '/knowledge-graph' },
+  { label: 'Automations', icon: IconRobot, link: '/automations' },
 ];
 
 export const Sidebar: React.FC = () => {

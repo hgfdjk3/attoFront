@@ -11,6 +11,7 @@ import { ChatConversation, ChatMessage } from './ChatConversation/ChatConversati
 import { useChatStream } from '../../../hooks/useChatStream';
 import { ManageSourcesModal } from './PromptInput/ManageSourcesModal/ManageSourcesModal';
 import '../ProjectDashboard.css';
+import { AutomationBuilder } from '@/components/Automations/AutomationBuilder/AutomationBuilder';
 
 const MOCK_CHATS: ChatItemData[] = [
   { id: 'c1', title: 'Optimizing vector embeddings', preview: 'We discussed chunking strategies and how to improve retrieval accuracy with hybrid search...', timestamp: '2h ago', isSaved: true },
@@ -39,13 +40,13 @@ interface ChatViewProps {
   onAddGlobalToProjectAndChat?: (sourceIds: string[]) => void;
 }
 
-export const ChatView: React.FC<ChatViewProps> = ({ 
-  sources, 
-  standaloneSources, 
-  globalSources, 
-  groups, 
-  attachedSourceIds, 
-  onDetachSource, 
+export const ChatView: React.FC<ChatViewProps> = ({
+  sources,
+  standaloneSources,
+  globalSources,
+  groups,
+  attachedSourceIds,
+  onDetachSource,
   onToggleSource,
   onAddGlobalToChat,
   onAddGlobalToProjectAndChat,
@@ -76,9 +77,10 @@ export const ChatView: React.FC<ChatViewProps> = ({
   const showMarkdownResponse = messages.length > 0 || isPending;
 
   return (
-    <Box p="sm" pr="0" pt="0" style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0, position: 'relative' }}>
+    <Box p="0" pr="0" pt="0" style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0, position: 'relative' }}>
       <ProjectHeader title="Operation Grandma" />
 
+      <AutomationBuilder height="200px" />
       <Box className="chat-scroll-container" style={{ flex: 1, minHeight: 0 }}>
         <AnimatePresence mode="wait">
           {showMarkdownResponse ? (
@@ -152,19 +154,19 @@ export const ChatView: React.FC<ChatViewProps> = ({
             onSubmit={(value, modeId) => {
               const now = new Date();
               const timestamp = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-              
-              setMessages((prev) => [...prev, { 
-                id: Date.now().toString(), 
-                role: 'user', 
+
+              setMessages((prev) => [...prev, {
+                id: Date.now().toString(),
+                role: 'user',
                 content: modeId === 'automation' ? `Create Automation: ${value}` : value,
-                timestamp 
+                timestamp
               }]);
-              
+
               mutate(value, {
                 onSuccess: (finalContent) => {
-                  setMessages((prev) => [...prev, { 
-                    id: (Date.now() + 1).toString(), 
-                    role: 'assistant', 
+                  setMessages((prev) => [...prev, {
+                    id: (Date.now() + 1).toString(),
+                    role: 'assistant',
                     content: finalContent as string,
                     timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
                   }]);
