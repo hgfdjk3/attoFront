@@ -1,11 +1,11 @@
 import React from 'react';
 import { Box, Button, Group } from '@mantine/core';
-import { Source } from '../Sources/types';
+import { Source } from '../../Sources/types';
 import { PromptInputHiddenSources } from './PromptInputHiddenSources';
 import { PromptInputSourceBadge } from './PromptInputSourceBadge';
 
 import { AnimatePresence } from 'framer-motion';
-import { AnimatedItem } from '../../animations/AnimatedItem';
+import { AnimatedItem } from '../../../animations/AnimatedItem';
 
 export interface PromptInputSourcesProps {
   attachedSources: Source[];

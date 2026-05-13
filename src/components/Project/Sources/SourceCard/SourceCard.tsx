@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card, Group, Text, ThemeIcon, Box, UnstyledButton } from '@mantine/core';
-import { IconPdf, IconFileText, IconExternalLink, IconGripVertical } from '@tabler/icons-react';
+import { IconPdf, IconFileText, IconExternalLink, IconGripVertical, IconCheck } from '@tabler/icons-react';
 import { useHover, useMergedRef } from '@mantine/hooks';
 import { useDraggable } from '@dnd-kit/react';
 import { Source, SourceType } from '../types';
@@ -15,6 +15,8 @@ interface SourceCardProps {
   onRemove?: (id: string) => void;
   onGoToSource?: (id: string) => void;
   onRename?: (id: string) => void;
+  selected?: boolean;
+  onClick?: () => void;
 }
 
 const getIcon = (type: SourceType) => {
@@ -32,7 +34,9 @@ export const SourceCard: React.FC<SourceCardProps> = ({
   isDraggingAny,
   onRemove,
   onGoToSource,
-  onRename
+  onRename,
+  selected,
+  onClick,
 }) => {
   const { hovered, ref: hoverRef } = useHover();
   const { ref: dragRef, handleRef, isDragging } = useDraggable({
@@ -50,12 +54,14 @@ export const SourceCard: React.FC<SourceCardProps> = ({
       p="xs"
       pl="5"
       radius="sm"
-      className="sourceCardRoot"
+      className={`sourceCardRoot ${selected ? 'selected' : ''}`}
       data-dragging={isDragging || undefined}
       data-dragging-any={isDraggingAny || undefined}
       shadow={isDragging ? 'md' : 'none'}
+      onClick={onClick}
       style={{
         borderLeft: source.color ? `4px solid var(--mantine-color-${source.color}-6)` : undefined,
+        cursor: onClick ? 'pointer' : undefined,
       }}
     >
       <Group wrap="nowrap" gap="xs">
@@ -78,7 +84,7 @@ export const SourceCard: React.FC<SourceCardProps> = ({
           </Text>
         </Box>
 
-        {!isOverlay && (
+        {!isOverlay && !selected && (
           <SourceCardMenu
             visible={hovered || isDragging}
             onGoToSource={() => onGoToSource?.(source.id)}
@@ -86,8 +92,13 @@ export const SourceCard: React.FC<SourceCardProps> = ({
             onRename={() => onRename?.(source.id)}
           />
         )}
+
+        {selected && (
+          <Box className="selectedCheck">
+            <IconCheck size={14} stroke={3} />
+          </Box>
+        )}
       </Group>
     </Card>
   );
 };
-

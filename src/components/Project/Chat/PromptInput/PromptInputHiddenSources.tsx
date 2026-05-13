@@ -1,9 +1,9 @@
 import React from 'react';
 import { ActionIcon, Button, Menu, Stack, Text } from '@mantine/core';
 import { IconX } from '@tabler/icons-react';
-import { Source } from '../Sources/types';
+import { Source } from '../../Sources/types';
 import { PromptInputSourceBadge } from './PromptInputSourceBadge';
-import Counter from '../../animations/Counter';
+import Counter from '../../../animations/Counter';
 
 export interface PromptInputHiddenSourcesProps {
   hiddenSources: Source[];

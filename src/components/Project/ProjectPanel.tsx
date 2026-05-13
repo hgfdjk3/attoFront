@@ -1,10 +1,11 @@
 import React from 'react';
-import { Box, Group } from '@mantine/core';
-import { DragDropProvider } from '@dnd-kit/react';
+import { Box, Group, Portal } from '@mantine/core';
+import { DragDropProvider, DragOverlay } from '@dnd-kit/react';
 import { PointerSensor } from '@dnd-kit/dom';
 import { ChatView } from './Chat/ChatView';
 import { ProjectConfigPanel } from '../Layout/ProjectConfigPanel';
 import { Source, SourceGroup } from './Sources/types';
+import { SourceCard } from './Sources/SourceCard/SourceCard';
 
 const MOCK_GROUPS: SourceGroup[] = [
   {
@@ -23,9 +24,17 @@ const MOCK_STANDALONE: Source[] = [
   { id: 's4', title: 'Design Assets', description: 'Link to Figma', type: 'link', color: 'green' },
 ];
 
+const MOCK_GLOBAL_SOURCES: Source[] = [
+  { id: 'g1', title: 'Company Guidelines.pdf', description: 'Global company policy', type: 'pdf', color: 'red' },
+  { id: 'g2', title: 'API Documentation.txt', description: 'Backend API specs', type: 'txt', color: 'blue' },
+  { id: 'g3', title: 'Brand Assets', description: 'Logos and colors', type: 'link', color: 'orange' },
+  { id: 'g4', title: 'Onboarding.doc', description: 'New hire onboarding', type: 'doc', color: 'green' },
+];
+
 export const ProjectPanel: React.FC = () => {
   const [groups, setGroups] = React.useState<SourceGroup[]>(MOCK_GROUPS);
   const [sources, setSources] = React.useState<Source[]>(MOCK_STANDALONE);
+  const [globalSources, setGlobalSources] = React.useState<Source[]>(MOCK_GLOBAL_SOURCES);
   const [attachedSourceIds, setAttachedSourceIds] = React.useState<string[]>([]);
   const [activeSourceId, setActiveSourceId] = React.useState<string | null>(null);
 
@@ -50,7 +59,16 @@ export const ProjectPanel: React.FC = () => {
       return;
     }
 
-    if (!targetId || targetId === 'standalone-zone') {
+    if (targetId === 'project-sources-zone') {
+      const globalSource = globalSources.find(s => s.id === sourceId);
+      if (globalSource) {
+        setGlobalSources(current => current.filter(s => s.id !== sourceId));
+        setSources(current => [...current, globalSource]);
+        return;
+      }
+    }
+
+    if (!targetId || targetId === 'standalone-zone' || targetId === 'project-sources-zone') {
       const sourceInGroup = groups.find((group) => group.sources.some((source) => source.id === sourceId));
       if (!sourceInGroup) return;
 
@@ -130,7 +148,26 @@ export const ProjectPanel: React.FC = () => {
     }
   };
 
-  const allSources = [...sources, ...groups.flatMap((group) => group.sources)];
+  const allSources = [...sources, ...groups.flatMap((group) => group.sources), ...globalSources];
+
+  const handleAddGlobalToChat = (sourceIds: string[]) => {
+    setAttachedSourceIds((current) => {
+      const newIds = [...current];
+      sourceIds.forEach(id => {
+        if (!newIds.includes(id)) newIds.push(id);
+      });
+      return newIds;
+    });
+  };
+
+  const handleAddGlobalToProjectAndChat = (sourceIds: string[]) => {
+    const sourcesToMove = globalSources.filter(s => sourceIds.includes(s.id));
+    setSources(current => [...current, ...sourcesToMove]);
+    setGlobalSources(current => current.filter(s => !sourceIds.includes(s.id)));
+    handleAddGlobalToChat(sourceIds);
+  };
+
+  const activeSource = allSources.find(s => s.id === activeSourceId);
 
   return (
     <DragDropProvider sensors={[PointerSensor]} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
@@ -138,8 +175,18 @@ export const ProjectPanel: React.FC = () => {
         <Box style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
           <ChatView
             sources={allSources}
+            standaloneSources={sources}
+            globalSources={globalSources}
+            groups={groups}
             attachedSourceIds={attachedSourceIds}
             onDetachSource={(sourceId) => setAttachedSourceIds((current) => current.filter((id) => id !== sourceId))}
+            onToggleSource={(sourceId) => setAttachedSourceIds((current) => 
+              current.includes(sourceId) 
+                ? current.filter((id) => id !== sourceId) 
+                : [...current, sourceId]
+            )}
+            onAddGlobalToChat={handleAddGlobalToChat}
+            onAddGlobalToProjectAndChat={handleAddGlobalToProjectAndChat}
           />
         </Box>
         <Box w={{ base: 10, xs: 10, sm: 10, md: 360, lg: 380 }} >
@@ -150,6 +197,17 @@ export const ProjectPanel: React.FC = () => {
           />
         </Box>
       </Group>
+
+      <Portal>
+        <DragOverlay dropAnimation={null} style={{ zIndex: 9999 }}>
+          {activeSource ? (
+            <SourceCard 
+              source={activeSource} 
+              isOverlay 
+            />
+          ) : null}
+        </DragOverlay>
+      </Portal>
     </DragDropProvider>
   );
 };

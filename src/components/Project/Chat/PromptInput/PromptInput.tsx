@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { ActionIcon, Box, Button, Group, Paper, Textarea, useMantineTheme, rem } from '@mantine/core';
 import { useDroppable } from '@dnd-kit/react';
 import { IconCornerDownLeft, IconEye, IconFileCode, IconPlus, IconX } from '@tabler/icons-react';
-import { Source } from '../Sources/types';
+import { Source } from '../../Sources/types';
 import { PromptInputSources } from './PromptInputSources';
+import { PromptActions } from './PromptActions/PromptActions';
 
 import './PromptInput.css';
 
@@ -24,6 +25,7 @@ export interface PromptInputProps {
   submitColor?: string;
   attachedSources?: Source[];
   onAttachSource?: () => void;
+  onManageAgents?: () => void;
   onDetachSource?: (sourceId: string) => void;
   emptySourcesLabel?: string;
 }
@@ -41,6 +43,7 @@ export const PromptInput: React.FC<PromptInputProps> = ({
   submitColor = 'blue',
   attachedSources = [],
   onAttachSource,
+  onManageAgents,
   onDetachSource,
   emptySourcesLabel,
 }) => {
@@ -110,16 +113,10 @@ export const PromptInput: React.FC<PromptInputProps> = ({
 
           <Group justify="space-between" mt="md" align="center">
             <Group gap="3">
-              <ActionIcon
-                variant="subtle"
-                color="gray"
-                size="lg"
-                radius="md"
-                onClick={onAttachSource}
-                aria-label="Attach source"
-              >
-                <IconPlus size={20} stroke={1.5} />
-              </ActionIcon>
+              <PromptActions 
+                onAttachSource={onAttachSource} 
+                onManageAgents={onManageAgents} 
+              />
 
               <PromptInputSources
                 attachedSources={attachedSources}

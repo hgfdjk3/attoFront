@@ -3,12 +3,13 @@ import { ActionIcon, Box, Group, Stack, Text, Tooltip } from '@mantine/core';
 import { AnimatePresence, motion } from 'motion/react';
 import { ProjectHeader } from '../ProjectHeader';
 import { ProjectDashboard } from '../ProjectDashboard';
-import { PromptInput } from './PromptInput';
-import { Source } from '../Sources/types';
+import { PromptInput } from './PromptInput/PromptInput';
+import { Source, SourceGroup } from '../Sources/types';
 import { ChatItemData } from './ChatItem';
 import { AutomationData } from '../../Automations/AutomationItem';
 import { ChatConversation, ChatMessage } from './ChatConversation/ChatConversation';
 import { useChatStream } from '../../../hooks/useChatStream';
+import { ManageSourcesModal } from './PromptInput/ManageSourcesModal/ManageSourcesModal';
 import '../ProjectDashboard.css';
 
 const MOCK_CHATS: ChatItemData[] = [
@@ -28,14 +29,31 @@ const MOCK_AUTOMATIONS: AutomationData[] = [
 
 interface ChatViewProps {
   sources: Source[];
+  standaloneSources: Source[];
+  globalSources: Source[];
+  groups: SourceGroup[];
   attachedSourceIds: string[];
   onDetachSource: (sourceId: string) => void;
+  onToggleSource: (sourceId: string) => void;
+  onAddGlobalToChat?: (sourceIds: string[]) => void;
+  onAddGlobalToProjectAndChat?: (sourceIds: string[]) => void;
 }
 
-export const ChatView: React.FC<ChatViewProps> = ({ sources, attachedSourceIds, onDetachSource }) => {
+export const ChatView: React.FC<ChatViewProps> = ({ 
+  sources, 
+  standaloneSources, 
+  globalSources, 
+  groups, 
+  attachedSourceIds, 
+  onDetachSource, 
+  onToggleSource,
+  onAddGlobalToChat,
+  onAddGlobalToProjectAndChat,
+}) => {
   const [chats, setChats] = useState<ChatItemData[]>(MOCK_CHATS);
   const [automations, setAutomations] = useState<AutomationData[]>(MOCK_AUTOMATIONS);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [isManageSourcesModalOpen, setIsManageSourcesModalOpen] = useState(false);
 
   const { mutate, streamedContent, isPending, data } = useChatStream();
 
@@ -155,10 +173,23 @@ export const ChatView: React.FC<ChatViewProps> = ({ sources, attachedSourceIds, 
             }}
             attachedSources={sources.filter((source) => attachedSourceIds.includes(source.id))}
             onDetachSource={onDetachSource}
+            onAttachSource={() => setIsManageSourcesModalOpen(true)}
             emptySourcesLabel="Project Sources"
           />
         </motion.div>
       </AnimatePresence>
+
+      <ManageSourcesModal
+        opened={isManageSourcesModalOpen}
+        onClose={() => setIsManageSourcesModalOpen(false)}
+        standaloneSources={standaloneSources}
+        globalSources={globalSources}
+        groups={groups}
+        attachedSourceIds={attachedSourceIds}
+        onToggleSource={onToggleSource}
+        onAddGlobalToChat={onAddGlobalToChat}
+        onAddGlobalToProjectAndChat={onAddGlobalToProjectAndChat}
+      />
     </Box>
   );
 };

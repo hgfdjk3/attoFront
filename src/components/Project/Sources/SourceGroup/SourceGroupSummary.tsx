@@ -20,8 +20,8 @@ const getIcon = (type: SourceType) => {
 
 const MAX_VISIBLE_SOURCE_GROUPS = 3;
 
-export const SourceGroupSummary: React.FC<SourceGroupSummaryProps> = ({ sources }) => {
-  const summary = sources.reduce((acc, source) => {
+export const SourceGroupSummary: React.FC<SourceGroupSummaryProps> = ({ sources = [] }) => {
+  const summary = (sources || []).reduce((acc, source) => {
     const key = `${source.type}-${source.color || 'gray'}`;
     if (!acc[key]) {
       acc[key] = { type: source.type, color: source.color || 'gray', count: 0 };

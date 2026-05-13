@@ -12,9 +12,16 @@ import './SourceGroup.css';
 interface SourceGroupProps {
   group: SourceGroupType;
   isDraggingAny?: boolean;
+  attachedSourceIds?: string[];
+  onToggleSource?: (sourceId: string) => void;
 }
 
-export const SourceGroup: React.FC<SourceGroupProps> = ({ group, isDraggingAny = false }) => {
+export const SourceGroup: React.FC<SourceGroupProps> = ({ 
+  group, 
+  isDraggingAny = false,
+  attachedSourceIds = [],
+  onToggleSource
+}) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const { ref, isDropTarget: isOver } = useDroppable({
     id: group.id,
@@ -80,9 +87,14 @@ export const SourceGroup: React.FC<SourceGroupProps> = ({ group, isDraggingAny =
               style={{ overflow: 'hidden' }}
             >
               <Stack gap="5" >
-                {group.sources.length > 0 ? (
-                  group.sources.map((source) => (
-                    <SourceCard key={source.id} source={source} />
+                {(group.sources || []).length > 0 ? (
+                  (group.sources || []).map((source) => (
+                    <SourceCard 
+                      key={source.id} 
+                      source={source} 
+                      selected={attachedSourceIds.includes(source.id)}
+                      onClick={onToggleSource ? () => onToggleSource(source.id) : undefined}
+                    />
                   ))
                 ) : (
                   <Text size="xs" c="dimmed" ta="center" py="md">
