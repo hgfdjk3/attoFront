@@ -31,6 +31,33 @@ Let me know if you need any changes.
 <my-component>This is a test component that should be rendered with special styling.</my-component>
 <my-co  mponent>This is a test component that should be rendered with special styling.</my-component>
 
+---
+
+link:
+ [link](https://google.com)
+
+
+ \`\`\`vega-lite
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "width": "container",
+      "height": 200,
+        "data": {
+    "values": [
+      { "month": "Jan", "revenue": 28 },
+      { "month": "Feb", "revenue": 55 },
+      { "month": "Mar", "revenue": 43 }
+    ]
+  },
+  "mark": "bar",
+    "encoding": {
+    "x": { "field": "month", "type": "nominal" },
+    "y": { "field": "revenue", "type": "quantitative" }
+  }
+}
+\`\`\`
+
+
 
 \`\`\`mermaid 
 graph TD;

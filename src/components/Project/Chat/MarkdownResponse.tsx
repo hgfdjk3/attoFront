@@ -1,6 +1,7 @@
 import React from 'react';
-import { Box } from '@mantine/core';
+import { Anchor, Box } from '@mantine/core';
 import { Streamdown } from 'streamdown';
+import 'streamdown/styles.css';
 import './MarkdownResponse.css';
 
 export interface MarkdownResponseProps {
@@ -14,16 +15,24 @@ const components: any = {
       {children}
     </div>
   ),
+  a: ({ href, children }: { href?: string; children?: React.ReactNode }) => (
+    <Anchor href={href} target="_blank" rel="noopener noreferrer">
+      {children}
+    </Anchor>
+  )
 };
 
 export const MarkdownResponse: React.FC<MarkdownResponseProps> = ({ content }) => {
-  // If the LLM sends <my-component>content</my-component>, this works natively.
-  // If you MUST use ?content?, you can use a simple regex pre-processor:
-  // const processedContent = content.replace(/\?([\s\S]+?)\?/g, '<my-component>$1</my-component>');
-
   return (
     <Box className="markdown-response-container" w={{ base: '100%', md: 800, lg: 1100 }}>
       <Streamdown
+        animated={{
+          animation: "blurIn",
+          easing: "ease-out",
+          // sep: "char",
+        }}
+        isAnimating={false}
+        caret="block"
         components={components}
         allowedTags={{ 'my-component': [] }}
       // skipHtml={false}
