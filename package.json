@@ -37,6 +37,7 @@
     "react-dom": "^19.2.0",
     "react-force-graph": "^1.48.2",
     "react-force-graph-2d": "^1.29.1",
+    "react-resizable-panels": "^4.11.1",
     "react-router-dom": "^7.9.4",
     "streamdown": "^2.5.0"
   },

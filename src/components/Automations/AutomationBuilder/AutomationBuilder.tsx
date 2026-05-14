@@ -1,35 +1,22 @@
-import React, { useState, useCallback } from 'react';
-import {
-  ReactFlow,
-  Controls,
-  Background,
-  applyNodeChanges,
-  applyEdgeChanges,
-  addEdge,
-  NodeChange,
-  EdgeChange,
-  Connection,
-  Edge,
-  BackgroundVariant
-} from '@xyflow/react';
-import '@xyflow/react/dist/style.css';
-import { AutomationNode } from './AutomationNode/AutomationNode';
+import React, { useState } from 'react';
+import { Edge } from '@xyflow/react';
 import { AppNode } from './types';
 import { Box, Paper } from '@mantine/core';
 import { AutomationActionButton } from '../AutomationActionButton';
 import { ScheduleConfiguratorModal } from '../ScheduleConfiguratorModal';
 import { ScheduleConfig } from '../ScheduleConfigurator';
+import { AutomationBoard } from './AutomationBoard';
 
 const getScheduleString = (config: ScheduleConfig): string => {
   const { frequency, interval, time } = config;
   const plural = interval > 1 ? 's' : '';
   const timeStr = time ? ` at ${time}` : '';
-  
+
   if (frequency === 'weeks' && config.byDays && config.byDays.length > 0) {
     const daysStr = config.byDays.map(d => d.charAt(0).toUpperCase() + d.slice(1)).join(', ');
     return `Every ${interval} week${plural} on ${daysStr}${timeStr}`;
   }
-  
+
   const freqSingle = frequency.endsWith('s') ? frequency.slice(0, -1) : frequency;
   return `Every ${interval} ${freqSingle}${plural}${timeStr}`;
 };
@@ -39,10 +26,6 @@ export interface AutomationBuilderProps {
   initialEdges?: Edge[];
   height?: string | number;
 }
-
-const nodeTypes = {
-  automation: AutomationNode,
-};
 
 const defaultNodes: AppNode[] = [
   {
@@ -87,30 +70,13 @@ export const AutomationBuilder: React.FC<AutomationBuilderProps> = ({
   initialEdges = defaultEdges,
   height = '100%'
 }) => {
-  const [nodes, setNodes] = useState<AppNode[]>(initialNodes);
-  const [edges, setEdges] = useState<Edge[]>(initialEdges);
   const [scheduleModalOpened, setScheduleModalOpened] = useState(false);
-  
+
   // Automation State
   const [isScheduled, setIsScheduled] = useState(false);
   const [isActive, setIsActive] = useState(false);
   const [scheduleConfig, setScheduleConfig] = useState<ScheduleConfig | undefined>(undefined);
   const [isRunning, setIsRunning] = useState(false);
-
-  const onNodesChange = useCallback(
-    (changes: NodeChange<AppNode>[]) => setNodes((nds) => applyNodeChanges(changes, nds)),
-    []
-  );
-
-  const onEdgesChange = useCallback(
-    (changes: EdgeChange[]) => setEdges((eds) => applyEdgeChanges(changes, eds)),
-    []
-  );
-
-  const onConnect = useCallback(
-    (params: Connection) => setEdges((eds) => addEdge({ ...params, animated: true }, eds)),
-    []
-  );
 
   return (
     <Paper
@@ -133,32 +99,24 @@ export const AutomationBuilder: React.FC<AutomationBuilderProps> = ({
           right: '10px',
         }}
       >
-        <AutomationActionButton 
-          isActive={isActive} 
-          isScheduled={isScheduled} 
+        <AutomationActionButton
+          isActive={isActive}
+          isScheduled={isScheduled}
           isRunning={isRunning}
           schedule={scheduleConfig ? getScheduleString(scheduleConfig) : undefined}
-          onToggle={() => setIsActive(!isActive)} 
+          onToggle={() => setIsActive(!isActive)}
           onRun={() => {
             setIsRunning(true);
             setTimeout(() => setIsRunning(false), 2000);
-          }} 
+          }}
           onScheduleClick={() => setScheduleModalOpened(true)}
         />
       </Box>
-      <ReactFlow
-        nodes={nodes}
-        edges={edges}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
-        onConnect={onConnect}
-        nodeTypes={nodeTypes}
-        fitView
-        nodesDraggable={false}
-        proOptions={{ hideAttribution: true }}
-      >
-        <Background variant={BackgroundVariant.Dots} bgColor="light-dark(var(--mantine-color-body), var(--mantine-color-zinc-8))" gap={16} size={1} />
-      </ReactFlow>
+
+      <AutomationBoard
+        initialNodes={initialNodes}
+        initialEdges={initialEdges}
+      />
 
       <ScheduleConfiguratorModal
         opened={scheduleModalOpened}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { ActionIcon, Box, Group, Stack, Text, Tooltip } from '@mantine/core';
 import { AnimatePresence, motion } from 'motion/react';
 import { ProjectHeader } from '../ProjectHeader';
@@ -12,6 +12,7 @@ import { useChatStream } from '../../../hooks/useChatStream';
 import { ManageSourcesModal } from './PromptInput/ManageSourcesModal/ManageSourcesModal';
 import '../ProjectDashboard.css';
 import { AutomationBuilder } from '@/components/Automations/AutomationBuilder/AutomationBuilder';
+import { ResizeDivider } from './ResizeDivider';
 
 const MOCK_CHATS: ChatItemData[] = [
   { id: 'c1', title: 'Optimizing vector embeddings', preview: 'We discussed chunking strategies and how to improve retrieval accuracy with hybrid search...', timestamp: '2h ago', isSaved: true },
@@ -58,6 +59,20 @@ export const ChatView: React.FC<ChatViewProps> = ({
 
   const { mutate, streamedContent, isPending, data } = useChatStream();
 
+  const [boardHeight, setBoardHeight] = useState(250);
+  const [isResizing, setIsResizing] = useState(false);
+
+  const handleResize = useCallback((deltaY: number) => {
+    setBoardHeight((prev) => {
+      const newHeight = prev + deltaY;
+      return Math.min(Math.max(newHeight, 150), 600);
+    });
+  }, []);
+
+  const handleToggleBoard = useCallback(() => {
+    setBoardHeight((prev) => (prev > 150 ? 150 : 600));
+  }, []);
+
   const handleToggleSave = (id: string) => {
     setChats((current) =>
       current.map((chat) =>
@@ -80,7 +95,34 @@ export const ChatView: React.FC<ChatViewProps> = ({
     <Box p="0" pr="0" pt="0" style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0, position: 'relative' }}>
       <ProjectHeader title="Operation Grandma" />
 
-      <AutomationBuilder height="200px" />
+      <AnimatePresence initial={false}>
+        {showMarkdownResponse && (
+          <>
+            <motion.div
+              key="automation-board-container"
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: boardHeight, opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={isResizing ? { duration: 0 } : { duration: 0.3, ease: "easeInOut" }}
+              style={{ 
+                overflow: 'hidden', 
+                position: 'relative', 
+                flexShrink: 0,
+                pointerEvents: isResizing ? 'none' : 'auto',
+                userSelect: isResizing ? 'none' : 'auto'
+              }}
+            >
+              <AutomationBuilder height="100%" />
+            </motion.div>
+            <ResizeDivider 
+              onResize={handleResize} 
+              onResizeStart={() => setIsResizing(true)}
+              onResizeEnd={() => setIsResizing(false)}
+              onToggle={handleToggleBoard}
+            />
+          </>
+        )}
+      </AnimatePresence>
       <Box className="chat-scroll-container" style={{ flex: 1, minHeight: 0 }}>
         <AnimatePresence mode="wait">
           {showMarkdownResponse ? (
