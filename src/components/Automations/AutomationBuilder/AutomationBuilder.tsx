@@ -85,7 +85,7 @@ export const AutomationBuilder: React.FC<AutomationBuilderProps> = ({
       radius="0"
       shadow="0"
       style={{
-        borderBottom: "1px solid var(--mantine-color-default-border)",
+        // borderBottom: "1px solid var(--mantine-color-default-border)",
         borderTop: "1px solid var(--mantine-color-default-border)",
         overflow: 'hidden',
       }}

@@ -29,7 +29,7 @@
 .resize-divider:hover::after,
 .resize-divider.is-resizing::after {
   opacity: 1;
-  background: var(--mantine-color-gray-4);
+  background: var(--mantine-color-default-border);
   height: 2px;
 }
 
