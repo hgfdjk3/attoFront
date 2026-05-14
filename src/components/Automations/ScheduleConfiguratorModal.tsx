@@ -56,7 +56,7 @@ export const ScheduleConfiguratorModal: React.FC<ScheduleConfiguratorModalProps>
         <Button variant="default" onClick={onClose}>
           Cancel
         </Button>
-        <Button onClick={handleSave} color="dark">
+        <Button onClick={handleSave}>
           Save Schedule
         </Button>
       </Group>

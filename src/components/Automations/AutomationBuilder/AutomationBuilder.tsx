@@ -17,6 +17,22 @@ import { AutomationNode } from './AutomationNode/AutomationNode';
 import { AppNode } from './types';
 import { Box, Paper } from '@mantine/core';
 import { AutomationActionButton } from '../AutomationActionButton';
+import { ScheduleConfiguratorModal } from '../ScheduleConfiguratorModal';
+import { ScheduleConfig } from '../ScheduleConfigurator';
+
+const getScheduleString = (config: ScheduleConfig): string => {
+  const { frequency, interval, time } = config;
+  const plural = interval > 1 ? 's' : '';
+  const timeStr = time ? ` at ${time}` : '';
+  
+  if (frequency === 'weeks' && config.byDays && config.byDays.length > 0) {
+    const daysStr = config.byDays.map(d => d.charAt(0).toUpperCase() + d.slice(1)).join(', ');
+    return `Every ${interval} week${plural} on ${daysStr}${timeStr}`;
+  }
+  
+  const freqSingle = frequency.endsWith('s') ? frequency.slice(0, -1) : frequency;
+  return `Every ${interval} ${freqSingle}${plural}${timeStr}`;
+};
 
 export interface AutomationBuilderProps {
   initialNodes?: AppNode[];
@@ -73,6 +89,13 @@ export const AutomationBuilder: React.FC<AutomationBuilderProps> = ({
 }) => {
   const [nodes, setNodes] = useState<AppNode[]>(initialNodes);
   const [edges, setEdges] = useState<Edge[]>(initialEdges);
+  const [scheduleModalOpened, setScheduleModalOpened] = useState(false);
+  
+  // Automation State
+  const [isScheduled, setIsScheduled] = useState(false);
+  const [isActive, setIsActive] = useState(false);
+  const [scheduleConfig, setScheduleConfig] = useState<ScheduleConfig | undefined>(undefined);
+  const [isRunning, setIsRunning] = useState(false);
 
   const onNodesChange = useCallback(
     (changes: NodeChange<AppNode>[]) => setNodes((nds) => applyNodeChanges(changes, nds)),
@@ -110,7 +133,18 @@ export const AutomationBuilder: React.FC<AutomationBuilderProps> = ({
           right: '10px',
         }}
       >
-        <AutomationActionButton isActive label='Trigger' actionType='trigger' />
+        <AutomationActionButton 
+          isActive={isActive} 
+          isScheduled={isScheduled} 
+          isRunning={isRunning}
+          schedule={scheduleConfig ? getScheduleString(scheduleConfig) : undefined}
+          onToggle={() => setIsActive(!isActive)} 
+          onRun={() => {
+            setIsRunning(true);
+            setTimeout(() => setIsRunning(false), 2000);
+          }} 
+          onScheduleClick={() => setScheduleModalOpened(true)}
+        />
       </Box>
       <ReactFlow
         nodes={nodes}
@@ -125,6 +159,19 @@ export const AutomationBuilder: React.FC<AutomationBuilderProps> = ({
       >
         <Background variant={BackgroundVariant.Dots} bgColor="light-dark(var(--mantine-color-body), var(--mantine-color-zinc-8))" gap={16} size={1} />
       </ReactFlow>
+
+      <ScheduleConfiguratorModal
+        opened={scheduleModalOpened}
+        onClose={() => setScheduleModalOpened(false)}
+        onSave={(config) => {
+          setScheduleConfig(config);
+          setIsScheduled(true);
+          setIsActive(true);
+          setScheduleModalOpened(false);
+        }}
+        initialConfig={scheduleConfig}
+        automationName="Automation Workflow"
+      />
     </Paper>
   );
 };
