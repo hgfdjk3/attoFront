@@ -16,6 +16,8 @@ import {
 import '@xyflow/react/dist/style.css';
 import { AutomationNode } from './AutomationNode/AutomationNode';
 import { AppNode } from './types';
+import { getLayoutedElements } from './utils/layout';
+
 
 const nodeTypes = {
   automation: AutomationNode,
@@ -30,10 +32,25 @@ const AutomationBoardInternal: React.FC<AutomationBoardProps> = ({
   initialNodes = [],
   initialEdges = [],
 }) => {
-  const [nodes, setNodes] = useState<AppNode[]>(initialNodes);
+  const [nodes, setNodes] = useState<AppNode[]>(() => getLayoutedElements(initialNodes, initialEdges));
   const [edges, setEdges] = useState<Edge[]>(initialEdges);
   const { fitView } = useReactFlow();
   const containerRef = useRef<HTMLDivElement>(null);
+
+  // Re-layout if initial data changes significantly
+  useEffect(() => {
+    setNodes(getLayoutedElements(initialNodes, initialEdges));
+    setEdges(initialEdges);
+  }, [initialNodes, initialEdges]);
+
+  // Automatically fit view when nodes change (e.g. after layout)
+  useEffect(() => {
+    if (nodes.length > 0) {
+      window.requestAnimationFrame(() => {
+        fitView({ duration: 400, padding: 0.15 });
+      });
+    }
+  }, [nodes.length, fitView]);
 
   const onNodesChange = useCallback(
     (changes: NodeChange<AppNode>[]) => setNodes((nds) => applyNodeChanges(changes, nds)),
@@ -76,6 +93,8 @@ const AutomationBoardInternal: React.FC<AutomationBoardProps> = ({
         nodeTypes={nodeTypes}
         fitView
         nodesDraggable={false}
+        minZoom={0.2}
+        maxZoom={1.5}
         proOptions={{ hideAttribution: true }}
       >
         <Background 

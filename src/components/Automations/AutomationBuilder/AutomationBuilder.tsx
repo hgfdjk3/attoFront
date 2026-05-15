@@ -57,12 +57,34 @@ const defaultNodes: AppNode[] = [
       description: 'Assigns the user to the appropriate team channel based on skills.',
       tools: ['Slack API', 'Database']
     },
+  },
+  {
+    id: '4',
+    type: 'automation',
+    position: { x: 1700, y: 150 },
+    data: {
+      title: 'Assign to Team',
+      description: 'Assigns the user to the appropriate team channel based on skills.',
+      tools: ['Slack API', 'Database']
+    },
+  },
+  {
+    id: '5',
+    type: 'automation',
+    position: { x: 1700, y: 150 },
+    data: {
+      title: 'Assign to Team',
+      description: 'Assigns the user to the appropriate team channel based on skills.',
+      tools: ['Slack API', 'Database']
+    },
   }
 ];
 
 const defaultEdges: Edge[] = [
   { id: 'e1-2', source: '1', target: '2', animated: true },
-  { id: 'e2-3', source: '2', target: '3', animated: true }
+  { id: 'e2-3', source: '2', target: '3', animated: true },
+  { id: 'e3-4', source: '3', target: '4', animated: true },
+  { id: 'e4-5', source: '4', target: '5', animated: true }
 ];
 
 export const AutomationBuilder: React.FC<AutomationBuilderProps> = ({
