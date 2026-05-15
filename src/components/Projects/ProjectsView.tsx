@@ -49,7 +49,7 @@ export const ProjectsView: React.FC = () => {
           <ProjectsHeader
             onSearchChange={setSearchQuery}
             onSortChange={(val) => console.log('Sort changed:', val)}
-            onNewProject={() => console.log('New project clicked')}
+            onNewProject={() => navigate('/new_project')}
           />
 
           <SimpleGrid

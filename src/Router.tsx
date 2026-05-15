@@ -4,6 +4,8 @@ import { KnowledgeGraphPage } from './pages/KnowledgeGraph.page';
 import { HomePage } from './pages/Home.page';
 import { AutomationsPage } from './pages/Automations.page';
 
+import { NewProjectPage } from './pages/NewProject.page';
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -12,6 +14,10 @@ const router = createBrowserRouter([
   {
     path: '/projects',
     element: <HomePage />,
+  },
+  {
+    path: '/new_project',
+    element: <NewProjectPage />,
   },
   {
     path: '/knowledge-graph',

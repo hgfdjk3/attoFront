@@ -27,6 +27,7 @@ export const ProjectsHeader: React.FC<ProjectsHeaderProps> = ({
               rightSection={<IconChevronDown size={16} />}
               className="sort-select"
               onChange={onSortChange}
+              size="sm"
             />
           </Group>
           <Button
@@ -34,7 +35,7 @@ export const ProjectsHeader: React.FC<ProjectsHeaderProps> = ({
             className="new-project-button"
             onClick={onNewProject}
             radius="md"
-            size="md"
+            size="sm"
           >
             New project
           </Button>
