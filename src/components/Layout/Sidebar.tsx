@@ -7,6 +7,7 @@ import {
   IconLayoutSidebar,
   IconSettings,
   IconRobot,
+  IconPlug,
 } from '@tabler/icons-react';
 import { Link, useLocation } from 'react-router-dom';
 
@@ -15,6 +16,7 @@ const navItems = [
   { label: 'Projects', icon: IconFolders, link: '/projects' },
   { label: 'Knowledge Graph', icon: IconGraph, link: '/knowledge-graph' },
   { label: 'Automations', icon: IconRobot, link: '/automations' },
+  { label: 'Connectors', icon: IconPlug, link: '/agents' },
 ];
 
 export const Sidebar: React.FC = () => {

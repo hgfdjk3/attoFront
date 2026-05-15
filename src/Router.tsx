@@ -5,6 +5,7 @@ import { HomePage } from './pages/Home.page';
 import { AutomationsPage } from './pages/Automations.page';
 
 import { NewProjectPage } from './pages/NewProject.page';
+import { AgentsPage } from './pages/Agents.page';
 
 const router = createBrowserRouter([
   {
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
   {
     path: '/automations',
     element: <AutomationsPage />,
+  },
+  {
+    path: '/agents',
+    element: <AgentsPage />,
   },
 ]);
 
