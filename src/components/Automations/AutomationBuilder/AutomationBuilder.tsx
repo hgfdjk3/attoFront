@@ -31,7 +31,7 @@ const defaultNodes: AppNode[] = [
   {
     id: '1',
     type: 'automation',
-    position: { x: 50, y: 150 },
+    position: { x: 0, y: 0 },
     data: {
       title: 'Trigger Event',
       description: 'Triggered when a new user joins the workspace.',
@@ -41,7 +41,7 @@ const defaultNodes: AppNode[] = [
   {
     id: '2',
     type: 'automation',
-    position: { x: 600, y: 150 },
+    position: { x: 0, y: 0 },
     data: {
       title: 'Extract Profile Data',
       description: 'Uses LLM to extract key skills and interests from user profile.',
@@ -51,7 +51,7 @@ const defaultNodes: AppNode[] = [
   {
     id: '3',
     type: 'automation',
-    position: { x: 1150, y: 150 },
+    position: { x: 0, y: 0 },
     data: {
       title: 'Assign to Team',
       description: 'Assigns the user to the appropriate team channel based on skills.',
@@ -61,30 +61,30 @@ const defaultNodes: AppNode[] = [
   {
     id: '4',
     type: 'automation',
-    position: { x: 1700, y: 150 },
+    position: { x: 0, y: 0 },
     data: {
-      title: 'Assign to Team',
-      description: 'Assigns the user to the appropriate team channel based on skills.',
-      tools: ['Slack API', 'Database']
+      title: 'Notify Manager',
+      description: 'Sends a summary report to the team lead.',
+      tools: ['Email Service']
     },
   },
   {
     id: '5',
     type: 'automation',
-    position: { x: 1700, y: 150 },
+    position: { x: 0, y: 0 },
     data: {
-      title: 'Assign to Team',
-      description: 'Assigns the user to the appropriate team channel based on skills.',
-      tools: ['Slack API', 'Database']
+      title: 'Archiving',
+      description: 'Archives the user session for audit logs.',
+      tools: ['S3 Bucket', 'Lambda']
     },
   }
 ];
 
 const defaultEdges: Edge[] = [
-  { id: 'e1-2', source: '1', target: '2', animated: true },
-  { id: 'e2-3', source: '2', target: '3', animated: true },
-  { id: 'e3-4', source: '3', target: '4', animated: true },
-  { id: 'e4-5', source: '4', target: '5', animated: true }
+  { id: 'e1-2', source: '1', target: '2', type: 'automation', animated: true },
+  { id: 'e2-3', source: '2', target: '3', type: 'automation', animated: true },
+  { id: 'e3-4', source: '3', target: '4', type: 'automation', animated: true },
+  { id: 'e4-5', source: '4', target: '5', type: 'automation', animated: true }
 ];
 
 export const AutomationBuilder: React.FC<AutomationBuilderProps> = ({

@@ -10,18 +10,18 @@ interface ProjectHeaderProps {
 export const ProjectHeader: React.FC<ProjectHeaderProps> = ({ title }) => {
   return (
     <Group justify="space-between" align="center" mb="sm">
-      <Group gap="5" align="center">
-        <ActionIcon 
-          variant="subtle" 
-          color="gray" 
+      <Group gap="5" ml="xs" align="center">
+        <ActionIcon
+          variant="subtle"
+          color="gray"
           component={Link}
           to="/projects"
         >
           <IconArrowLeft size={20} />
         </ActionIcon>
-        <Anchor 
-          size="md" 
-          c="dimmed" 
+        <Anchor
+          size="md"
+          c="dimmed"
           component={Link}
           to="/projects"
           underline="never"

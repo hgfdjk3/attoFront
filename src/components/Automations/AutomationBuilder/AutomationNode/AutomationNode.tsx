@@ -1,47 +1,55 @@
 import React from 'react';
 import { Handle, Position, NodeProps } from '@xyflow/react';
-import { Card, Text, Badge, Group, Stack, ThemeIcon, Menu, ActionIcon } from '@mantine/core';
-import { IconTool, IconDotsVertical, IconEdit, IconCopy, IconTrash } from '@tabler/icons-react';
-import { AppNode } from '../types';
+import { Card, Stack } from '@mantine/core';
+import { AppEdge, AppNode } from '../types';
+import { useReactFlow } from '@xyflow/react';
+import { AutomationNodeHeader } from './AutomationNodeHeader';
+import { AutomationNodeContent } from './AutomationNodeContent';
+import { AutomationNodeRewrite } from './AutomationNodeRewrite';
 import './AutomationNode.css';
 
 export interface AutomationNodeProps extends NodeProps<AppNode> { }
 
-export const AutomationNode: React.FC<AutomationNodeProps> = ({ data, isConnectable }) => {
+export const AutomationNode: React.FC<AutomationNodeProps> = ({ data, isConnectable, id }) => {
+  const { setNodes } = useReactFlow<AppNode, AppEdge>();
+  const [prompt, setPrompt] = React.useState('');
+
+  const setIsRewriting = (val: boolean) => {
+    setNodes((nds) => nds.map((n) => n.id === id ? { ...n, data: { ...n.data, isRewriting: val } } : n));
+  };
+
+  const isRewriting = data.isRewriting;
+
+  const handleRewrite = () => {
+    // In a real app, this would call an LLM API
+    console.log(`Rewriting node ${data.title} with prompt: ${prompt}`);
+    setIsRewriting(false);
+    setPrompt('');
+  };
+
   return (
-    <Card shadow="sm" p="md" radius="md" withBorder className="automation-node-card">
+    <Card p="md" className="automation-node-card">
       <Handle type="target" position={Position.Left} isConnectable={isConnectable} className="automation-handle" />
 
       <Stack gap="xs">
-        <Group justify="space-between" align="center" wrap="nowrap" gap="xs">
-          <Text fw={600} size="md" style={{ flex: 1 }}>{data.title}</Text>
-          <Menu shadow="md" width={160} position="bottom-start" withinPortal>
-            <Menu.Target>
-              <ActionIcon variant="subtle" color="gray" size="sm" className="nodrag">
-                <IconDotsVertical size={16} />
-              </ActionIcon>
-            </Menu.Target>
+        <AutomationNodeHeader
+          title={data.title}
+          isRewriting={!!isRewriting}
+          onToggleRewrite={() => setIsRewriting(!isRewriting)}
+        />
 
-            <Menu.Dropdown>
-              <Menu.Item leftSection={<IconEdit size={14} />}>Edit</Menu.Item>
-              <Menu.Item leftSection={<IconCopy size={14} />}>Duplicate</Menu.Item>
-              <Menu.Divider />
-              <Menu.Item color="red" leftSection={<IconTrash size={14} />}>Delete</Menu.Item>
-            </Menu.Dropdown>
-          </Menu>
-
-        </Group>
-        <Text size="sm" c="dimmed" lineClamp={2}>{data.description}</Text>
-
-
-        {data.tools && data.tools.length > 0 && (
-          <Group gap="xs" mt="xs">
-            {data.tools.map((tool, index) => (
-              <Badge key={index} variant="light" size="sm" leftSection={<ThemeIcon size="xs" variant="transparent"><IconTool size={10} /></ThemeIcon>}>
-                {tool}
-              </Badge>
-            ))}
-          </Group>
+        {!isRewriting ? (
+          <AutomationNodeContent
+            description={data.description}
+            tools={data.tools}
+          />
+        ) : (
+          <AutomationNodeRewrite
+            prompt={prompt}
+            onPromptChange={setPrompt}
+            onRewrite={handleRewrite}
+            onCancel={() => setIsRewriting(false)}
+          />
         )}
       </Stack>
 

@@ -9,18 +9,32 @@ import {
   EdgeChange,
   Connection,
   Edge,
+  Node,
   BackgroundVariant,
   ReactFlowProvider,
-  useReactFlow
+  useReactFlow,
+  useNodesState,
+  useEdgesState
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
+import { getLayoutedElements } from './utils/layout';
+import { AutomationEdge } from './AutomationEdge';
 import { AutomationNode } from './AutomationNode/AutomationNode';
 import { AppNode } from './types';
-import { getLayoutedElements } from './utils/layout';
+import './AutomationBoard.css';
 
 
 const nodeTypes = {
   automation: AutomationNode,
+};
+
+const edgeTypes = {
+  automation: AutomationEdge,
+};
+
+const defaultEdgeOptions = {
+  type: 'automation',
+  animated: true,
 };
 
 export interface AutomationBoardProps {
@@ -32,8 +46,8 @@ const AutomationBoardInternal: React.FC<AutomationBoardProps> = ({
   initialNodes = [],
   initialEdges = [],
 }) => {
-  const [nodes, setNodes] = useState<AppNode[]>(() => getLayoutedElements(initialNodes, initialEdges));
-  const [edges, setEdges] = useState<Edge[]>(initialEdges);
+  const [nodes, setNodes, onNodesChange] = useNodesState(getLayoutedElements(initialNodes, initialEdges));
+  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const { fitView } = useReactFlow();
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -41,7 +55,7 @@ const AutomationBoardInternal: React.FC<AutomationBoardProps> = ({
   useEffect(() => {
     setNodes(getLayoutedElements(initialNodes, initialEdges));
     setEdges(initialEdges);
-  }, [initialNodes, initialEdges]);
+  }, [initialNodes, initialEdges, setNodes, setEdges]);
 
   // Automatically fit view when nodes change (e.g. after layout)
   useEffect(() => {
@@ -52,20 +66,39 @@ const AutomationBoardInternal: React.FC<AutomationBoardProps> = ({
     }
   }, [nodes.length, fitView]);
 
-  const onNodesChange = useCallback(
-    (changes: NodeChange<AppNode>[]) => setNodes((nds) => applyNodeChanges(changes, nds)),
-    []
-  );
-
-  const onEdgesChange = useCallback(
-    (changes: EdgeChange[]) => setEdges((eds) => applyEdgeChanges(changes, eds)),
-    []
-  );
+  // Handle structural changes (deletions/healing) by recalculating layout
+  const lastStructureRef = useRef({ nodeCount: nodes.length, edgeCount: edges.length });
+  
+  useEffect(() => {
+    if (nodes.length !== lastStructureRef.current.nodeCount || edges.length !== lastStructureRef.current.edgeCount) {
+      lastStructureRef.current = { nodeCount: nodes.length, edgeCount: edges.length };
+      setNodes((nds) => getLayoutedElements(nds as AppNode[], edges));
+    }
+  }, [nodes.length, edges.length, setNodes, edges]);
 
   const onConnect = useCallback(
-    (params: Connection) => setEdges((eds) => addEdge({ ...params, animated: true }, eds)),
-    []
+    (params: Connection) => setEdges((eds) => addEdge({ ...params, animated: true, type: 'automation' }, eds)),
+    [setEdges]
   );
+
+  const onNodeClick = useCallback((_: React.MouseEvent, node: Node) => {
+    // Clear other open elements when focusing a new node
+    setNodes((nds) => nds.map((n) => ({ ...n, data: { ...n.data, isRewriting: n.id === node.id ? n.data.isRewriting : false } })));
+    setEdges((eds) => eds.map((e) => ({ ...e, data: { ...e.data, popoverOpened: false } })));
+
+    fitView({
+      nodes: [{ id: node.id }],
+      duration: 600,
+      padding: 0.6,
+    });
+  }, [fitView, setNodes, setEdges]);
+
+  const onPaneClick = useCallback(() => {
+    // Clear all open rewrite inputs and popovers when clicking the board background
+    setNodes((nds) => nds.map((n) => ({ ...n, data: { ...n.data, isRewriting: false } })));
+    setEdges((eds) => eds.map((e) => ({ ...e, data: { ...e.data, popoverOpened: false } })));
+    fitView({ duration: 600, padding: 0.15 });
+  }, [fitView, setNodes, setEdges]);
 
   // Auto-center whenever the container size changes
   useEffect(() => {
@@ -83,7 +116,7 @@ const AutomationBoardInternal: React.FC<AutomationBoardProps> = ({
   }, [fitView]);
 
   return (
-    <div ref={containerRef} style={{ width: '100%', height: '100%' }}>
+    <div ref={containerRef} className="automation-board-container">
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -91,17 +124,21 @@ const AutomationBoardInternal: React.FC<AutomationBoardProps> = ({
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
         nodeTypes={nodeTypes}
+        edgeTypes={edgeTypes}
+        defaultEdgeOptions={defaultEdgeOptions}
         fitView
         nodesDraggable={false}
         minZoom={0.2}
         maxZoom={1.5}
+        onNodeClick={onNodeClick}
+        onPaneClick={onPaneClick}
         proOptions={{ hideAttribution: true }}
       >
-        <Background 
-          variant={BackgroundVariant.Dots} 
-          bgColor="light-dark(var(--mantine-color-body), var(--mantine-color-zinc-8))" 
-          gap={16} 
-          size={1} 
+        <Background
+          variant={BackgroundVariant.Dots}
+          className="automation-board-background"
+          gap={16}
+          size={1}
         />
       </ReactFlow>
     </div>
