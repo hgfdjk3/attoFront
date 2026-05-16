@@ -87,3 +87,8 @@
 .agent-card:hover .agent-desc {
   color: var(--mantine-color-zinc-3) !important;
 }
+
+
+.status-indicator-glass {
+  border: var(--mantine-color-default-border) solid 1px;
+}

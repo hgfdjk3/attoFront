@@ -127,8 +127,8 @@ export const AgentModal: React.FC<AgentModalProps> = ({
 
               <Group gap="xs">
                 {agent.sourcesAdded.map((source) => (
-                  <Box 
-                    key={source} 
+                  <Box
+                    key={source}
                     className="agent-modal-source-card"
                     style={{ '--source-color': agent.brandColor } as React.CSSProperties}
                   >
@@ -153,13 +153,13 @@ export const AgentModal: React.FC<AgentModalProps> = ({
                   <Text size="xs" fw={600} c="zinc.4">{agent.developer}</Text>
                   <Group gap={4}>
                     {(agent.developerWebsite || agent.developerSupport) && (
-                      <Button 
-                        component="a" 
-                        href={agent.developerWebsite || agent.developerSupport} 
+                      <Button
+                        component="a"
+                        href={agent.developerWebsite || agent.developerSupport}
                         target="_blank"
-                        variant="subtle" 
-                        color="zinc.5" 
-                        size="compact-xs" 
+                        variant="subtle"
+                        color="zinc.5"
+                        size="compact-xs"
                         rightSection={<IconExternalLink size={12} />}
                       >
                         Visit Website
@@ -188,8 +188,7 @@ export const AgentModal: React.FC<AgentModalProps> = ({
                 Cancel
               </Button>
               <Button
-                variant={isEnabled ? "light" : "filled"}
-                color={isEnabled ? "red.9" : "dark"}
+                variant={isEnabled ? "outline" : "filled"}
                 className="agent-modal-button"
                 radius="md"
                 size="sm"

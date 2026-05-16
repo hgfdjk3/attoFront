@@ -81,7 +81,7 @@ export const AGENTS_DIRECTORY: AgentInfo[] = [
     name: 'Discord',
     description: 'Connect to your Discord servers to read channel history and manage roles.',
     developer: 'Community',
-    category: '  Code',
+    category: 'Development & Code',
     brandColor: '#5865F2',
     icon: <IconBrandDiscord size={24} stroke={1.5} />,
     sourcesAdded: ['Servers', 'Text Channels'],
