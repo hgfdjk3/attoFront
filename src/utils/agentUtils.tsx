@@ -16,6 +16,8 @@ export interface AgentInfo {
   name: string;
   description: string;
   developer: string;
+  developerWebsite?: string;
+  developerSupport?: string;
   category: string;
   brandColor: string;
   icon: React.ReactNode;
@@ -29,6 +31,8 @@ export const AGENTS_DIRECTORY: AgentInfo[] = [
     name: 'GitHub',
     description: 'Establish a high-bandwidth connection to your GitHub organization. Empower your AI to navigate repositories, analyze pull requests, and manage issues with full awareness of your codebase and development history.',
     developer: 'Atom Inc.',
+    developerWebsite: 'https://atom.inc',
+    developerSupport: 'https://support.atom.inc',
     category: 'Development & Code',
     brandColor: '#fff',
     icon: <IconBrandGithub size={24} stroke={1.5} />,
@@ -40,6 +44,8 @@ export const AGENTS_DIRECTORY: AgentInfo[] = [
     name: 'GitLab',
     description: 'Seamlessly integrate your GitLab ecosystem into your AI workspace. Sync private and public projects, track merge requests in real-time, monitor CI/CD pipelines, and provide your AI with deep technical context across your entire software development lifecycle.',
     developer: 'Atom Inc.',
+    developerWebsite: 'https://gitlab.com',
+    developerSupport: 'https://support.gitlab.com',
     category: 'Development & Code',
     brandColor: '#fc6d26',
     icon: <IconBrandGitlab size={24} stroke={1.5} />,
@@ -51,6 +57,8 @@ export const AGENTS_DIRECTORY: AgentInfo[] = [
     name: 'Jira',
     description: 'Integrate your Jira workflow to bring mission-critical project tracking into your workspace. Sync boards, track issues, and maintain a unified view of your team’s progress across all projects.',
     developer: 'Community',
+    developerWebsite: 'https://atlassian.com',
+    developerSupport: 'https://support.atlassian.com',
     category: 'Development & Code',
     brandColor: '#0052CC',
     icon: <IconBrandJira size={24} stroke={1.5} />,

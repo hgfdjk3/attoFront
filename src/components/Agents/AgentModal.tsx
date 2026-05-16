@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal, Text, Group, Button, Badge, ThemeIcon, Stack, Box, Title, SimpleGrid, Divider, Spoiler } from '@mantine/core';
 import { motion, AnimatePresence } from 'motion/react';
-import { IconDatabase, IconTool } from '@tabler/icons-react';
+import { IconDatabase, IconTool, IconExternalLink } from '@tabler/icons-react';
 import { AgentInfo } from '../../utils/agentUtils';
 import './AgentModal.css';
 
@@ -127,8 +127,8 @@ export const AgentModal: React.FC<AgentModalProps> = ({
 
               <Group gap="xs">
                 {agent.sourcesAdded.map((source) => (
-                  <Box
-                    key={source}
+                  <Box 
+                    key={source} 
                     className="agent-modal-source-card"
                     style={{ '--source-color': agent.brandColor } as React.CSSProperties}
                   >
@@ -138,6 +138,36 @@ export const AgentModal: React.FC<AgentModalProps> = ({
                   </Box>
                 ))}
               </Group>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.3 }}
+            >
+              <Stack gap="xs" px={4}>
+                <Text fw={700} lh={1} size="md">
+                  Developer
+                </Text>
+                <Group justify="space-between" align="center">
+                  <Text size="xs" fw={600} c="zinc.4">{agent.developer}</Text>
+                  <Group gap={4}>
+                    {(agent.developerWebsite || agent.developerSupport) && (
+                      <Button 
+                        component="a" 
+                        href={agent.developerWebsite || agent.developerSupport} 
+                        target="_blank"
+                        variant="subtle" 
+                        color="zinc.5" 
+                        size="compact-xs" 
+                        rightSection={<IconExternalLink size={12} />}
+                      >
+                        Visit Website
+                      </Button>
+                    )}
+                  </Group>
+                </Group>
+              </Stack>
             </motion.div>
           </Stack>
 
