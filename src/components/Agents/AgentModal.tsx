@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, Text, Group, Button, Badge, ThemeIcon, Stack, Box, Title, SimpleGrid, Divider } from '@mantine/core';
+import { Modal, Text, Group, Button, Badge, ThemeIcon, Stack, Box, Title, SimpleGrid, Divider, Spoiler } from '@mantine/core';
 import { motion, AnimatePresence } from 'motion/react';
 import { IconDatabase, IconTool } from '@tabler/icons-react';
 import { AgentInfo } from '../../utils/agentUtils';
@@ -45,14 +45,23 @@ export const AgentModal: React.FC<AgentModalProps> = ({
             >
               {agent.name}
             </Title>
-            <Group gap={6}>
-              <Text size="xs" fw={700} c="zinc.5" style={{ textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                Verified
-              </Text>
-              <Divider orientation="vertical" h={10} color="zinc.7" />
-              <Text size="xs" fw={600} c="zinc.4">
-                by {agent.developer}
-              </Text>
+            <Group gap={12}>
+              <Group gap={4}>
+                <Text size="xs" fw={700} c="zinc.5" style={{ textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                  Verified
+                </Text>
+                <Divider orientation="vertical" h={10} color="zinc.7" />
+                <Text size="xs" fw={600} c="zinc.4">
+                  by {agent.developer}
+                </Text>
+              </Group>
+              <Divider orientation="vertical" h={14} color="zinc.8" />
+              <Group gap={6}>
+                <IconTool size={14} color="var(--mantine-color-zinc-5)" />
+                <Text size="xs" fw={700} c="zinc.4">
+                  {agent.toolsEnabled.length} Tools
+                </Text>
+              </Group>
             </Group>
           </Stack>
 
@@ -75,98 +84,91 @@ export const AgentModal: React.FC<AgentModalProps> = ({
           </div>
         </Group>
 
-        <Stack gap="xl" px="xl" py="xl">
+        <Stack gap="xl" p="md">
           <motion.div
             initial={{ opacity: 0, y: 5 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
           >
-            <Stack gap={8}>
-              <Text fw={700} size="xs" c="zinc.5" style={{ textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+            <Stack gap="5">
+              <Text fw={700} lh={1} size="md" >
                 Description
               </Text>
-              <Text size="sm" c="zinc.3" lh={1.6}>
-                {agent.description}
-              </Text>
+              <Spoiler styles={{
+                control: {
+                  fontSize: 'var(--mantine-font-size-xs)',
+                  fontWeight: 500,
+                  display: 'inline',
+                }
+              }} maxHeight={50} showLabel="Show More" hideLabel="Show Less">
+                <Text size="xs" c="zinc.3" >
+                  {agent.description}
+                </Text>
+              </Spoiler>
             </Stack>
           </motion.div>
 
-          <SimpleGrid cols={2} spacing="md">
+          <Stack gap="md">
             <motion.div
               initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.2 }}
-              className="agent-modal-section"
             >
-              <Group justify="space-between" mb="sm">
-                <Group gap={8}>
-                  <ThemeIcon size={20} radius="sm" variant="light" color="zinc.8">
-                    <IconDatabase size={12} stroke={2} />
-                  </ThemeIcon>
-                  <Text fw={700} size="xs" c="zinc.5" style={{ textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+              <Group justify="space-between" mb="sm" px={4}>
+                <Group gap={6}>
+                  <Text fw={700} lh={1} size="md">
                     Sources
                   </Text>
-                </Group>
-                <Text fw={800} size="xs" c="zinc.4" bg="zinc.8" px={6} py={2} style={{ borderRadius: 4 }}>
-                  {agent.sourcesAdded.length.toString().padStart(2, '0')}
-                </Text>
-              </Group>
-              <Group gap={4}>
-                {agent.sourcesAdded.map(source => (
-                  <Badge key={source} variant="outline" color="zinc.8" radius="sm" size="xs" c="zinc.3" fw={500} style={{ borderStyle: 'dashed' }}>
-                    {source}
-                  </Badge>
-                ))}
-              </Group>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, x: 10 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.3 }}
-              className="agent-modal-section"
-            >
-              <Group justify="space-between" mb="sm">
-                <Group gap={8}>
-                  <ThemeIcon size={20} radius="sm" variant="light" color="zinc.8">
-                    <IconTool size={12} stroke={2} />
-                  </ThemeIcon>
-                  <Text fw={700} size="xs" c="zinc.5" style={{ textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                    Tools
+                  <Text size="10px" fw={800} c="zinc.5" bg="zinc.8" px={6} py={1} style={{ borderRadius: 10 }}>
+                    {agent.sourcesAdded.length}
                   </Text>
                 </Group>
-                <Text fw={800} size="xs" c="zinc.4" bg="zinc.8" px={6} py={2} style={{ borderRadius: 4 }}>
-                  {agent.toolsEnabled.length.toString().padStart(2, '0')}
-                </Text>
               </Group>
-              <Group gap={4}>
-                {agent.toolsEnabled.map(tool => (
-                  <Badge key={tool} variant="light" color="zinc.8" radius="sm" size="xs" c="zinc.4" fw={500}>
-                    {tool}
-                  </Badge>
+
+              <Group gap="xs">
+                {agent.sourcesAdded.map((source) => (
+                  <Box
+                    key={source}
+                    className="agent-modal-source-card"
+                    style={{ '--source-color': agent.brandColor } as React.CSSProperties}
+                  >
+                    <Text size="xs" fw={700} c="zinc.2">
+                      {source}
+                    </Text>
+                  </Box>
                 ))}
               </Group>
             </motion.div>
-          </SimpleGrid>
+          </Stack>
 
-          <Stack gap="sm" mt="sm">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.98 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.4 }}
-            >
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+          >
+            <Group grow justify="flex-end" mt="md" gap="sm">
               <Button
-                fullWidth
+                variant="subtle"
+                color="zinc.5"
+                size="sm"
+                onClick={onClose}
+                fw={500}
+                px="md"
+              >
+                Cancel
+              </Button>
+              <Button
                 variant={isEnabled ? "light" : "filled"}
                 color={isEnabled ? "red.9" : "dark"}
                 className="agent-modal-button"
                 radius="md"
-                size="md"
+                size="sm"
+                px="md"
                 style={!isEnabled ? {
                   background: `linear-gradient(135deg, ${agent.brandColor}, color-mix(in srgb, ${agent.brandColor}, black 30%))`,
                   border: 0,
-                  height: 48
-                } : { height: 48 }}
+                  height: 40
+                } : { height: 40 }}
                 onClick={() => {
                   onToggleStatus(agent.id);
                   onClose();
@@ -174,12 +176,8 @@ export const AgentModal: React.FC<AgentModalProps> = ({
               >
                 {isEnabled ? "Disable Connector" : "Enable Connector"}
               </Button>
-            </motion.div>
-
-            <Button variant="subtle" color="zinc.5" fullWidth size="xs" onClick={onClose} fw={500}>
-              Dismiss
-            </Button>
-          </Stack>
+            </Group>
+          </motion.div>
         </Stack>
       </Box>
     </Modal>

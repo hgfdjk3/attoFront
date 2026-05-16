@@ -27,7 +27,7 @@ export const AGENTS_DIRECTORY: AgentInfo[] = [
   {
     id: 'github',
     name: 'GitHub',
-    description: 'Connect your repositories to allow Atom to read your code, PRs, and issues.',
+    description: 'Establish a high-bandwidth connection to your GitHub organization. Empower your AI to navigate repositories, analyze pull requests, and manage issues with full awareness of your codebase and development history.',
     developer: 'Atom Inc.',
     category: 'Development & Code',
     brandColor: '#fff',
@@ -38,7 +38,7 @@ export const AGENTS_DIRECTORY: AgentInfo[] = [
   {
     id: 'gitlab',
     name: 'GitLab',
-    description: 'Sync your GitLab projects, merge requests, and pipelines for AI context.',
+    description: 'Seamlessly integrate your GitLab ecosystem into your AI workspace. Sync private and public projects, track merge requests in real-time, monitor CI/CD pipelines, and provide your AI with deep technical context across your entire software development lifecycle.',
     developer: 'Atom Inc.',
     category: 'Development & Code',
     brandColor: '#fc6d26',
@@ -49,7 +49,7 @@ export const AGENTS_DIRECTORY: AgentInfo[] = [
   {
     id: 'jira',
     name: 'Jira',
-    description: 'Bring in your Jira boards and issues for comprehensive project tracking.',
+    description: 'Integrate your Jira workflow to bring mission-critical project tracking into your workspace. Sync boards, track issues, and maintain a unified view of your team’s progress across all projects.',
     developer: 'Community',
     category: 'Development & Code',
     brandColor: '#0052CC',
