@@ -14,7 +14,6 @@
 }
 
 .automation-node-card:hover {
-  transform: translateY(-4px) scale(1.01);
   border-color: var(--mantine-color-blue-5);
   box-shadow:
     0 20px 25px -5px rgba(0, 0, 0, 0.1),
@@ -56,4 +55,26 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+.automation-tool-item {
+  border-radius: var(--mantine-radius-xs);
+  padding: 5px;
+  border: 1px solid var(--mantine-color-default-border);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+  background-color: light-dark(var(--mantine-color-zinc-1), var(--mantine-color-zinc-8));
+}
+
+.automation-tool-item:hover {
+  background-color: light-dark(var(--mantine-color-zinc-1), var(--mantine-color-zinc-8));
+}
+
+.automation-tool-item .mantine-ThemeIcon-root {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.automation-paginator-btn:disabled {
+  background-color: transparent !important;
+  opacity: 0.25 !important;
 }

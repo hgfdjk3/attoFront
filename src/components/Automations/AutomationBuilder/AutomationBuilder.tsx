@@ -55,7 +55,7 @@ const defaultNodes: AppNode[] = [
     data: {
       title: 'Assign to Team',
       description: 'Assigns the user to the appropriate team channel based on skills.',
-      tools: ['Slack API', 'Database']
+      tools: ['Slack API', 'Database', 'LLM', 'JSON Parser', 'Email Service', 'Notification Service']
     },
   },
   {

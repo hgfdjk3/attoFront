@@ -1,14 +1,19 @@
 import React from 'react';
-import { Text, Group, Badge } from '@mantine/core';
+import { Text } from '@mantine/core';
+import { AutomationNodeTools } from './AutomationNodeTools';
 
 interface AutomationNodeContentProps {
   description: string;
   tools?: string[];
+  toolsExpanded: boolean;
+  onToggleTools: () => void;
 }
 
 export const AutomationNodeContent: React.FC<AutomationNodeContentProps> = ({
   description,
   tools,
+  toolsExpanded,
+  onToggleTools,
 }) => {
   return (
     <>
@@ -17,19 +22,11 @@ export const AutomationNodeContent: React.FC<AutomationNodeContentProps> = ({
       </Text>
 
       {tools && tools.length > 0 && (
-        <Group gap={6} mt={4}>
-          {tools.map((tool, index) => (
-            <Badge 
-              key={index} 
-              variant="dot" 
-              size="xs" 
-              color="blue"
-              styles={{ label: { textTransform: 'none', fontWeight: 500 } }}
-            >
-              {tool}
-            </Badge>
-          ))}
-        </Group>
+        <AutomationNodeTools 
+          tools={tools} 
+          expanded={toolsExpanded} 
+          onToggle={onToggleTools} 
+        />
       )}
     </>
   );

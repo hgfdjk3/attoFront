@@ -6,6 +6,8 @@ import { useReactFlow } from '@xyflow/react';
 import { AutomationNodeHeader } from './AutomationNodeHeader';
 import { AutomationNodeContent } from './AutomationNodeContent';
 import { AutomationNodeRewrite } from './AutomationNodeRewrite';
+import { AutomationExpandedTools } from './AutomationExpandedTools';
+import { AnimatePresence } from 'motion/react';
 import './AutomationNode.css';
 
 export interface AutomationNodeProps extends NodeProps<AppNode> { }
@@ -18,6 +20,10 @@ export const AutomationNode: React.FC<AutomationNodeProps> = ({ data, isConnecta
     setNodes((nds) => nds.map((n) => n.id === id ? { ...n, data: { ...n.data, isRewriting: val } } : n));
   };
 
+  const setToolsExpanded = (val: boolean) => {
+    setNodes((nds) => nds.map((n) => n.id === id ? { ...n, data: { ...n.data, toolsExpanded: val } } : n));
+  };
+
   const isRewriting = data.isRewriting;
 
   const handleRewrite = () => {
@@ -28,32 +34,42 @@ export const AutomationNode: React.FC<AutomationNodeProps> = ({ data, isConnecta
   };
 
   return (
-    <Card p="md" className="automation-node-card">
-      <Handle type="target" position={Position.Left} isConnectable={isConnectable} className="automation-handle" />
+    <div >
+      <Card p="md" className="automation-node-card">
+        <Handle type="target" position={Position.Left} isConnectable={isConnectable} className="automation-handle" />
 
-      <Stack gap="xs">
-        <AutomationNodeHeader
-          title={data.title}
-          isRewriting={!!isRewriting}
-          onToggleRewrite={() => setIsRewriting(!isRewriting)}
-        />
+        <Stack gap="xs">
+          <AutomationNodeHeader
+            title={data.title}
+            isRewriting={!!isRewriting}
+            onToggleRewrite={() => setIsRewriting(!isRewriting)}
+          />
 
-        {!isRewriting ? (
-          <AutomationNodeContent
-            description={data.description}
-            tools={data.tools}
-          />
-        ) : (
-          <AutomationNodeRewrite
-            prompt={prompt}
-            onPromptChange={setPrompt}
-            onRewrite={handleRewrite}
-            onCancel={() => setIsRewriting(false)}
-          />
+          {!isRewriting ? (
+            <AutomationNodeContent
+              description={data.description}
+              tools={data.tools}
+              toolsExpanded={!!data.toolsExpanded}
+              onToggleTools={() => setToolsExpanded(!data.toolsExpanded)}
+            />
+          ) : (
+            <AutomationNodeRewrite
+              prompt={prompt}
+              onPromptChange={setPrompt}
+              onRewrite={handleRewrite}
+              onCancel={() => setIsRewriting(false)}
+            />
+          )}
+        </Stack>
+
+        <Handle type="source" position={Position.Right} isConnectable={isConnectable} className="automation-handle" />
+      </Card>
+
+      <AnimatePresence>
+        {data.toolsExpanded && data.tools && data.tools.length > 0 && (
+          <AutomationExpandedTools key="expanded-tools" tools={data.tools} />
         )}
-      </Stack>
-
-      <Handle type="source" position={Position.Right} isConnectable={isConnectable} className="automation-handle" />
-    </Card>
+      </AnimatePresence>
+    </div>
   );
 };
