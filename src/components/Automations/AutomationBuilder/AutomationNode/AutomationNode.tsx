@@ -33,8 +33,24 @@ export const AutomationNode: React.FC<AutomationNodeProps> = ({ data, isConnecta
     setPrompt('');
   };
 
+  const handleNodeClick = () => {
+    setNodes((nds) =>
+      nds.map((n) =>
+        n.id === id
+          ? n
+          : {
+              ...n,
+              data: {
+                ...n.data,
+                toolsExpanded: false
+              }
+            }
+      )
+    );
+  };
+
   return (
-    <div >
+    <div onClick={handleNodeClick}>
       <Card p="md" className="automation-node-card">
         <Handle type="target" position={Position.Left} isConnectable={isConnectable} className="automation-handle" />
 

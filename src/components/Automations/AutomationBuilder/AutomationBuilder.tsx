@@ -35,7 +35,7 @@ const defaultNodes: AppNode[] = [
     data: {
       title: 'Trigger Event',
       description: 'Triggered when a new user joins the workspace.',
-      tools: ['WebHook Listener']
+      tools: ['tool-webhook']
     },
   },
   {
@@ -45,7 +45,7 @@ const defaultNodes: AppNode[] = [
     data: {
       title: 'Extract Profile Data',
       description: 'Uses LLM to extract key skills and interests from user profile.',
-      tools: ['LLM', 'JSON Parser']
+      tools: ['tool-llm', 'tool-json-parser']
     },
   },
   {
@@ -55,7 +55,7 @@ const defaultNodes: AppNode[] = [
     data: {
       title: 'Assign to Team',
       description: 'Assigns the user to the appropriate team channel based on skills.',
-      tools: ['Slack API', 'Database', 'LLM', 'JSON Parser', 'Email Service', 'Notification Service']
+      tools: ['tool-slack-api', 'tool-database', 'tool-llm', 'tool-json-parser', 'tool-email', 'tool-notification']
     },
   },
   {
@@ -65,7 +65,7 @@ const defaultNodes: AppNode[] = [
     data: {
       title: 'Notify Manager',
       description: 'Sends a summary report to the team lead.',
-      tools: ['Email Service']
+      tools: ['tool-email']
     },
   },
   {
@@ -75,7 +75,7 @@ const defaultNodes: AppNode[] = [
     data: {
       title: 'Archiving',
       description: 'Archives the user session for audit logs.',
-      tools: ['S3 Bucket', 'Lambda']
+      tools: ['tool-s3', 'tool-lambda']
     },
   }
 ];

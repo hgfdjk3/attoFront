@@ -37,7 +37,7 @@
   width: 48px;
   height: 6px;
   border-radius: 100px;
-  background: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-4));
+  background: light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-4));
   border: 1px solid var(--mantine-color-default-border);
   display: flex;
   align-items: center;
@@ -51,8 +51,8 @@
 .resize-divider:hover .divider-handle,
 .resize-divider.is-resizing .divider-handle {
   width: 64px;
-  background: var(--mantine-color-gray-2);
-  border-color: var(--mantine-color-gray-2);
+  background: light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-2));
+  border-color: light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-2));
   box-shadow: 0 4px 12px rgba(34, 139, 230, 0.3);
 }
 

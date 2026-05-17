@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Group, Paper, Flex, ThemeIcon, Text, Box, ActionIcon } from '@mantine/core';
 import { IconTool, IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { getToolInfo } from '../../../../utils/agentUtils';
 import './AutomationNode.css';
 
 export interface AutomationExpandedToolsProps {
@@ -52,30 +53,32 @@ export const AutomationExpandedTools: React.FC<AutomationExpandedToolsProps> = (
                 transition={{ duration: 0.2, ease: 'easeInOut' }}
               >
                 <Flex gap={6} direction="column">
-                  {displayedTools.map((tool, index) => (
-                    <Group
-                      key={index}
-                      color="blue"
-                      w="100%"
-                      className="automation-tool-item"
-                    >
-                      <ThemeIcon
-                        variant="outline"
-                        color="blue"
-                        size="sm"
-                        radius="xs"
-                        bg="body.2"
-                        style={{
-                          border: '1px solid var(--mantine-color-default-border)',
-                        }}
+                  {displayedTools.map((tool, index) => {
+                    const toolInfo = getToolInfo(tool);
+                    return (
+                      <Group
+                        key={index}
+                        w="100%"
+                        className="automation-tool-item"
                       >
-                        <IconTool size={14} />
-                      </ThemeIcon>
-                      <Text size="xs" fw={600}>
-                        {tool}
-                      </Text>
-                    </Group>
-                  ))}
+                        <ThemeIcon
+                          variant="outline"
+                          size="sm"
+                          radius="xs"
+                          bg="body.2"
+                          style={{
+                            border: `1px solid ${toolInfo.color}`,
+                            color: toolInfo.color
+                          }}
+                        >
+                          {toolInfo.icon}
+                        </ThemeIcon>
+                        <Text size="xs" fw={600}>
+                          {toolInfo.name}
+                        </Text>
+                      </Group>
+                    );
+                  })}
                 </Flex>
               </motion.div>
             </AnimatePresence>
