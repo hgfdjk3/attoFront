@@ -30,7 +30,7 @@ export const SidebarWorkspace: React.FC<SidebarWorkspaceProps> = ({
   if (!sidebarOpened) {
     return (
       <NavLink
-        leftSection={<FolderIcon size={18} stroke={1.5} color="var(--mantine-color-gray-5)" />}
+        leftSection={<FolderIcon size={18} stroke={1.5} color="light-dark(var(--mantine-color-zinc-7), var(--mantine-color-zinc-5))" />}
         variant="subtle"
         p="xs"
         style={{ borderRadius: 'var(--mantine-radius-md)', display: 'flex', justifyContent: 'center' }}
@@ -42,7 +42,7 @@ export const SidebarWorkspace: React.FC<SidebarWorkspaceProps> = ({
   return (
     <NavLink
       label={<Text size="sm" fw={500} truncate>{name}</Text>}
-      leftSection={<FolderIcon size={16} stroke={1.5} color="var(--mantine-color-gray-5)" />}
+      leftSection={<FolderIcon size={16} stroke={1.5} color="light-dark(var(--mantine-color-zinc-6), var(--mantine-color-zinc-7))" />}
       opened={isOpened}
       onChange={onToggle}
 
@@ -55,7 +55,7 @@ export const SidebarWorkspace: React.FC<SidebarWorkspaceProps> = ({
         <NavLink
           key={chat.id}
           label={<Text size="xs" c="dimmed" truncate>{chat.name}</Text>}
-          leftSection={<IconMessage size={14} stroke={1.5} color="var(--mantine-color-gray-6)" />}
+          leftSection={<IconMessage size={14} stroke={1.5} color="light-dark(var(--mantine-color-zinc-6), var(--mantine-color-zinc-2))" />}
           h={32}
           variant="light"
           active={location.pathname === `/chat/${chat.id}`}

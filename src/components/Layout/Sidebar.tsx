@@ -16,7 +16,7 @@ import { Image } from '@mantine/core';
 
 
 const navItems = [
-  { label: 'Search', icon: IconSearch, link: '/search' },
+  { label: 'Search', icon: IconSearch, link: '/' },
   { label: 'Projects', icon: IconFolders, link: '/projects' },
   { label: 'Connectors', icon: IconPlug, link: '/agents' },
   { label: 'Developers', icon: IconCode, link: '/developers' },
@@ -145,7 +145,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ opened, onToggle }) => {
               </Text>
             </Box>
 
-            <ScrollArea flex={1} offsetScrollbars>
+            <ScrollArea flex={1} pr="0" >
               <Stack gap={0}>
                 {mockProjects.map((project) => (
                   <SidebarWorkspace
