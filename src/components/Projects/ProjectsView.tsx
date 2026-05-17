@@ -63,7 +63,7 @@ export const ProjectsView: React.FC = () => {
                   title={project.title}
                   description={project.description}
                   updatedAt={project.updatedAt}
-                  onClick={() => navigate('/')}
+                  onClick={() => navigate(`/project/${encodeURIComponent(project.title)}`)}
                 />
               </motion.div>
             ))}

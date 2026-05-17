@@ -3,7 +3,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { KnowledgeGraphPage } from './pages/KnowledgeGraph.page';
 import { HomePage } from './pages/Home.page';
 import { AutomationsPage } from './pages/Automations.page';
-
+import { ProjectPage } from './pages/Project.page';
 import { NewProjectPage } from './pages/NewProject.page';
 import { AgentsPage } from './pages/Agents.page';
 
@@ -15,6 +15,10 @@ const router = createBrowserRouter([
   {
     path: '/projects',
     element: <HomePage />,
+  },
+  {
+    path: '/project/:projectName',
+    element: <ProjectPage />,
   },
   {
     path: '/new_project',

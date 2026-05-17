@@ -8,7 +8,7 @@ import {
   IconPlug,
   IconCode,
 } from '@tabler/icons-react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { SidebarWorkspace } from './SidebarWorkspace';
 import { motion, AnimatePresence } from 'framer-motion';
 import AtomLogo from '../../Atom.svg';
@@ -65,12 +65,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ opened, onToggle }) => {
         : [...prev, projectId]
     );
   };
-
+  const navigate = useNavigate();
   return (
     <Box style={{ display: 'flex', flexDirection: 'column', height: '100%', padding: '0' }}>
       {/* Sidebar Header */}
       <Group justify={opened ? "space-between" : "center"} pr={opened ? 0 : "sm"} mb={opened ? "md" : 0} flex-direction={opened ? "row" : "column"} px={opened ? 4 : 0} gap="6" mt={4} >
-        <Group gap="xs" wrap="nowrap">
+        <Group gap="xs" wrap="nowrap" onClick={() => navigate('/')} style={{ cursor: 'pointer' }} >
           <Image src={AtomLogo} w={24} h={24} style={{ flexShrink: 0 }} />
           <AnimatePresence mode="wait">
 

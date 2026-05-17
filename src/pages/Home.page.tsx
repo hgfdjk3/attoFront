@@ -3,7 +3,7 @@ import { Box } from '@mantine/core';
 import { useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'motion/react';
 import { ProjectLayout } from '../components/Layout/ProjectLayout';
-import { ProjectPanel } from '../components/Project/ProjectPanel';
+import { DashboardView } from '../components/Dashboard/DashboardView';
 import { ProjectsView } from '../components/Projects/ProjectsView';
 
 export const HomePage: React.FC = () => {
@@ -18,13 +18,13 @@ export const HomePage: React.FC = () => {
             <ProjectsView key="projects-view" />
           ) : (
             <motion.div
-              key="project-panel"
+              key="dashboard"
               initial={{ opacity: 1 }}
               animate={{ opacity: 1, transition: { duration: 0.1 } }}
               exit={{ opacity: 0 }}
               style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}
             >
-              <ProjectPanel />
+              {/* <DashboardView /> */}
             </motion.div>
           )}
         </AnimatePresence>
