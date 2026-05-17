@@ -225,7 +225,7 @@ export const getToolInfo = (toolIdOrName: string) => {
         color = agent.brandColor;
       }
       if (agent.icon && React.isValidElement(agent.icon)) {
-        icon = React.cloneElement(agent.icon as React.ReactElement, { size: 14 });
+        icon = React.cloneElement(agent.icon as React.ReactElement<{ size?: number }>, { size: 14 });
       }
     }
   }

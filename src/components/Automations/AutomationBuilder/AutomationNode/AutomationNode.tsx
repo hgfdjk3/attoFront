@@ -8,6 +8,7 @@ import { AutomationNodeContent } from './AutomationNodeContent';
 import { AutomationNodeRewrite } from './AutomationNodeRewrite';
 import { AutomationExpandedTools } from './AutomationExpandedTools';
 import { AnimatePresence } from 'motion/react';
+import { getToolInfo } from '../../../../utils/agentUtils';
 import './AutomationNode.css';
 
 export interface AutomationNodeProps extends NodeProps<AppNode> { }
@@ -49,10 +50,31 @@ export const AutomationNode: React.FC<AutomationNodeProps> = ({ data, isConnecta
     );
   };
 
+  const firstTool = data.tools && data.tools.length > 0 ? data.tools[0] : null;
+  const toolInfo = firstTool ? getToolInfo(firstTool) : null;
+  const nodeColor = toolInfo ? toolInfo.color : 'var(--mantine-color-blue-6)';
+
   return (
     <div onClick={handleNodeClick}>
-      <Card p="md" className="automation-node-card">
-        <Handle type="target" position={Position.Left} isConnectable={isConnectable} className="automation-handle" />
+      <Card
+        p="md"
+        className="automation-node-card"
+        style={{
+          borderLeft: `4px solid ${nodeColor}`,
+          '--node-color': nodeColor,
+        } as React.CSSProperties}
+      >
+        <Handle
+          type="target"
+          position={Position.Left}
+          isConnectable={isConnectable}
+          className="automation-handle"
+          style={{
+            background: nodeColor,
+            borderColor: 'var(--mantine-color-body)',
+            boxShadow: `0 0 8px ${nodeColor}`,
+          }}
+        />
 
         <Stack gap="xs">
           <AutomationNodeHeader
@@ -78,13 +100,23 @@ export const AutomationNode: React.FC<AutomationNodeProps> = ({ data, isConnecta
           )}
         </Stack>
 
-        <Handle type="source" position={Position.Right} isConnectable={isConnectable} className="automation-handle" />
+        <Handle
+          type="source"
+          position={Position.Right}
+          isConnectable={isConnectable}
+          className="automation-handle"
+          style={{
+            background: nodeColor,
+            borderColor: 'var(--mantine-color-body)',
+            boxShadow: `0 0 8px ${nodeColor}`,
+          }}
+        />
       </Card>
 
       <AnimatePresence>
-        {data.toolsExpanded && data.tools && data.tools.length > 0 && (
+        {data.toolsExpanded && data.tools && data.tools.length > 0 ? (
           <AutomationExpandedTools key="expanded-tools" tools={data.tools} />
-        )}
+        ) : null}
       </AnimatePresence>
     </div>
   );

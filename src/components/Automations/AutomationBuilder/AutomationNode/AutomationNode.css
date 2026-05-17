@@ -14,11 +14,11 @@
 }
 
 .automation-node-card:hover {
-  border-color: var(--mantine-color-blue-5);
+  border-color: var(--node-color, var(--mantine-color-blue-5));
   box-shadow:
     0 20px 25px -5px rgba(0, 0, 0, 0.1),
     0 10px 10px -5px rgba(0, 0, 0, 0.04),
-    0 0 0 1px var(--mantine-color-blue-5);
+    0 0 0 1px var(--node-color, var(--mantine-color-blue-5));
 }
 
 .automation-handle {
@@ -32,8 +32,8 @@
 
 .automation-handle:hover {
   transform: scale(1.5);
-  background: var(--mantine-color-blue-4);
-  box-shadow: 0 0 12px var(--mantine-color-blue-6);
+  background: var(--node-color, var(--mantine-color-blue-4)) !important;
+  box-shadow: 0 0 12px var(--node-color, var(--mantine-color-blue-6)) !important;
 }
 
 .automation-node-description {
