@@ -116,7 +116,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ opened, onToggle }) => {
             )}
 
             leftSection={<item.icon size={18} stroke={1.5} />}
-            active={location.pathname === item.link}
+            active={location.pathname === item.link || location.pathname.startsWith(item.link + '/')}
             variant="light"
             p="xs"
             style={{

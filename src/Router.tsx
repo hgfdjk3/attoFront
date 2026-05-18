@@ -6,6 +6,9 @@ import { AutomationsPage } from './pages/Automations.page';
 import { ProjectPage } from './pages/Project.page';
 import { NewProjectPage } from './pages/NewProject.page';
 import { AgentsPage } from './pages/Agents.page';
+import { DevelopersPage } from './pages/Developers.page';
+import { DevelopersDocsPage } from './pages/DevelopersDocs.page';
+import { DevelopersConnectionsPage } from './pages/DevelopersConnections.page';
 
 const router = createBrowserRouter([
   {
@@ -35,6 +38,18 @@ const router = createBrowserRouter([
   {
     path: '/agents',
     element: <AgentsPage />,
+  },
+  {
+    path: '/developers',
+    element: <DevelopersPage />,
+  },
+  {
+    path: '/developers/docs',
+    element: <DevelopersDocsPage />,
+  },
+  {
+    path: '/developers/connections',
+    element: <DevelopersConnectionsPage />,
   },
 ]);
 
