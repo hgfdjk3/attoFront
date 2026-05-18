@@ -11,16 +11,14 @@ const MOCK_PROJECTS = [
     title: 'test',
     description: 'A sandbox project for experimenting with new agent configurations and prompt templates.',
     updatedAt: '2 days ago',
-    status: 'active' as const,
     sourcesCount: 4,
     agentsCount: 2,
   },
   {
     id: '2',
     title: 'ty',
-    description: '',
+    description: 'if i want to make it run, how to do it? ',
     updatedAt: 'last week',
-    status: 'idle' as const,
     sourcesCount: 1,
     agentsCount: 0,
   },
@@ -75,7 +73,6 @@ export const ProjectsView: React.FC = () => {
                   title={project.title}
                   description={project.description}
                   updatedAt={project.updatedAt}
-                  status={project.status}
                   sourcesCount={project.sourcesCount}
                   agentsCount={project.agentsCount}
                   onClick={() => navigate(`/project/${encodeURIComponent(project.title)}`)}

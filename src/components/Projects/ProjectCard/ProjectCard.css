@@ -9,7 +9,7 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  min-height: 220px;
+  height: 165px;
   transition:
     transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
     box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1),
@@ -80,7 +80,7 @@
 
 .project-card-header {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: var(--mantine-spacing-sm);
 }
 
@@ -144,35 +144,6 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-.project-card-status {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.project-card-status-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-
-.project-card-status-dot[data-status="active"] {
-  background-color: #22c55e;
-  box-shadow: 0 0 6px rgba(34, 197, 94, 0.4);
-}
-
-.project-card-status-dot[data-status="idle"] {
-  background-color: var(--mantine-color-dimmed);
-}
-
-.project-card-status-label {
-  font-size: 11px;
-  color: var(--mantine-color-dimmed);
-  font-weight: 500;
-  letter-spacing: 0.01em;
 }
 
 /* ── Menu button ─────────────────────────────────── */

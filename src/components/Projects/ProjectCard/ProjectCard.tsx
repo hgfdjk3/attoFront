@@ -17,7 +17,6 @@ interface ProjectCardProps {
   title: string;
   description: string;
   updatedAt: string;
-  status?: 'active' | 'idle';
   sourcesCount?: number;
   agentsCount?: number;
   accentColor?: AccentColor;
@@ -47,7 +46,6 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
   title,
   description,
   updatedAt,
-  status = 'active',
   sourcesCount = 0,
   agentsCount = 0,
   accentColor,
@@ -77,12 +75,6 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
 
           <div className="project-card-title-group">
             <span className="project-card-title">{title}</span>
-            <div className="project-card-status">
-              <span className="project-card-status-dot" data-status={status} />
-              <span className="project-card-status-label">
-                {status === 'active' ? 'Active' : 'Idle'}
-              </span>
-            </div>
           </div>
 
           <Menu shadow="md" position="bottom-end" withArrow>
