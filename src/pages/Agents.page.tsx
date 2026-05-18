@@ -14,7 +14,7 @@ export const AgentsPage: React.FC = () => {
               letterSpacing: '-1px',
             }}
           >
-            Connectors Marketplace
+            Connectors Library
           </Title>
           <Text c="zinc.4" size="md">
             Discover and manage agents to bring external sources into your workspace.
