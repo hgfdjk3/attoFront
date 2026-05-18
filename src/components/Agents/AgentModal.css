@@ -1,12 +1,12 @@
 .agent-modal .mantine-Modal-content {
-  background-color: var(--mantine-color-zinc-9) !important;
-  border: 1px solid var(--mantine-color-zinc-8);
+  background-color: light-dark(var(--mantine-color-zinc-0), var(--mantine-color-zinc-9)) !important;
+  border: 1px solid light-dark(var(--mantine-color-zinc-2), var(--mantine-color-zinc-8));
   overflow: hidden;
 }
 
 .agent-modal .mantine-Modal-header {
-  background-color: var(--mantine-color-zinc-9) !important;
-  border-bottom: 1px solid var(--mantine-color-zinc-8);
+  background-color: light-dark(var(--mantine-color-zinc-0), var(--mantine-color-zinc-9)) !important;
+  border-bottom: 1px solid light-dark(var(--mantine-color-zinc-2), var(--mantine-color-zinc-8));
 }
 
 .agent-modal-hero {
@@ -17,7 +17,7 @@
       transparent 70%);
   margin: 0;
   display: flex;
-  border-bottom: 1px solid var(--mantine-color-zinc-8);
+  border-bottom: 1px solid light-dark(var(--mantine-color-zinc-2), var(--mantine-color-zinc-8));
 }
 
 .agent-modal-icon-wrapper {
@@ -67,16 +67,16 @@
 }
 
 .agent-modal-section {
-  background-color: var(--mantine-color-zinc-9);
-  border: 1px solid var(--mantine-color-zinc-8);
+  background-color: light-dark(var(--mantine-color-zinc-0), var(--mantine-color-zinc-9));
+  border: 1px solid light-dark(var(--mantine-color-zinc-2), var(--mantine-color-zinc-8));
   padding: 16px;
   border-radius: var(--mantine-radius-md);
 }
 
 .agent-modal-source-card {
   padding: 6px 14px;
-  background-color: var(--mantine-color-zinc-9);
-  border: 1px solid var(--mantine-color-zinc-8);
+  background-color: light-dark(var(--mantine-color-zinc-1), var(--mantine-color-zinc-9));
+  border: 1px solid light-dark(var(--mantine-color-zinc-4), var(--mantine-color-zinc-8));
   border-left: 4px solid var(--source-color);
   border-radius: var(--mantine-radius-sm);
   transition: all 0.2s ease;
@@ -84,12 +84,13 @@
 }
 
 .agent-modal-source-card:hover {
-  background-color: var(--mantine-color-zinc-8);
+  background-color: light-dark(var(--mantine-color-zinc-2), var(--mantine-color-zinc-8));
   transform: translateX(2px);
 }
 
 .agent-modal-button {
   height: 48px;
+  color: light-dark(var(--mantine-color-zinc-9), var(--mantine-color-zinc-1));
   font-weight: 700;
   letter-spacing: 0.5px;
   text-transform: uppercase;

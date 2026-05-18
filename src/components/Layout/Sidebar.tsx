@@ -11,8 +11,8 @@ import {
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { SidebarWorkspace } from './SidebarWorkspace';
 import { motion, AnimatePresence } from 'framer-motion';
-import AtomLogo from '../../Atom.svg';
-import { Image } from '@mantine/core';
+import { ThemeToggle } from '../ThemeToggle/ThemeToggle';
+import { AtomLogo } from '../AtomLogo/AtomLogo';
 
 
 const navItems = [
@@ -71,7 +71,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ opened, onToggle }) => {
       {/* Sidebar Header */}
       <Group justify={opened ? "space-between" : "center"} pr={opened ? 0 : "sm"} mb={opened ? "md" : 0} flex-direction={opened ? "row" : "column"} px={opened ? 4 : 0} gap="6" mt={4} >
         <Group gap="xs" wrap="nowrap" onClick={() => navigate('/')} style={{ cursor: 'pointer' }} >
-          <Image src={AtomLogo} w={24} h={24} style={{ flexShrink: 0 }} />
+          <AtomLogo size={24} color="var(--mantine-color-text)" />
           <AnimatePresence mode="wait">
 
             {opened && (
@@ -169,6 +169,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ opened, onToggle }) => {
 
       {/* Footer Section */}
       <Stack gap="xs" mt="md">
+        <ThemeToggle opened={opened} />
         <NavLink
           label={
             <AnimatePresence mode="wait">
