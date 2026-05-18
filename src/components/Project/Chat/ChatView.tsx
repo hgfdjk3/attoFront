@@ -57,6 +57,7 @@ export const ChatView: React.FC<ChatViewProps> = ({
 
   const { mutate, streamedContent, isPending, data } = useChatStream();
 
+  const [isAutomationMode, setIsAutomationMode] = useState(false);
   const [boardHeight, setBoardHeight] = useState(150);
   const [isResizing, setIsResizing] = useState(false);
 
@@ -94,7 +95,7 @@ export const ChatView: React.FC<ChatViewProps> = ({
       <ProjectHeader title="Operation Grandma" />
 
       <AnimatePresence initial={false}>
-        {showMarkdownResponse && (
+        {showMarkdownResponse && isAutomationMode && (
           <>
             <motion.div
               key="automation-board-container"
@@ -217,6 +218,8 @@ export const ChatView: React.FC<ChatViewProps> = ({
             onDetachSource={onDetachSource}
             onAttachSource={() => setIsManageSourcesModalOpen(true)}
             emptySourcesLabel="Project Sources"
+            isAutomationMode={isAutomationMode}
+            onAutomationModeToggle={setIsAutomationMode}
           />
         </motion.div>
       </AnimatePresence>
