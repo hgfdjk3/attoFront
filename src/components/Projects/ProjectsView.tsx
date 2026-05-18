@@ -9,14 +9,20 @@ const MOCK_PROJECTS = [
   {
     id: '1',
     title: 'test',
-    description: 'asdfasdf',
+    description: 'A sandbox project for experimenting with new agent configurations and prompt templates.',
     updatedAt: '2 days ago',
+    status: 'active' as const,
+    sourcesCount: 4,
+    agentsCount: 2,
   },
   {
     id: '2',
     title: 'ty',
     description: '',
     updatedAt: 'last week',
+    status: 'idle' as const,
+    sourcesCount: 1,
+    agentsCount: 0,
   },
 ];
 
@@ -53,16 +59,25 @@ export const ProjectsView: React.FC = () => {
           />
 
           <SimpleGrid
-            cols={{ base: 2, sm: 3, lg: 3 }}
+            cols={{ base: 1, sm: 2, lg: 3 }}
             spacing="lg"
             verticalSpacing="lg"
           >
-            {filteredProjects.map((project) => (
-              <motion.div key={project.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.3 }}>
+            {filteredProjects.map((project, index) => (
+              <motion.div
+                key={project.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3, delay: index * 0.05 }}
+              >
                 <ProjectCard
                   title={project.title}
                   description={project.description}
                   updatedAt={project.updatedAt}
+                  status={project.status}
+                  sourcesCount={project.sourcesCount}
+                  agentsCount={project.agentsCount}
                   onClick={() => navigate(`/project/${encodeURIComponent(project.title)}`)}
                 />
               </motion.div>
