@@ -150,21 +150,10 @@ export const ProjectPanel: React.FC = () => {
 
   const allSources = [...sources, ...groups.flatMap((group) => group.sources), ...globalSources];
 
-  const handleAddGlobalToChat = (sourceIds: string[]) => {
-    setAttachedSourceIds((current) => {
-      const newIds = [...current];
-      sourceIds.forEach(id => {
-        if (!newIds.includes(id)) newIds.push(id);
-      });
-      return newIds;
-    });
-  };
-
-  const handleAddGlobalToProjectAndChat = (sourceIds: string[]) => {
+  const handleAddGlobalToProject = (sourceIds: string[]) => {
     const sourcesToMove = globalSources.filter(s => sourceIds.includes(s.id));
     setSources(current => [...current, ...sourcesToMove]);
     setGlobalSources(current => current.filter(s => !sourceIds.includes(s.id)));
-    handleAddGlobalToChat(sourceIds);
   };
 
   const activeSource = allSources.find(s => s.id === activeSourceId);
@@ -185,8 +174,7 @@ export const ProjectPanel: React.FC = () => {
                 ? current.filter((id) => id !== sourceId) 
                 : [...current, sourceId]
             )}
-            onAddGlobalToChat={handleAddGlobalToChat}
-            onAddGlobalToProjectAndChat={handleAddGlobalToProjectAndChat}
+            onAddGlobalToProject={handleAddGlobalToProject}
           />
         </Box>
         <Box w={{ base: 10, xs: 10, sm: 10, md: 360, lg: 380 }} >

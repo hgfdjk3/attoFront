@@ -19,8 +19,7 @@ export interface ManageSourcesModalProps {
   globalSources: Source[];
   attachedSourceIds: string[];
   onToggleSource: (sourceId: string) => void;
-  onAddGlobalToChat?: (sourceIds: string[]) => void;
-  onAddGlobalToProjectAndChat?: (sourceIds: string[]) => void;
+  onAddGlobalToProject: (sourceIds: string[]) => void;
 }
 
 export const ManageSourcesModal: React.FC<ManageSourcesModalProps> = ({
@@ -31,17 +30,23 @@ export const ManageSourcesModal: React.FC<ManageSourcesModalProps> = ({
   globalSources = [],
   attachedSourceIds = [],
   onToggleSource,
-  onAddGlobalToChat,
-  onAddGlobalToProjectAndChat,
+  onAddGlobalToProject,
 }) => {
   const { ref: projectSourcesRef, isDropTarget: isOverProjectSources } = useDroppable({
     id: 'project-sources-zone',
   });
 
+  // Derive project source IDs from standalone + grouped sources
+  const projectSourceIds = [
+    ...standaloneSources.map((s) => s.id),
+    ...groups.flatMap((g) => g.sources.map((s) => s.id)),
+  ];
+
   return (
     <Modal
       opened={opened}
       onClose={onClose}
+      centered
       title={
         <Text fw={600} size="lg">
           Manage Sources
@@ -56,7 +61,7 @@ export const ManageSourcesModal: React.FC<ManageSourcesModalProps> = ({
     >
       <Grid>
         <Grid.Col span={6}>
-          <ProjectSourcesSection 
+          <ProjectSourcesSection
             standaloneSources={standaloneSources}
             groups={groups}
             attachedSourceIds={attachedSourceIds}
@@ -67,11 +72,10 @@ export const ManageSourcesModal: React.FC<ManageSourcesModalProps> = ({
         </Grid.Col>
 
         <Grid.Col span={6}>
-          <GlobalSourcesSection 
+          <GlobalSourcesSection
             globalSources={globalSources}
-            attachedSourceIds={attachedSourceIds}
-            onToggleSource={onToggleSource}
-            onAddGlobalToProjectAndChat={onAddGlobalToProjectAndChat}
+            projectSourceIds={projectSourceIds}
+            onAddToProject={onAddGlobalToProject}
           />
         </Grid.Col>
       </Grid>

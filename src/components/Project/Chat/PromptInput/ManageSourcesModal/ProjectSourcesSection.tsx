@@ -37,8 +37,8 @@ export const ProjectSourcesSection: React.FC<ProjectSourcesSectionProps> = ({
           ref={dropRef}
           className={`projectSourcesDropZone ${isOver ? 'active' : ''}`}
         >
-          <ScrollArea h={450} offsetScrollbars scrollbars="y">
-            <Stack gap="sm" pr="sm">
+          <ScrollArea h={450} offsetScrollbars scrollbars="y" scrollbarSize={4}>
+            <Stack gap="sm" >
               <AnimatePresence mode="popLayout">
                 {groups.map((group) => (
                   <motion.div

@@ -37,8 +37,7 @@ interface ChatViewProps {
   attachedSourceIds: string[];
   onDetachSource: (sourceId: string) => void;
   onToggleSource: (sourceId: string) => void;
-  onAddGlobalToChat?: (sourceIds: string[]) => void;
-  onAddGlobalToProjectAndChat?: (sourceIds: string[]) => void;
+  onAddGlobalToProject: (sourceIds: string[]) => void;
 }
 
 export const ChatView: React.FC<ChatViewProps> = ({
@@ -49,8 +48,7 @@ export const ChatView: React.FC<ChatViewProps> = ({
   attachedSourceIds,
   onDetachSource,
   onToggleSource,
-  onAddGlobalToChat,
-  onAddGlobalToProjectAndChat,
+  onAddGlobalToProject,
 }) => {
   const [chats, setChats] = useState<ChatItemData[]>(MOCK_CHATS);
   const [automations, setAutomations] = useState<AutomationData[]>(MOCK_AUTOMATIONS);
@@ -59,7 +57,7 @@ export const ChatView: React.FC<ChatViewProps> = ({
 
   const { mutate, streamedContent, isPending, data } = useChatStream();
 
-  const [boardHeight, setBoardHeight] = useState(250);
+  const [boardHeight, setBoardHeight] = useState(150);
   const [isResizing, setIsResizing] = useState(false);
 
   const handleResize = useCallback((deltaY: number) => {
@@ -104,9 +102,9 @@ export const ChatView: React.FC<ChatViewProps> = ({
               animate={{ height: boardHeight, opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
               transition={isResizing ? { duration: 0 } : { duration: 0.3, ease: "easeInOut" }}
-              style={{ 
-                overflow: 'hidden', 
-                position: 'relative', 
+              style={{
+                overflow: 'hidden',
+                position: 'relative',
                 flexShrink: 0,
                 pointerEvents: isResizing ? 'none' : 'auto',
                 userSelect: isResizing ? 'none' : 'auto'
@@ -114,8 +112,8 @@ export const ChatView: React.FC<ChatViewProps> = ({
             >
               <AutomationBuilder height="100%" />
             </motion.div>
-            <ResizeDivider 
-              onResize={handleResize} 
+            <ResizeDivider
+              onResize={handleResize}
               onResizeStart={() => setIsResizing(true)}
               onResizeEnd={() => setIsResizing(false)}
               onToggle={handleToggleBoard}
@@ -231,8 +229,7 @@ export const ChatView: React.FC<ChatViewProps> = ({
         groups={groups}
         attachedSourceIds={attachedSourceIds}
         onToggleSource={onToggleSource}
-        onAddGlobalToChat={onAddGlobalToChat}
-        onAddGlobalToProjectAndChat={onAddGlobalToProjectAndChat}
+        onAddGlobalToProject={onAddGlobalToProject}
       />
     </Box>
   );

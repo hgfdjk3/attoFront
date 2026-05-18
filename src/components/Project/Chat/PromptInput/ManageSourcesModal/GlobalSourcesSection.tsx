@@ -19,16 +19,14 @@ import {
   IconFileText,
   IconExternalLink,
   IconPlus,
-  IconMessages
 } from '@tabler/icons-react';
 import { Source, SourceType } from '../../../Sources/types';
 import { SourceCard } from '../../../Sources/SourceCard/SourceCard';
 
 export interface GlobalSourcesSectionProps {
   globalSources: Source[];
-  attachedSourceIds: string[];
-  onToggleSource: (sourceId: string) => void;
-  onAddGlobalToProjectAndChat?: (sourceIds: string[]) => void;
+  projectSourceIds: string[];
+  onAddToProject: (sourceIds: string[]) => void;
 }
 
 const TYPE_ICONS: Record<SourceType, React.ReactNode> = {
@@ -40,18 +38,13 @@ const TYPE_ICONS: Record<SourceType, React.ReactNode> = {
 
 export const GlobalSourcesSection: React.FC<GlobalSourcesSectionProps> = ({
   globalSources = [],
-  attachedSourceIds = [],
-  onToggleSource,
-  onAddGlobalToProjectAndChat,
+  projectSourceIds = [],
+  onAddToProject,
 }) => {
   const theme = useMantineTheme();
   const [searchQuery, setSearchQuery] = useState('');
   const [activeType, setActiveType] = useState<SourceType | 'all'>('all');
-
-  const attachedGlobalSourceIds = useMemo(() => {
-    const globalIds = globalSources.map(s => s.id);
-    return attachedSourceIds.filter(id => globalIds.includes(id));
-  }, [globalSources, attachedSourceIds]);
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
   const filteredGlobalSources = useMemo(() => {
     return globalSources.filter((source) => {
@@ -63,6 +56,34 @@ export const GlobalSourcesSection: React.FC<GlobalSourcesSectionProps> = ({
     });
   }, [globalSources, searchQuery, activeType]);
 
+  // Sources that are not yet in the project
+  const availableSources = useMemo(() => {
+    return filteredGlobalSources.filter(
+      (source) => !projectSourceIds.includes(source.id)
+    );
+  }, [filteredGlobalSources, projectSourceIds]);
+
+  // Sources already in the project
+  const alreadyAddedSources = useMemo(() => {
+    return filteredGlobalSources.filter((source) =>
+      projectSourceIds.includes(source.id)
+    );
+  }, [filteredGlobalSources, projectSourceIds]);
+
+  const handleToggleSelection = (sourceId: string) => {
+    setSelectedIds((prev) =>
+      prev.includes(sourceId)
+        ? prev.filter((id) => id !== sourceId)
+        : [...prev, sourceId]
+    );
+  };
+
+  const handleAddSelected = () => {
+    if (selectedIds.length === 0) return;
+    onAddToProject(selectedIds);
+    setSelectedIds([]);
+  };
+
   const types: (SourceType | 'all')[] = ['all', 'pdf', 'txt', 'link', 'doc'];
 
   return (
@@ -73,7 +94,7 @@ export const GlobalSourcesSection: React.FC<GlobalSourcesSectionProps> = ({
       <Stack gap="sm" h="100%" style={{ borderLeft: `1px solid light-dark(${theme.colors.gray[2]}, ${theme.colors.dark[6]})`, paddingLeft: 'var(--mantine-spacing-xl)' }}>
         <Box mb="xs">
           <Text fw={600} size="md">Global Sources</Text>
-          <Text size="sm" c="dimmed">Drag items to project sources</Text>
+          <Text size="sm" c="dimmed">Select &amp; add to project, or drag them over</Text>
         </Box>
 
         <TextInput
@@ -113,8 +134,8 @@ export const GlobalSourcesSection: React.FC<GlobalSourcesSectionProps> = ({
         <ScrollArea h={320} offsetScrollbars scrollbars="y" mt="xs">
           <Stack gap="xs" pr="sm">
             <AnimatePresence mode="popLayout">
-              {filteredGlobalSources.length > 0 ? (
-                filteredGlobalSources.map((source) => (
+              {availableSources.length > 0 && (
+                availableSources.map((source) => (
                   <motion.div
                     key={source.id}
                     layout
@@ -125,12 +146,44 @@ export const GlobalSourcesSection: React.FC<GlobalSourcesSectionProps> = ({
                   >
                     <SourceCard
                       source={source}
-                      selected={attachedSourceIds.includes(source.id)}
-                      onClick={() => onToggleSource(source.id)}
+                      selected={selectedIds.includes(source.id)}
+                      onClick={() => handleToggleSelection(source.id)}
                     />
                   </motion.div>
                 ))
-              ) : (
+              )}
+
+              {alreadyAddedSources.length > 0 && (
+                <motion.div
+                  key="already-added-label"
+                  layout
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                >
+                  <Text size="xs" c="dimmed" fw={500} mt="sm" mb={4}>
+                    Already in project
+                  </Text>
+                </motion.div>
+              )}
+
+              {alreadyAddedSources.map((source) => (
+                <motion.div
+                  key={source.id}
+                  layout
+                  initial={{ opacity: 0, x: 50 }}
+                  animate={{ opacity: 0.5, x: 0 }}
+                  exit={{ opacity: 0, x: -50 }}
+                  transition={{ duration: 0.2 }}
+                  style={{ pointerEvents: 'none' }}
+                >
+                  <SourceCard
+                    source={source}
+                    selected={false}
+                  />
+                </motion.div>
+              ))}
+
+              {filteredGlobalSources.length === 0 && (
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -147,22 +200,39 @@ export const GlobalSourcesSection: React.FC<GlobalSourcesSectionProps> = ({
         </ScrollArea>
 
         <Box mt="auto" pt="md">
-          <Text size="sm" mb="xs" c="dimmed">
-            {attachedGlobalSourceIds.length > 0
-              ? `Add ${attachedGlobalSourceIds.length} attached sources to:`
-              : 'Select global sources to attach to chat'}
-          </Text>
-          <Button
-            fullWidth
-            variant="filled"
-            size="sm"
-            disabled={attachedGlobalSourceIds.length === 0}
-            onClick={() => {
-              onAddGlobalToProjectAndChat?.(attachedGlobalSourceIds);
-            }}
-          >
-            Add to Project
-          </Button>
+          <AnimatePresence mode="wait">
+            {selectedIds.length > 0 ? (
+              <motion.div
+                key="add-button"
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 8 }}
+                transition={{ duration: 0.15 }}
+              >
+                <Button
+                  fullWidth
+                  variant="filled"
+                  size="sm"
+                  leftSection={<IconPlus size={16} />}
+                  onClick={handleAddSelected}
+                >
+                  Add {selectedIds.length} source{selectedIds.length !== 1 ? 's' : ''} to Project
+                </Button>
+              </motion.div>
+            ) : (
+              <motion.div
+                key="hint-text"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.15 }}
+              >
+                <Text size="sm" c="dimmed" ta="center">
+                  Select sources to add to your project
+                </Text>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </Box>
       </Stack>
     </motion.div>
